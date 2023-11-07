@@ -1,0 +1,6 @@
+<aura:event type="COMPONENT">
+    <aura:attribute name="SelectedOptions" type="List"></aura:attribute>
+    <aura:attribute name="SelectedQLiId" type="String"></aura:attribute>
+    <aura:attribute name="DeleteQLiId" type="String[]"></aura:attribute>
+    
+</aura:event>

@@ -1,0 +1,352 @@
+<aura:component controller = "QuoteCalculationHandler" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="QuoteLineItemlist" type="List" />
+    <aura:attribute name="QuoteTableScreen" type="String" />
+    <aura:attribute name="ProductTableScreen" type="Boolean" />
+    <aura:attribute name="ProductOptionScreen" type="Boolean" /> 
+    <aura:attribute name="QuoterecordId" type="String" />
+    
+    <aura:attribute name="TotalOTI" type="Currency" />
+    <aura:attribute name="TotalSAAS" type="Currency" />
+    <aura:attribute name="QuoteName" type="String" />
+    <aura:attribute name="AccountName" type="String" />
+    
+    <aura:attribute name="NumberOfBookingLabel" type="String" />
+    
+    <aura:attribute name="TravelTotalOTI" type="Currency" />
+    <aura:attribute name="TravelTotalSAAS" type="Currency" />
+    <aura:attribute name="ExpenseTotalOTI" type="Currency" />
+    <aura:attribute name="ExpenseTotalSAAS" type="Currency" />
+    <aura:attribute name="TravelDiscount" type="Currency" />
+    <aura:attribute name="ExpenseDiscount" type="Currency" />
+    
+    <aura:attribute name="Productlist" type="List"/>
+    <aura:attribute name="selectedProductList" type="List"/>
+    <aura:attribute name="AllProductIds" type="List"/>
+    <aura:attribute name="prodId" type="String"/>
+    <aura:attribute name="SelectedProductOptions" type="List"/>
+    <aura:attribute name="SelectedOptionlist" type="List"/>
+    <aura:attribute name="WrapperList" type="List"/>
+    <aura:attribute name="QuoteLineItemRelatedToXQuote" type="List"/>
+    <aura:attribute name="selectedofferingType" type="String" />
+    <aura:attribute name="selectedpricingType" type="String" default="-None-"/>
+    <aura:attribute name="numberOfBookings" type="Integer" default="0"/>
+    <aura:attribute name="minimumCommitment" type="Integer" default="0"/>
+     <aura:attribute name="accTypeCalculated" type="Boolean" default="true"/>
+    <aura:attribute name="selected" type="Map[]"/>
+    <aura:attribute name="offeringType" type="String[]" default="-None-,SBT,TRF" />
+    <aura:attribute name="pricingType" type="String[]" default="-None-,Per Month,Per Report,Per User" />
+    
+    <aura:attribute name="show" type="Boolean" default="false" />
+    <aura:attribute name="showalert" type="Boolean" default="false" />
+    <aura:attribute name="QuoteObject" type="SObject" />
+    <aura:attribute name="AllQuoteLineItemlist" type="List"/>
+    
+    <Aura:attribute name ="ProductName" type="String"/>
+    <Aura:attribute name ="AccountType" type="String"/>
+    <Aura:attribute name ="SelectedOffering" type="String"/>
+    <Aura:attribute name ="SelectedPricing" type="String"/>
+    <aura:attribute name="Commitment" type="Integer" />
+    <aura:attribute name="NumberOfBooking" type="Integer" />
+    
+    <Aura:attribute name ="QuantityError" type="String"/>
+    <Aura:attribute name ="ProductError" type="String"/>
+    <Aura:attribute name ="SelectedProduct" type="String"/>
+    
+    <aura:handler name="featuresXOptions" event="c:QuotelineitemEvent"  action="{!c.handleComponentEvent}"></aura:handler>
+    
+    <aura:handler name="ConfiguredProdId" event="c:QuotelineitemEvent"  action="{!c.handleConfigureEvent}"></aura:handler>
+    
+    <aura:attribute name="ParentQliId" type="String" />
+    
+    <aura:attribute name="ProuctOption" type="List" default="[
+                                                             {'label': 'Travel Bundle', 'value': '01tC20000008bSDIAY'},
+                                                             {'label': 'Expense Bundle', 'value': '01tC20000008eBZIAY'},
+                                                             ]"/>
+   
+    
+    <aura:attribute name="showinputfield" type="Boolean"/>
+    <aura:attribute name="showHideIcons" type="Boolean"/>
+    <aura:attribute name="showCalculateModal" type="Boolean" default="false"/>
+    <aura:attribute name="SelectedProductName" type="String" default=""/>
+    
+        <aura:if isTrue="{!v.QuoteTableScreen}">
+            <aura:if isTrue="{!v.QuoteTableScreen}">
+                <lightning:card>
+                    <div class="slds-page-header">
+                        <div class="slds-page-header__row">
+                            <lightning:icon iconName="standard:webcart" alternativeText="Edit Quote" title="Edit Quote" />
+                            <div class="slds-media__body">
+                                <div class="slds-page-header__name">
+                                    <div class="slds-page-header__name-title" style="padding-left:5px;">
+                                        <h1>
+                                            <span>Quote</span>
+                                            <span class="slds-page-header__title slds-truncate" title="Edit Quote"><b>Edit Quote</b></span>
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-page-header__col-actions">
+                                <div class="slds-page-header__controls">
+                                    <div class="slds-page-header__control">
+                                        <lightning:button label="Add Product" variant="brand" title="Neutral action" onclick="{!c.handleClickAddProduct }"/>
+                                        <lightning:button variant="brand" label="Add Discount" title="Destructive action" onclick="{! c.CalculateDiscount}"/>
+                                        
+                                        <!--lightning:button label="Calculate" title="Neutral action" onclick="{! c.handleClickCalculate }"/-->
+                                        <!--lightning:button variant="brand" label="Save" title="Brand action" onclick="{!c.handleClickSave }" /-->
+                                        <lightning:button variant="destructive" label="Back To Quote" title="Destructive action" onclick="{! c.navigateBackToQuote }"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </lightning:card>
+                 <br></br>
+                <lightning:card>
+                <lightning:accordion  allowMultipleSectionsOpen="true" class="accordionClass">
+                    <lightning:accordionSection name="A" label="Quote Details">
+                            <div style="width:100%;margin-left:10px;">
+                                <table style="width:100%;border-spacing:10px;">
+                                     <tr>
+                                        <td style="width:20%;"><b style="font-size:12px;">Account Name : </b></td>
+                                        <td ><span style="font-size:12px;">{!v.QuoteObject.Account.Name}</span></td>
+                                        <td style="width:20%;"><b style="font-size:12px;">Quote Name  : </b></td>
+                                        <td ><span style="font-size:12px;">{!v.QuoteObject.Name}</span></td>
+                                     </tr>
+                                    <tr>
+                                        <td style="width:20%;"><b style="font-size:12px;">Travel Total OTI :</b></td>
+                                        <td ><span style="font-size:12px;"><lightning:formattedNumber value="{!v.QuoteObject.Travel_Total_OTI__c}" style="currency" currencyCode="INR" /></span></td> 
+                                        <td style="width:20%;"><b style="font-size:12px;">Expense Total OTI :</b></td>
+                                        <td ><span style="font-size:12px;"><lightning:formattedNumber value="{!v.QuoteObject.Expense_Total_OTI__c}" style="currency" currencyCode="INR" /></span></td>
+                                     </tr>
+                                    <tr>
+                                        <td style="width:20%;"><b style="font-size:12px;">Travel Total MRR SAAS  :</b></td>
+                                        <td ><span style="font-size:12px;"><lightning:formattedNumber value="{!v.QuoteObject.Travel_Total_SAAS__c}" style="currency" currencyCode="INR" /></span></td>
+                                        <td style="width:20%;"><b style="font-size:12px;">Expense Total MRR SAAS :</b></td>
+                                        <td ><span style="font-size:12px;"><lightning:formattedNumber value="{!v.QuoteObject.Expense_Total_SAAS__c}" style="currency" currencyCode="INR" /></span></td>
+                                     </tr>
+                                    <tr>
+                                        <td style="width:20%;"><b style="font-size:12px;">Travel OTI Discounted :</b></td>
+                                        <td ><span style="font-size:12px;"><lightning:formattedNumber value="{!v.QuoteObject.Travel_OTI_Discounted__c}" style="currency" currencyCode="INR" /></span></td>
+                                        <td style="width:20%;"><b style="font-size:12px;">Expense OTI Discounted :</b></td>
+                                        <td ><span style="font-size:12px;"><lightning:formattedNumber value="{!v.QuoteObject.Expense_OTI_Discounted__c}" style="currency" currencyCode="INR" /></span></td>
+                                     </tr>
+                                     <tr>
+                                        <td style="width:20%;"><b style="font-size:12px;">Travel Total MRR SAAS Discounted :</b></td>
+                                        <td ><span style="font-size:12px;"><lightning:formattedNumber value="{!v.QuoteObject.Travel_ARR_Discounted__c}" style="currency" currencyCode="INR" /> </span></td>
+                                        <td style="width:20%;"><b style="font-size:12px;">Expense Total MRR SAAS Discounted :</b></td>
+                                        <td ><span style="font-size:12px;"> <lightning:formattedNumber value="{!v.QuoteObject.Expense_ARR_Discounted__c}" style="currency" currencyCode="INR" /></span></td>
+                                     </tr>
+                                </table>
+                            </div>
+                        </lightning:accordionSection> 
+                    </lightning:accordion>
+                    </lightning:card>
+                <aura:if isTrue="{!v.showCalculateModal}">
+                    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+                        <div class="slds-modal__container">
+                            <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                <lightning:card>
+                                    <div  class="slds-grid slds-wrap">
+                                        <div class="slds-size_1-of-2">
+                                            <b style="padding-left:10px;">Expense ARR Discount</b>
+                                            <lightning:input name="Travel Discount"  type="number" label="" value="{!v.QuoteObject.Expense_ARR_Discount__c}" class="slds-text-align_center slds-m-around_x-small" onchange="{!c.calculateExpenseARR}"/>
+                                        </div>
+                                        <div class="slds-size_1-of-2">
+                                            <b style="padding-left:10px;">Expense OTI Discount</b>
+                                            <lightning:input name="Travel Discount"  type="number" label="" value="{!v.QuoteObject.Expense_OTI_Discount__c}" class="slds-text-align_center slds-m-around_x-small" onchange="{!c.calculateExpenseOTI}"/>
+                                        </div>
+                                        <div class="slds-size_1-of-2">
+                                            <b style="padding-left:10px;">Travel ARR Discount</b>
+                                            <lightning:input name="Travel Discount"  type="number" label="" value="{!v.QuoteObject.Travel_ARR_Discount__c}" class="slds-text-align_center slds-m-around_x-small" onchange="{!c.calculateTravelARR}"/> 
+                                        </div>
+                                        <div class="slds-size_1-of-2">
+                                            <b style="padding-left:10px;">Travel OTI Discount</b>
+                                            <lightning:input name="Travel Discount"  type="number" label="" value="{!v.QuoteObject.Travel_OTI_Discount__c}" class="slds-text-align_center slds-m-around_x-small" onchange="{!c.calculateTravelOTI}"/> 
+                                        </div>
+                                        <br></br>
+                                         <br></br>
+                                        <lightning:button variant="brand" label="Calculate" title="Calculate" onclick="{!c.handleClickCalculateDiscount}"  class="slds-align_absolute-center "/>
+                                    </div>
+                                </lightning:card>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+                </aura:if>
+                <lightning:card>
+                    <!--Data Table--> 
+                    <aura:if isTrue="{!v.QuoteLineItemlist.length > 0}">
+                        <c:AvailableQLI  QuoteLineItemlist ="{!v.QuoteLineItemlist}" AllQuoteLineItemlist="{!v.AllQuoteLineItemlist}"/>
+                        <!--table class="slds-table slds-table_bordered slds-no-row-hover slds-table_cell-buffer">
+                            <thead>
+                                <tr class="slds-text-title-caps">
+                                    
+                                    <th scope="col"><div class="slds-truncate" title="Contact Last Name">Selected</div></th>
+                                    <th scope="col"><div class="slds-truncate" title="Contact Email">Product Name</div></th>
+                                    <th scope="col"><div class="slds-truncate" title="Contact Description">Offering Type</div></th>
+                                    <th scope="col"><div class="slds-truncate" title="Contact Description">Account Type</div></th>
+                                    <th scope="col"><div class="slds-truncate" title="Contact Description">Pricing Type</div></th>
+                                    <th scope="col"><div class="slds-truncate" title="Contact Description">Type</div></th>
+                                    <th scope="col"><div class="slds-truncate" title="Contact Description">SAAS Price</div></th>
+                                    <th scope="col"><div class="slds-truncate" title="Contact Description">SAAS Quantity</div></th>
+                                    <th scope="col"><div class="slds-truncate" title="Contact Description">OTI Price</div></th>
+                                    <th scope="col"><div class="slds-truncate" title="Contact Description">OTI Quantity</div></th>
+                                    <th scope="col"><div class="slds-truncate" title="Contact Description"></div></th>
+                                    <th scope="col"><div class="slds-truncate" title="Contact Description"></div></th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                <### display all records of QuoteLineItemlist attribute one by one by aura:iteration ###>
+                                <aura:iteration items="{!v.QuoteLineItemlist}" var="acc" indexVar="sNo">
+                                    <Child Lightning Component>
+                                    <c:AvailableQLI singleRec="{!acc}" QuoteLineItemlist ="{!v.QuoteLineItemlist}"/>
+                                </aura:iteration>
+                            </tbody>
+                        </table--> 
+                    </aura:if>
+                    <aura:if isTrue="{!empty(v.QuoteLineItemlist)}"> 
+                        <div class="slds-align_absolute-center">
+                            <span style="font-size:20px;color:green;">This quote has no line items. Click on Add Products button to select products.</span>
+                        </div>
+                    </aura:if>
+                </lightning:card>
+            </aura:if>
+            <aura:set attribute="else">
+                    <aura:if isTrue="{!v.ProductTableScreen}"> 
+                        <lightning:card>
+                            <div class="slds-page-header slds-page-header_record-home">
+                                <div class="slds-page-header__row">
+                                    <lightning:icon iconName="standard:product" alternativeText="Edit Quote" title="Edit Quote" />
+                                    <div class="slds-media__body">
+                                        <div class="slds-page-header__name">
+                                            <div class="slds-page-header__name-title" style="padding-left:5px;">
+                                                <h1>
+                                                    <span>Product</span>
+                                                    <span class="slds-page-header__title slds-truncate" title="Edit Quote"><b>Product Selection</b></span>
+                                                </h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="slds-page-header__col-actions">
+                                        <div class="slds-page-header__controls">
+                                            <div class="slds-page-header__control">
+                                                <lightning:button label="Cancel" variant="destructive" title="Neutral action" onclick="{!c.navigateToQuoteLine}"/>
+                                                <!--lightning:button variant="brand" label="Save" title="Brand action" onclick="{! c.handleClickSaveProduct}" /--> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </lightning:card>
+                        <br></br>
+                        <lightning:card >
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col slds-size_1-of-4" style="margin: 0.6%;">
+                                    <div>
+                                        <!--c:customLookupComp selected="{!v.selected}"></c:customLookupComp-->
+                                        <lightning:combobox name="progress" label="Products" value="{!v.selectedProduct}" placeholder="Select Product" options="{!v.ProuctOption}" onchange="{! c.handleChange }"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container-fluid" style="margin: 0.5%">
+                                
+                                <div class="slds-grid slds-gutters">
+                                    <aura:if  isTrue="{!v.SelectedProduct =='01tC20000008bSDIAY'}">
+                                        <div class="slds-col slds-size_1-of-4">
+                                            <lightning:select name="select" label="Select offering type:" required="true"  value="{!v.selectedofferingType}" onchange="{!c.doSomething}">
+                                                <aura:iteration items="{!v.offeringType}" var="offeringType">
+                                                    <option text="{!offeringType}"></option>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </div>
+                                    </aura:if>
+                                    <div class="slds-col slds-size_1-of-4">
+                                        <lightning:select name="select" label="Select pricing type:" required="true"  value="{!v.selectedpricingType}" onchange="{!c.HandleBookingLabel}">
+                                            <aura:iteration items="{!v.pricingType}" var="pricingType">
+                                                <option text="{!pricingType}"></option>
+                                            </aura:iteration>
+                                        </lightning:select>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-4">
+                                        <lightning:input name="Number Of Bookings" type="number" label="{!v.NumberOfBookingLabel}" value="{!v.numberOfBookings}" onchange="{!c.calculateCommitment}"/>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-4">
+                                        <!--lightning:input name="Commitments" disabled="true" type="number" label="Minimum Commitment" value="{!v.minimumCommitment}"/-->
+                                    </div>
+                                    
+                                </div>
+                                <br/>
+                                
+                                <aura:if isTrue="{!v.showAccountButton}">
+                                    <div style="margin-left: 46%">
+                                        <lightning:button variant="brand" label="Get Products" title="Brand action" onclick="{! c.getAccountType }" />
+                                        <!--lightning:button variant="destructive" label="Cancel" title="Destructive action" onclick="{! c.navigateBackToQuote }"/-->
+                                    </div>
+                                    <aura:set attribute="else">
+                                        <!--b>
+                                            <div class="slds-box slds-theme_shade slds-theme_alert-texture" >
+                                                <p style="margin-left: 40%;font-size: 20px;">The Account type is : 
+                                                    <strong>
+                                                        {!v.accTypeCalculated}
+                                                    </strong>
+                                                </p>
+                                            </div>
+                                        </b-->
+                                        <div style="margin-left: 46%">
+                                            <br/>
+                                            <lightning:button variant="brand" label="Get Products" title="Brand action"  onclick="{! c.getAccountType }"/>
+                                            <!--lightning:button variant="destructive" label="Cancel" title="Destructive action" onclick="{! c.navigateBackToQuote }"/-->
+                                        </div>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </lightning:card>
+                </aura:if>
+            </aura:set>
+        </aura:if>
+        <aura:if isTrue="{!v.show}">
+            <lightning:spinner aura:id="spinner" variant="brand" size="large" />
+        </aura:if>
+         <aura:if isTrue="{!v.showalert}">
+            <lightning:notificationsLibrary aura:id="notifyId"/>
+        </aura:if>
+        <aura:if isTrue="{!v.ProductOptionScreen}">
+            <lightning:card>
+                <div class="slds-page-header slds-page-header_record-home">
+                    <div class="slds-page-header__row">
+                        <lightning:icon iconName="custom:custom19" alternativeText="Edit Quote" title="Edit Quote" />
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title" style="padding-left:5px;">
+                                    <h1>
+                                        <span>Product Options</span>
+                                        <span class="slds-page-header__title slds-truncate" title="Edit Quote"><b>Configure Products</b></span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-page-header__col-actions">
+                            <div class="slds-page-header__controls">
+                                <div class="slds-page-header__control">
+                                    <!--lightning:button variant="brand" label="Save" title="Brand action" onclick="{! c.handleClickSaveProduct}" /--> 
+                                    <lightning:button variant="destructive" label="Cancel" title="Brand action"  onclick="{!c.NavigateBackToQuotelineItem }"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </lightning:card>
+            <div>
+                <c:ConfigureLineItems aura:id="quotelineitems" productIds="{!v.prodId}"  SelectedProductOptions="{!v.SelectedProductOptions}"  ProductName="{!v.ProductName}" AccountType="{!v.AccountType}" SelectedOffering="{!v.SelectedOffering}" SelectedPricing="{!v.SelectedPricing}" Commitment="{!v.Commitment}" NumberOfBooking="{!v.NumberOfBooking}" show="{!v.show}" QuoteLineItemRelatedToXQuote="{!v.QuoteLineItemRelatedToXQuote}"/>
+            </div>
+            
+        </aura:if>
+</aura:component>

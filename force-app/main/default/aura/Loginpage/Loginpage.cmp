@@ -1,0 +1,20 @@
+<aura:component  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+  
+    
+    <aura:handler name="init" value="{!this}" action="{!c.handleLoginButtomClick}" />
+      <lightning:layout>
+        <lightning:layoutItem padding="around-small" size="12" class="main">
+            <div >
+                <form class="slds-form--stacked">
+                    <ui:inputtext aura:id="User" label=" User Name " class="" value="{!v.Empiduser}" maxlength="30" placeholder="Employee Id" required="false" size="20"/> <br/>
+                    <ui:inputSecret aura:id="pwd" label=" Password " class="" value="{!v.Empidpwd}" maxlength="10" placeholder="Password" required="false" size="20"/> <br/>
+                    <div class="slds-float--left slds-button_brand">
+                        <div class="slds-grid buttons">   
+                            <lightning:button variant="brand" label="Login" title="Login" iconPosition = "Left" onclick="{!c.handleLoginButtomClick}"/>
+                         </div>
+                    </div>
+                </form>
+             </div>
+       </lightning:layoutItem>
+    </lightning:layout>
+</aura:component>

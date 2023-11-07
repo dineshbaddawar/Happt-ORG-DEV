@@ -1,0 +1,16 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+            <aura:attribute name="recordId" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.myAction}"/>
+    <aura:attribute name="fields" type="List" 
+                    default="['OpportunityId']"/>
+            <!--lightning:notificationsLibrary aura:id="notifLib"/-->
+    <lightning:recordForm aura:id="contactRecordCreator"
+                    objectApiName="Quote"
+                                  layoutType="Full"
+                                  columns="2"
+                                  fields="{!v.fields}"
+                                  onload="{!c.onLoad}"
+                                  targetFields="{!v.recordId}" onsuccess="{!c.handleSuccess}" onsubmit="{!c.handleOnSubmit}">
+      
+    </lightning:recordForm>
+</aura:component>

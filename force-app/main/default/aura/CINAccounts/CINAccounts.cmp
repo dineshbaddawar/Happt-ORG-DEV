@@ -1,0 +1,243 @@
+<aura:component controller="AccountBasedOnLeadCIN"  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <!--Attribiute-->
+    <aura:attribute name="recordId" type="String"/>
+    <!-- <aura:attribute name="LeadCIN" type="String"/>-->
+    <aura:attribute name="accListWithsimCIN" type="List" />
+    <aura:attribute name="accListWithsimDomain" type="List" />
+    <aura:attribute name="leadListWithsimDomain" type="List" />
+    <aura:attribute name="showImage" type="boolean" default="false"/>
+    
+    <aura:attribute name="url" type="String" />
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!--Lightning Card-->
+    
+    <lightning:card >
+        <div style = "border-style: solid;margin :1%" >
+            <div style = "margin :1%" >
+                <aura:if  isTrue="{!v.accListWithsimCIN.length > 0}">
+                    
+                    <div style="margin-bottom: 1%;margin-top: 1%;">
+                        <header  style="background-color:#004d00;">
+                            <b style="color:white">
+                                Accounts With Similar CIN number :
+                            </b> 
+                        </header>
+                    </div>
+                    
+                    
+                    <table aria-multiselectable="true" class="slds-table slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols" role="grid" aria-label="Example advanced table of Opportunities with cell focused">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Account Name">Name</div>
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Account CIN">CIN</div>
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Owner">Owner</div>
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Rating">Action</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{! v.accListWithsimCIN }" var="account">
+                                <tr>
+                                    <td>
+                                        <a href="{!v.url +'/'+ account.Id}">
+                                            {!account.Name}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <b>
+                                            {!account.CIN__c}
+                                        </b>
+                                    </td>
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate" title="{!account.Owner.FirstName}">
+                                            <a href="#" tabindex="0">{!account.Owner.FirstName}&nbsp; {!account.Owner.LastName} </a>
+                                        </div>
+                                    </td>
+                                    
+                                    <td> 
+                                        <lightning:button variant="brand"  value="{!account.Id}" label="Tag Account" title="Brand action" onclick="{!c.tagAccount}" />
+                                    </td>
+                                </tr>	
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <aura:set attribute="else">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_2-of-8 LeftDiv">
+                                <img src="{!$Resource.company_logo}" alt="User avatar" class="center"/>
+                            </div>
+                            <div class="slds-col slds-size_6-of-8 LeftDiv">
+                                <div style="margin-top: 13%;margin-left: 4%;">
+                                    <b>
+                                        No Accounts With Similar CIN Number .. 😊😊
+                                    </b>
+                                </div>
+                            </div>
+                        </div>
+                    </aura:set>
+                </aura:if>
+                
+                <aura:if  isTrue="{!v.accListWithsimDomain.length > 0}">
+                    
+                    <div style="margin-bottom: 1%;margin-top: 1%;">
+                        <header  style="background-color:#004d00;">
+                            <b style="color:white">
+                                Accounts With Similar Domain :
+                            </b> 
+                        </header>
+                    </div>
+                    
+                    <table aria-multiselectable="true" class="slds-table slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols" role="grid" aria-label="Example advanced table of Opportunities with cell focused">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Account Name">Name</div>
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Account CIN">CIN</div>
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Owner">Email</div>
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Rating">Action</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{! v.accListWithsimDomain }" var="account">
+                                <tr>
+                                    <td>
+                                        <a href="{!v.url +'/'+ account.Id}">
+                                            {!account.Name}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <b>
+                                            {!account.CIN__c}
+                                        </b>
+                                    </td>
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate" title="{!account.Email__c}">
+                                            <a href="#" tabindex="0">{!account.Email__c}</a>
+                                        </div>
+                                    </td>
+                                    <td> 
+                                        <lightning:button variant="brand"  value="{!account.Id}" label="Tag Account" title="Brand action" onclick="{!c.tagAccount}" />
+                                    </td>
+                                </tr>	
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <aura:set attribute="else">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_2-of-8 LeftDiv">
+                                <img src="{!$Resource.company_logo}" alt="User avatar" class="center"/>
+                            </div>
+                            <div class="slds-col slds-size_6-of-8 LeftDiv">
+                                <div style="margin-top: 13%;margin-left: 4%;">
+                                    <b>
+                                        No Accounts With Similar Domain .. 😊😊
+                                    </b>
+                                </div>
+                            </div>
+                        </div>
+                    </aura:set>
+                </aura:if>
+                
+                <aura:if  isTrue="{!v.leadListWithsimDomain.length > 0}">
+                    
+                    <div style="margin-bottom: 1%;margin-top: 1%;">
+                        <header  style="background-color:#004d00;">
+                            <b style="color:white">
+                                Leads With Similar Domain :
+                            </b> 
+                        </header>
+                    </div>
+                    
+                    <table aria-multiselectable="true" class="slds-table slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols" role="grid" aria-label="Example advanced table of Opportunities with cell focused">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Account Name">Name</div>
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Account CIN">CIN</div>
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Account CIN">Account</div>
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Account CIN">Company</div>
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Owner">Email</div>
+                                </th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{! v.leadListWithsimDomain }" var="account">
+                                <tr>
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate" title="{!account.Email}">
+                                            <a href="{!v.url +'/'+ account.Id}">
+                                                {!account.Name}
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <b>
+                                            {!account.CIN__c}
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <b>
+                                            <a href="{!v.url +'/'+ account.Account__c}">
+                                                {!account.Account__r.Name}
+                                            </a>
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <b>
+                                            {!account.Company}
+                                        </b>
+                                    </td>
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate" title="{!account.Email}">
+                                            <a href="#" tabindex="0">{!account.Email}</a>
+                                        </div>
+                                    </td>
+                                    
+                                </tr>	
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    <aura:set attribute="else">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_2-of-8 LeftDiv">
+                                <img src="{!$Resource.company_logo}" alt="User avatar" class="center"/>
+                            </div>
+                            <div class="slds-col slds-size_6-of-8 LeftDiv">
+                                <div style="margin-top: 13%;margin-left: 4%;">
+                                    <b>
+                                        No Leads With Similar Domain .. 😊😊
+                                    </b>
+                                </div>
+                            </div>
+                        </div>
+                    </aura:set>
+                </aura:if> 
+            </div>
+        </div>
+    </lightning:card>
+    <br/>
+</aura:component>

@@ -1,0 +1,6 @@
+.slds-illustration.slds-illustration_small .slds-illustration__svg {
+    width: 100%;
+    max-width: 500px;
+    max-height: 400px;
+    margin-bottom: var(--lwc-spacingMedium,1rem);
+}

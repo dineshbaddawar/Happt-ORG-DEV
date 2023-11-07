@@ -1,0 +1,9 @@
+<template>
+    <template if:true={pickListValues}>
+        <c-multi-select-picklist received-pick-list-values={pickListValues}
+            onmultipicklistgenericevent={multipicklistgenericevent}
+            selected-values={fieldValue} field-api-name="Company_Category__c">
+        </c-multi-select-picklist>
+    </template>
+    <p> Selected Values:  {fieldValue}</p>
+</template>

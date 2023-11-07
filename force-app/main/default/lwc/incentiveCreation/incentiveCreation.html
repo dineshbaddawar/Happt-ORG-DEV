@@ -1,0 +1,96 @@
+<!--
+  @description       : 
+  @author            : Dhanush Babu
+  @group             : 
+  @last modified on  : 03-06-2023
+  @last modified by  : Dhanush Babu
+-->
+<template>
+   <!-- Card to disply all the data -->
+   <lightning-card>
+    <lightning-button label="New Incentive" onclick={handleNewClick} slot="actions"></lightning-button>
+          <template if:true={incentivesList}>
+            <lightning-datatable
+                     key-field="id"
+                      data={incentiveData}
+                      columns={incentiveColumns}>
+                     </lightning-datatable>
+          </template>
+  
+    <template if:true={showPopUp}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            aria-modal="true"
+            aria-label="Meaningful description of the modal content"
+            class="slds-modal slds-fade-in-open"
+        >
+            <div class="slds-modal__container">
+                <button
+                    class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    onclick={handleClose}>
+
+                    <span class="slds-assistive-text" >Cancel and close</span>
+                </button>
+                <div
+                    class="slds-modal__content slds-p-around_medium slds-modal__content_headless"
+                    id="modal-content-id-1"
+                >
+                         <lightning-layout>
+                               <lightning-layout-item size="5">
+                                <lightning-combobox
+                                name="object"
+                                label="Please Select The Object"
+                                value={objName}
+                                placeholder="Select object"
+                                options={objOptions}
+                                onchange={handleChangeObj} ></lightning-combobox>
+                                
+                                <lightning-combobox
+                                name="Profile"
+                                label="Please Select The Profile"
+                                value={ProfileName}
+                                placeholder="Select Profile"
+                                options={profileOptions}
+                                onchange={handleChangeprofiles} ></lightning-combobox>
+
+                             
+                             
+                            </lightning-layout-item>
+                            <lightning-layout-item size="1">
+
+                            </lightning-layout-item>
+                                    <lightning-layout-item size="5">
+                                        <lightning-combobox
+                                        name="object"
+                                        label="Please Select The Evaluation Field"
+                                        value={objFieldName}
+                                        placeholder="Select Field"
+                                        options={objFieldOptions}
+                                        onchange={handleChangeObjField} ></lightning-combobox>
+                                        
+                                        <lightning-combobox
+                                        name="object"
+                                        label="Please Select The Computation Field"
+                                        value={ComputatioobjFieldName}
+                                        placeholder="Select Computation Field"
+                                        options={ComputatioobjFieldOptions}
+                                        onchange={handleComputatioChangeObjField} ></lightning-combobox>
+                                    </lightning-layout-item>
+                         </lightning-layout>
+                </div>
+                <div class="slds-modal__footer">
+                    <button
+                        class="slds-button slds-button_neutral"
+                        aria-label="Cancel and close" onclick={handleClose}
+                    >
+                        Cancel
+                    </button>
+                    <button class="slds-button slds-button_brand" onclick={handleSave}>Save</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+</lightning-card>
+</template>

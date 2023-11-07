@@ -1,0 +1,231 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="keyList" type="List"/>
+    <aura:attribute name="value" type="string"/>
+    <aura:attribute name="deleteButton" type="string"/>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    <aura:attribute name="pageNumber" type="Integer" default="1"/>
+    <aura:attribute name="pageSize" type="Integer" default="10"/>
+    <aura:attribute name="accTypeCalculated" type="String"/>
+    <aura:attribute name="subType" type="String[]" default="-None-,Custom API,API,SFTP,Premium,Pro,Elite" />
+    <aura:attribute name="Type" type="String[]" default="-None-,OTI,OTI + SAAS" />
+    <aura:attribute name="isLastPage" type="Boolean" default="false"/>
+    <aura:attribute name="dataSize" type="Integer" default="0"/>
+    <aura:attribute name="qliList" type="List" />
+    <aura:attribute name="childQliList" type="List" />
+    <aura:attribute name="relatedList" type="List" />
+    <aura:attribute name="isExpenseProduct" type="Boolean" default="false"/>
+    <aura:attribute name="isTravelProduct" type="Boolean" default="false"/>
+    <aura:Attribute name="bundleQLI" type="QuoteLineItem"/>
+    <!--Response Handlers -->
+    <aura:attribute name="mapOfProdIdbyListOfPLDTobeReturn" type="map"/>
+    <aura:attribute name="mapOfNestedProdIdByListOfPLDTobeReturn" type="map"/>
+    <!--Response Handlers -->
+    <div class="slds-m-around--xxx-large">
+        <br></br>
+        <lightning:card>
+                <div class="slds-grid slds-gutters">
+                <div class="slds-col">
+                    <span><b>Product Name</b></span><br/>
+                    <span>{!v.bundleQLI.Product_Name__c}</span>
+                </div>
+                <div class="slds-col">
+                    <span><b>Account Type</b></span><br/>
+                    <span>{!v.bundleQLI.Account_Type__c}</span>
+                </div>
+                <aura:if isTrue="{!v.isTravelProduct}">
+                    <div class="slds-col">
+                    <span><b>Offering Type</b></span><br/>
+                    <span>{!v.bundleQLI.Travel_Offering_Type__c}</span>
+                </div>
+                </aura:if>
+                
+                <div class="slds-col">
+                    <span><b>Pricing Type</b></span><br/>
+                    <span>{!v.bundleQLI.Travel_Pricing_Type__c}</span>
+                </div>
+            </div>
+                
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                
+                <thead>
+                    <tr class="slds-line-height_reset slds-text-title_caps">
+                        <th  class="slds-is-resizable" scope="col">
+                            <div class="slds-truncate" title="Name">
+                                Selected
+                            </div>
+                        </th>
+                        <th  class="slds-is-resizable" scope="col">
+                            <div class="slds-truncate" title="Name">
+                                Product Name
+                            </div>
+                        </th>
+                        <aura:if  isTrue="{!v.isExpenseProduct}">
+                            <th scope="col">
+                            <div class="slds-truncate" title="Actions">Sub Type</div>
+                        </th>
+                        </aura:if>
+                        
+                        <th scope="col">
+                            <div class="slds-truncate" title="Actions">Type</div>
+                        </th>
+                        <th class="slds-is-resizable" scope="col">
+                            <div class="slds-truncate" title="Industry">
+                                Quantity
+                            </div>
+                        </th>
+                        <!--th class="slds-is-resizable" scope="col">
+                            <div class="slds-truncate" title="Phone">
+                                Discount
+                            </div>
+                        </th-->
+                        <th class="slds-is-resizable" scope="col">
+                            <div class="slds-truncate" title="Phone">
+                                SAAS Price
+                            </div>
+                        </th>
+                        <th  class="slds-is-resizable" scope="col">
+                            <div class="slds-truncate" title="Account Number">
+                                OTI Price
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <aura:if isTrue="{!v.qliList.length > 0}">
+                    <tbody>
+                        
+                        <aura:iteration items="{!v.qliList}" var="acc" indexVar="index">
+                            
+                            <aura:if isTrue="{!v.bundleQLI.Product2Id == acc.Parent_Quote_Line_Item__c}">
+                                <tr id ="{!index}"> 
+                                <td>  
+                                    <lightning:input type="checkbox" name="Team Member" disabled="true" value="{!acc.Selected__c}" checked="true"/>
+                                </td>
+                                <td>  
+                                    <lightning:input type="text" disabled="true" name="Team Member"   value="{!acc.Product_Name__c}" />
+                                </td>
+                                <aura:if  isTrue="{!v.isExpenseProduct}">
+                                    <td>  
+                                    <lightning:select name="select" label="Select Sub type:"   value="{!acc.Sub_Type__c}">
+                                        <aura:iteration items="{!v.subType}" var="subType">
+                                            <option text="{!subType}"></option>
+                                        </aura:iteration>
+                                    </lightning:select>  
+                                </td>
+                                </aura:if>
+                                
+                                <td>
+                                    <lightning:select disabled="true" name="select" label="Select type:" required="true"  value="{!acc.Type__c}">
+                                        <aura:iteration items="{!v.Type}" var="type">
+                                            <option text="{!type}"></option>
+                                        </aura:iteration>
+                                    </lightning:select>  
+                                </td>
+                                <td>  
+                                    <aura:if  isTrue="{!acc.Is_Editable__c}">
+                                        {!acc.Is_Editable__c}
+                                        <lightning:input type="text" name="Quantity"  value="{!acc.Quantity}" />
+                                        <aura:set attribute="else">
+                                            <lightning:input type="text" disabled="false" name="Quantity"  value="{!acc.Quantity}" />
+                                        </aura:set>
+                                    </aura:if>
+                                </td>
+                                <!--td>  
+                                    <lightning:input type="text" name="Discount"   value="{!acc.Quantity}" />
+                                </td-->
+                                <td>  
+                                    <lightning:input type="text" disabled="true" name="Saas Price"   value="{!acc.SAAS_Price__c}" />
+                                </td>
+                                <td>  
+                                    <lightning:input type="text" disabled="true" name="Oti Price"   value="{!acc.OTI_Price__c}" />
+                                </td>
+                                <!--td>  
+                                    <lightning:input type="text" disabled="true" name="Travel  Offering Type"   value="{!acc.Travel_Offering_Type__c}" />
+                                </td-->
+                            </tr>
+                            <aura:iteration items="{!v.relatedList}" var="cus" indexVar="key">
+                                <aura:if  isTrue="{!cus.key == acc.Product2Id}">
+                                    <aura:iteration items="{!cus.value}" var="cus" indexVar="index">
+                                        <tr id ="{!index}" > 
+                                            <td style="margin:2%;">  
+                                                <lightning:input type="checkbox" disbaled="true" name="{!index}" style="margin-left:30%;margin-top: 15%"  value="{!cus.Selected__c}"  onchange="{!c.onCheckBoxSelection}" />
+                                            </td>
+                                            <td  style="color:#00ace6;">  
+                                                <lightning:input type="text" disabled="true" name="Team Member" style="margin-left:10%"  value="{!cus.name}" />
+                                            </td>
+                                            <aura:if  isTrue="{!v.isExpenseProduct}">
+                                                <td style="color:#00ace6;">  
+                                                <lightning:select name="select" label="Select Sub type:"  value="{!cus.Sub_Type__c}">
+                                                    <aura:iteration items="{!v.subType}" var="subType">
+                                                        <option text="{!subType}"></option>
+                                                    </aura:iteration>
+                                                </lightning:select>  
+                                            </td>
+                                            </aura:if>
+                                            
+                                            <td style="color:#00ace6;">
+                                                <lightning:select disabled="true" name="select" label="Select type:" required="true"  value="{!cus.Type__c}">
+                                                    <aura:iteration items="{!v.Type}" var="type">
+                                                        <option text="{!type}"></option>
+                                                    </aura:iteration>
+                                                </lightning:select>  
+                                            </td>
+                                            <td style="color:#00ace6;">  
+                                                <lightning:input type="text" name="Team Member"  value="{!cus.Quantity}" />
+                                            </td>
+                                            <!--td style="color:#00ace6;">  
+                                                <lightning:input type="text" name="Team Member"   value="{!cus.discount}" />
+                                            </td-->
+                                            <td style="color:#00ace6;">  
+                                                <lightning:input type="text" disabled="true" name="Team Member"   value="{!cus.SAAS_Price__c}" />
+                                            </td>
+                                            <td style="color:#00ace6;">  
+                                                <lightning:input type="text" disabled="true" name="Team Member"   value="{!cus.OTI_Price__c}" />
+                                            </td>
+                                            <!--td style="color:#00ace6;">  
+                                                <lightning:input type="text" disabled="true" name="Team Member"   value="{!cus.Travel_Offering_Type__c}" />
+                                            </td-->
+                                        </tr>
+                                    </aura:iteration>
+                                    <br/>
+                                </aura:if>
+                            </aura:iteration>
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tbody>
+                </aura:if>
+            </table>
+            
+            
+            <!--div class="slds-float_right" style="margin:0.5%">
+                <lightning:button label="{!v.deleteButton}" name="{!v.deleteButton}" iconName="utility:delete" iconPosition="right" variant="destructive" onclick="{!c.deleteProduct}"/>
+            </div-->
+            <!--aura:set attribute="footer">
+                <div class="slds-align_absolute-center"> 
+                    <div class="slds-p-right_xx-small">
+                        <lightning:button label="Prev"
+                                          onclick="{!c.handlePrev}"
+                                          disabled="{! v.pageNumber == 1}"
+                                          variant="brand"
+                                          iconName="utility:back"
+                                          name="prev"/>
+                    </div>
+                    <span class="slds-badge slds-badge_lightest">
+                        Page {!v.pageNumber} | Showing records from {! ((v.pageNumber-1)*v.pageSize)+' to '+((v.pageNumber-1)*v.pageSize+v.dataSize)}
+                    </span>
+                    <div class="slds-p-left_xx-small">
+                        <lightning:button label="Next"
+                                          disabled="{!v.isLastPage}"
+                                          onclick="{!c.handleNext}"
+                                          variant="brand"
+                                          iconName="utility:forward"
+                                          iconPosition="right"
+                                          name="next"/>
+                    </div>
+                </div>  
+                
+            </aura:set-->
+            
+        </lightning:card>
+    </div>
+</aura:component>

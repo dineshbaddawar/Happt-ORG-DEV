@@ -1,0 +1,195 @@
+<aura:component >
+    <aura:attribute name="SelectedProductOptions" type="List"/>
+    <aura:attribute name="SelectedOptions" type="List"/>
+    <aura:attribute name ="selectedQLI" type="List"/>
+    <Aura:attribute name ="FeatureName" type="String"/>
+    <aura:attribute name="tempList" type="List" />
+    <aura:attribute name ="deleteqliId" type="String[]"/>
+    <aura:attribute name ="IsTrvaelProduct" type="boolean" default="false"/>
+    <aura:attribute name="AllProductOptions" type="List"/>
+    <aura:attribute name="NumberOfBooking" type="Integer" />
+    <aura:attribute name ="NumberOfBookingLabel" type="String" default="Number Of Booking"/>
+    
+    
+    
+    <aura:attribute name="showErrorClass" type="boolean" default="false"/>
+    <aura:attribute name="EditQuantity" type="boolean" default="false" />
+    <aura:attribute name="isExpenseProduct" type="boolean" default="false" />
+    <aura:attribute name="show" type="Boolean" default="false" />
+    
+    <Aura:attribute name ="ProductName" type="String"/>
+    <Aura:attribute name ="AccountType" type="String"/>
+    <Aura:attribute name ="SelectedOffering" type="String"/>
+    <Aura:attribute name ="SelectedPricing" type="String"/>
+    <aura:attribute name="Commitment" type="Currency" />
+    
+    <aura:attribute name="ParentParam1" type="String" default="Got Message From Parent"/>
+    <aura:attribute name="ParentParam2" type="boolean" default="false" />
+    <aura:attribute name="ParentParam3" type="List"  />
+    
+   <aura:registerEvent name="SelectedparentRecords" type="c:ParentSelectedOptionId"/>
+   <aura:registerEvent name="Loader" type="c:ParentSelectedOptionId"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.myAction}" />
+    <lightning:card >
+        <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+            <!--div class="slds-size_1-of-5">
+                <b style="padding-left:10px;">Product Name</b>
+                <div class="slds-box slds-box_small slds-text-align_center slds-m-around_x-small">{!v.ProductName}</div>
+               
+            </div-->
+            <div class="slds-size_1-of-4">
+                <b style="padding-left:10px;">Account Type</b>
+                <div class="slds-box slds-box_small slds-text-align_center slds-m-around_x-small">{!v.AccountType}</div>
+                
+            </div>
+            <aura:if isTrue="{!AND(v.SelectedOffering,v.IsTrvaelProduct)}">
+                <div class="slds-size_1-of-4">
+                    
+                    <b style="padding-left:10px;">Offering Type</b>
+                    <div class="slds-box slds-box_small slds-text-align_center slds-m-around_x-small">{!v.SelectedOffering}</div>
+                    
+                </div>
+            </aura:if>
+            <div class="slds-size_1-of-4">
+                <b style="padding-left:10px;">Pricing Type</b>
+                <div class="slds-box slds-box_small slds-text-align_center slds-m-around_x-small">{!v.SelectedPricing}</div>
+                
+            </div>
+            <div class="slds-size_1-of-4">
+                <b style="padding-left:10px;">{!v.NumberOfBookingLabel}</b>
+                <div class="slds-box slds-box_small slds-text-align_center slds-m-around_x-small">{!v.NumberOfBooking}</div>
+                
+            </div>
+        </div>
+    </lightning:card>
+    <aura:if isTrue="{!v.show}">
+        <lightning:spinner aura:id="spinner" variant="brand" size="large" alternativeText="Loading"/>
+    </aura:if>
+    <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-border_left slds-border_right" role="grid">
+        <tr>
+            <th scope="col" height="22" style="width: 3rem">Selected</th>
+            <th scope="col" height="22">Product Name</th>
+            <aura:if isTrue="{!v.IsTrvaelProduct}">
+                <aura:set attribute="else">
+                  <th scope="col" height="22">Sub Type</th>
+                </aura:set>
+            </aura:if>
+            <th scope="col" height="22">Type</th>
+            <!--th scope="col" height="22">Multiply Prices Based on Quantity</th-->
+            <!--th scope="col" height="22">Quantity</th-->
+            <th scope="col" height="22">SAAS Price</th>
+            <th scope="col" height="22">SAAS Quantity</th>
+            <th scope="col" height="22">OTI Price</th>
+             <th scope="col" height="22">OTI Quantity</th>
+            <!--th scope="col" height="22">List Price</th-->
+        </tr>                      
+        <tbody>
+            <aura:iteration items="{!v.tempList}" var="ProductOption">
+                <aura:if isTrue="{!ProductOption.Parent_Product__c == null}">
+                    <tr class="slds-hint-parent">
+                    <td>
+                        <aura:if isTrue="{!ProductOption.Mandatory__c}">
+                            <label class="slds-checkbox">
+                                <ui:inputCheckbox aura:id="checkContact" value="{!ProductOption.Selected__c}" text="{!ProductOption.Id}" change="{!c.selectSingleOptionRec}" disabled="true"/>
+                                <span class="slds-checkbox--faux" />
+                                <span class="slds-form-element__label"></span>
+                            </label>
+                            <aura:set attribute="else">
+                                <label class="slds-checkbox">
+                                    <ui:inputCheckbox aura:id="checkContact" value="{!ProductOption.Selected__c}" text="{!ProductOption.Id}" change="{!c.selectSingleOptionRec}" />
+                                    <span class="slds-checkbox--faux" />
+                                    <span class="slds-form-element__label"></span>
+                                </label>
+                            </aura:set>
+                        </aura:if>
+                        
+                    </td>
+                    <td >
+                        <div class="slds-truncate" title="{!ProductOption.Product_Name__c}">{!ProductOption.Product_Name__c}</div>  
+                    </td>
+                    <aura:if isTrue="{!ProductOption.Is_Travel_Product__c}">
+                        
+                        <aura:set attribute="else">
+                            <td>
+                                <div data-id ="{!ProductOption.Id}" >
+                                    <aura:if isTrue="{!ProductOption.Is_Subtype_Editable__c}">
+                                        
+                                        <lightning:select  name="select" label=""   value="{!ProductOption.Sub_Type__c}" >
+                                            <option >None</option>
+                                            <option >Pro</option>
+                                            <option >Premium</option>
+                                            <option >Elite</option>
+                                            <option >Custom API</option>
+                                            <option >API</option>
+                                            <option >SFTP</option>
+                                        </lightning:select>
+                                        <aura:set attribute="else">
+                                            <lightning:select  disabled="true" name="select" label=""   value="{!ProductOption.Sub_Type__c}">
+                                                <option >None</option>
+                                                <option >Pro</option>
+                                                <option >Premium</option>
+                                                <option >Elite</option>
+                                                <option >Custom API</option>
+                                                <option >API</option>
+                                                <option >SFTP</option>
+                                            </lightning:select>
+                                        </aura:set>
+                                        
+                                    </aura:if>
+                                </div>
+                            </td>
+                        </aura:set>
+                    </aura:if>
+                    <td >
+                        <div class="slds-truncate" title="{!ProductOption.Type__c}">{!ProductOption.Type__c}</div>  
+                    </td>
+                    <!--td >
+                        <div class="slds-truncate" title="{!ProductOption.Type__c}">{!ProductOption.Multiply_Prices_Based_on_Quantity__c}</div>  
+                    </td-->
+                    <!--td >
+                        <aura:if isTrue="{!ProductOption.Editable__c}">
+                              <input type="number" id="text-input-id-49" placeholder="Enter Quantity"  class="slds-input" value="{!ProductOption.Quantity__c}" data-Id ="{!ProductOption.Product__c}" onchange="{!c.onChange}"/>
+                            <aura:set attribute="else">
+                               <input type="number" id="text-input-id-49" placeholder="Enter Quantity"  class="slds-input" value="{!ProductOption.Quantity__c}" data-Id ="{!ProductOption.Product__c}" onchange="{!c.onChange}" disabled="true"/>
+                            </aura:set>
+                        </aura:if> 
+                    </td-->
+                    <td>
+                        <!--lightning:formattedRichText class="slds-cell-wrap" style="white-space: normal;" value="{!ProductOption.Description__c}"/-->
+                        <div class="slds-truncate" title="{!ProductOption.Description__c}">{!ProductOption.SAAS_Price__c}</div>  
+                    </td>
+                    <td>
+                        <!--lightning:formattedRichText class="slds-cell-wrap" style="white-space: normal;" value="{!ProductOption.Description__c}"/-->
+                        <!--div class="slds-truncate" title="{!ProductOption.Description__c}">{!ProductOption.SAAS_Quantity__c}</div--> 
+                        <aura:if isTrue="{!and(ProductOption.SAAS_Quantity_Editable__c,ProductOption.Editable__c)}">
+                             <input type="number" id="text-input-id-49" placeholder="Enter Quantity"  class="slds-input" value="{!ProductOption.SAAS_Quantity__c}" data-Id ="{!ProductOption.Product__c}" onchange="{!c.onChangeSAASquantity}"/>
+                            <aura:set attribute="else">
+                            <input type="number" id="text-input-id-49" placeholder="Enter Quantity"  class="slds-input" value="{!ProductOption.SAAS_Quantity__c}" data-Id ="{!ProductOption.Product__c}" onchange="{!c.onChangeSAASquantity}"  disabled="true"/>
+                            </aura:set>
+                        </aura:if> 
+                    </td>
+                    <td >
+                        <div class="slds-truncate" title="{!ProductOption.List_Price__c}">{!ProductOption.OTI_Price__c}</div>  
+                    </td>
+                    <td>
+                        <!--lightning:formattedRichText class="slds-cell-wrap" style="white-space: normal;" value="{!ProductOption.Description__c}"/-->
+                        <!--div class="slds-truncate" title="{!ProductOption.Description__c}">{!ProductOption.OTI_Quantity__c}</div-->
+                        <aura:if isTrue="{!and(ProductOption.OTI_Quantity_Editable__c,ProductOption.Editable__c)}">
+                            <input type="number" id="text-input-id-49" placeholder="Enter Quantity"  class="slds-input" value="{!ProductOption.OTI_Quantity__c}" data-Id ="{!ProductOption.Product__c}" onchange="{!c.onChangeOTIquantity}"/>
+                            <aura:set attribute="else">
+                                <input type="number" id="text-input-id-49" placeholder="Enter Quantity"  class="slds-input" value="{!ProductOption.OTI_Quantity__c}" data-Id ="{!ProductOption.Product__c}" onchange="{!c.onChangeOTIquantity}"  disabled="true"/>
+                            </aura:set>
+                        </aura:if> 
+                    </td>
+                </tr>
+                <aura:if isTrue="{!and(ProductOption.Parent_Product__c == null,ProductOption.Is_Travel_Product__c==false)}">
+                    <c:Childfeaturecomponent aura:id="ChildComp" tempListLatest="{!v.tempList}" ParentProductId="{!ProductOption.Product__c}" selectedQLI="{!v.selectedQLI}" deleteqliId="{!v.deleteqliId}" SelectedProductOptions="{!v.SelectedProductOptions}" AccountType="{!v.AccountType}" SelectedPricing="{!v.SelectedPricing}"  AllProductOptions="{!v.AllProductOptions}"/>
+                </aura:if>
+                </aura:if>
+                
+                
+            </aura:iteration> 
+        </tbody>
+    </table>
+</aura:component>

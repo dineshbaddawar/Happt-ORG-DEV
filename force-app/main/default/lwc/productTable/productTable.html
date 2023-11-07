@@ -1,0 +1,92 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 06-09-2021
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+  Modifications Log 
+  Ver   Date         Author                               Modification
+  1.0   06-09-2021   ChangeMeIn@UserSettingsUnder.SFDoc   Initial Version
+-->
+<template >
+       <p style="color:darkgrey;font-size:16px">Selected Products</p>
+       <br/>
+           <!-- <p>{item}</p>-->
+          <!--lightning-input value ={item} onchange={handleItemChange}></lightning-input-->
+          <template if:true={itemlist}>
+          
+           
+            <lightning-layout style="padding-bottom:8px ;font-weight: bold;">
+                <lightning-layout-item size="3">
+                  Name
+                </lightning-layout-item>
+
+
+                
+                <lightning-layout-item size="1">
+                  Sale Type
+                </lightning-layout-item>
+                
+                <!--<lightning-layout-item size="2">
+                  Category
+                </lightning-layout-item>-->
+                
+                <!--<lightning-layout-item size="2">
+                    Type
+                </lightning-layout-item>-->
+                
+
+                <lightning-layout-item size="2">
+                    Pricing Type
+                </lightning-layout-item>
+
+                <lightning-layout-item size="2">
+                    Price
+                </lightning-layout-item>
+
+                 <lightning-layout-item size="1">
+                    Qty / Months
+                </lightning-layout-item>
+
+                <lightning-layout-item size="1">
+                    Subtotal
+                </lightning-layout-item>
+                
+                 <!--lightning-layout-item size="1">
+                    Discount
+                </lightning-layout-item-->
+
+                 <lightning-layout-item size="1">
+                    Total
+                </lightning-layout-item>
+            
+        </lightning-layout>
+        
+            <template for:each={itemlist} for:item="wrapper" for:index="index">
+               <template if:true={wrapper}>  
+               
+                  <c-product-table-row item = {wrapper} key={wrapper.Product2Id} index={index} 
+                  ondelete={handleDelete}></c-product-table-row>
+              </template>
+            </template> 
+
+             <!--template for:each={itemlist} for:item="wrapper">
+               <template if:true={wrapper}>  
+               
+                  <c-product-table-row-o-t-i item = {wrapper} key={wrapper.proId}></c-product-table-row-o-t-i>
+
+
+              </template>
+            </template--> 
+          
+          </template> 
+        
+    
+     <!--<tr  key={wrapper.proId}>
+                      <td>{wrapper.proName}</td>
+                      <td>{wrapper.family}</td>
+                      <td>{wrapper.category}</td>
+                      <td>{wrapper.pricingType}</td>
+                      <td> <c-search-pricing-type pricingTypes={wrapper.proId} ></c-search-pricing-type></td>
+                 </tr>-->
+</template>

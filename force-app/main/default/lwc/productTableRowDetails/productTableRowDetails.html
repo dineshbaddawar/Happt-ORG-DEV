@@ -1,0 +1,123 @@
+<template>
+
+         <template if:true={ErrorMessage}>
+            
+              <div class="slds-text-color_error">Please complete all the details.</div>
+           </template>
+         
+ <lightning-layout style="padding-bottom:4px;font-size:smaller">
+    
+
+         <template if:false={item.Is_Generic}>
+            <lightning-layout-item size="3">
+               <template if:true={isIndependent}>
+               <b>{item.proName}</b>
+               </template>
+               <template if:false={isIndependent}>
+               {item.proName}
+               </template>
+            </lightning-layout-item>
+         </template>
+
+      <template if:true={item.Is_Generic}>
+         <lightning-layout-item size="1">
+            <template if:true={isIndependent}>
+            <b>{item.proName}</b>
+            </template>
+            <template if:false={isIndependent}>
+            {item.proName}
+            </template>
+            
+         </lightning-layout-item>
+         <lightning-layout-item size="2">
+               <div style="padding-right: 10%;">
+                  <lightning-input type="text" placeholder="Enter Details of Product"  variant="label-hidden" onchange={handleOtherDetails}   value={item.Other_Details}></lightning-input>
+            </div>
+         </lightning-layout-item>
+      </template>
+
+            <lightning-layout-item size="1">
+               {item.Sales_Type}
+            </lightning-layout-item>
+            
+            <!--<lightning-layout-item size="2">
+               {item.category}
+            </lightning-layout-item>-->
+            
+            <!--<lightning-layout-item size="2">
+                {item.pricingType}
+            </lightning-layout-item>-->
+
+            <lightning-layout-item size="2">     
+              
+               <template if:true={selectedProductPricerecordId} >
+                     <div style="padding-right: 10%;">
+                        <c-custom-lookup-advanced 
+                                       icon-name="standard:price_book_entries"
+                                       s-object-api-name="Product_Price__c"
+                                       displayfield ="Pricing_Type__c"
+                                       onlookupupdate={handleUpdatePricing}
+                                       fieldstoquery = " , List_Price__c "
+                                       default-record-id={selectedProductPricerecordId}
+                                       placeholder="Search for Products Pricing here..."
+                                       where-clause={whereClausePricing}
+                                       >
+                        </c-custom-lookup-advanced>
+                     </div>
+               </template>
+            
+                 
+            </lightning-layout-item>
+        
+        <lightning-layout-item size="2">
+           <!-- <template if:true={item.UnitPrice} >-->
+                 <div style="padding-right: 10%;">
+                    <template if:false={isDependentPricing}>
+                   <lightning-input  variant="label-hidden" type="number" onchange={handlePrice}  value={item.UnitPrice}></lightning-input>
+                    </template>
+                  </div>
+            <!--</template>-->
+        </lightning-layout-item>
+
+        <lightning-layout-item size="1">
+           <div style="padding-right: 10%;">
+                 <template if:false={isDependentPricing}>
+         <lightning-input type="number"  variant="label-hidden"  value={item.Quantity} onchange={handleQuantity} data-id={item.Product2Id}></lightning-input>
+                 </template>
+           </div>
+        </lightning-layout-item>
+
+         <lightning-layout-item size="1">
+                
+                <div style="padding-top: 8%;">
+                   <template if:false={isDependentPricing}>
+                      <p>{subtotalValue}</p>
+                   </template>
+              
+           </div>
+          </lightning-layout-item>
+        
+         <!--lightning-layout-item size="1">
+            <div style="padding-right: 10%;">
+               <template if:false={isDependentPricing}>
+            <lightning-input type="number"  variant="label-hidden"    value={item.Discount} onchange={handleDis}></lightning-input>
+               </template>
+            </div>
+         </lightning-layout-item-->
+        <lightning-layout-item size="1">
+           <div style="padding-top: 8%;">
+               <template if:false={isDependentPricing}>
+                      <p>{totalValue}</p>
+                   </template>
+           </div>
+                
+        </lightning-layout-item>
+       <lightning-layout-item size="1">
+          <!--data-id={item.Product2Id}-->
+                <lightning-button-icon icon-name="utility:delete"    alternative-text="Delete"   class="slds-m-left_xx-small" onclick={handleDeleteitem}  title="Delete"></lightning-button-icon>
+       </lightning-layout-item>
+   </lightning-layout>
+
+ 
+
+</template>

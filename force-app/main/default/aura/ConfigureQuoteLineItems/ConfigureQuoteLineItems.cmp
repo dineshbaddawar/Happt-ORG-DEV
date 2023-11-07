@@ -1,0 +1,48 @@
+<aura:component controller="ConfigurePorductController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="quoteDetails" type="object"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div class="slds-page-header slds-page-header_record-home">
+                <div class="slds-page-header__row">
+                    <lightning:icon iconName="standard:webcart" alternativeText="Edit Quote" title="Edit Quote" />
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1>
+                                    <span>Quote</span>
+                                    <span class="slds-page-header__title slds-truncate" title="Edit Quote"><b>Edit Quote</b></span>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-page-header__col-actions">
+                        <div class="slds-page-header__controls">
+                            <div class="slds-page-header__control">
+                                <lightning:button label="Add Product" variant="brand" title="Neutral action" onclick="{!c.handleClickAddProduct }"/>
+                                <!--lightning:button label="Calculate" title="Neutral action" onclick="{! c.handleClickCalculate }"/-->
+                                <!--lightning:button variant="brand" label="Save" title="Brand action" onclick="{!c.handleClickSave }" /-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+    <div class="container-fluid" style="margin: 1%">
+                <lightning:card >
+                    <div class="container-fluid" style="margin: 0.5%">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-3">
+                                <lightning:input name="Number Of Bookings" disabled="true" type="text" label="Account Name" value="{!v.quoteDetails.Account.Name}" />
+                            </div>
+                            <div class="slds-col slds-size_1-of-3">
+                                <lightning:input name="Number Of Bookings" disabled="true" type="text" label="Opportunity Name" value="{!v.quoteDetails.Opportunity.Name}" />
+                            </div>
+                            <div class="slds-col slds-size_1-of-3">
+                                <lightning:input name="Number Of Bookings" disabled="true" type="text" label="Quote Name" value="{!v.quoteDetails.Name}" />
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                </lightning:card>  
+                
+            </div>
+</aura:component>

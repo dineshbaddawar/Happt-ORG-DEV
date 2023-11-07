@@ -1,0 +1,19 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" 
+                access="global" controller="OppDocApprovalHelper">    
+    
+    <div class="modal-header slds-modal__header slds-size_1-of-1">
+        <h4 class="title slds-text-heading--medium">Submit for Document Approval</h4>
+    </div>
+    
+    <div class="slds-m-around_x-small slds-modal_large" style="z-index: 1; padding-bottom: 50px;">
+        <div class="container-fluid">
+            <lightning:textarea aura:id="comnt" name="comment" type="text" label="Submitter Comment"/>
+        </div>
+    </div>
+    
+    <div class="modal-footer slds-modal__footer slds-align_absolute-center">
+            <lightning:button label="Submit for Approval" title="Submit for Approval" onclick="{! c.handleSubmit }" class="marginTop"/>
+            <lightning:button label="Cancel" title="Cancel" onclick="{!c.CloseQuickAction}" class="marginTop"/>
+    </div>
+    
+</aura:component>

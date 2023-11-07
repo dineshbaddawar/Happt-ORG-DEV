@@ -1,0 +1,46 @@
+<aura:component controller="ProductConfiguration">
+	<!--declare aura attributes-->
+    <!--aura:attribute name="showSaveCancelBtn" type="boolean"/-->
+    <aura:attribute name="showErrorClass" type="boolean" default="false"/>
+    <aura:attribute name="sNo" type="string" />
+    <aura:attribute name="singleRec" type="sobject" />
+    <aura:attribute name="EditMode" type="boolean" default="false" />
+    <aura:attribute name="EditEmail" type="boolean" default="false" />
+    <aura:attribute name="EditDescription" type="boolean" default="false" />
+    <!--aura:attribute name="childMap" type="Map"/-->
+    <aura:attribute name="childqlilist" type="List"/>
+    <aura:attribute name="quoteId" type="string"/>
+    <!--Table Row Start-->  
+   <aura:handler name="init" value="{!this}" action="{!c.qliInitMethod}"/>
+   
+    <aura:iteration  items="{!v.childqlilist}" indexVar="key" var="item">
+        <tr id ="{!index}"> 
+            <td>
+                <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-12">
+                            <!--lightning:icon iconName="utility:chevrondown" size="x-small"/-->
+                        </div>
+                        <div class="slds-col slds-size_10-of-12">
+                             <div class="slds-truncate" title="{!item.Product_Name__c}" >{!item.Product_Name__c}</div>
+                        </div>
+                    </div>
+            </td>
+            <td>  
+                <lightning:input type="text" disabled="true" name="Team Member"   value="{!item.Sub_Type__c}" />
+            </td>
+            <td>
+                <lightning:input type="text" disabled="true" name="Team Member"   value="{!item.Type__c}" />
+            </td>
+            <td>  
+                <lightning:input type="text"  disabled="true" name="Quantity"  value="{!item.Quantity}" />
+            </td>
+            <td>  
+                <lightning:input type="text" disabled="true" name="Saas Price"   value="{!item.SAAS_Price__c}" />
+            </td>
+            <td>  
+                <lightning:input type="text" disabled="true" name="Oti Price"   value="{!item.OTI_Price__c}" />
+            </td>
+        </tr>
+    </aura:iteration >
+   
+</aura:component>

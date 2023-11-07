@@ -1,0 +1,22 @@
+<apex:page lightningStylesheets="true">
+        <!-- This is used to include the JS files that makes embedding a Lightning App in  VF page possible -->
+    <apex:includeLightning />
+    
+        <!-- This is where the component gets embeded -->
+    <div id="lightning" />
+
+    <script>
+                //1. Specify the Lightning App
+        $Lightning.use("c:paymentTermsAndConditionlwc", function () {
+                        //2. Specify the Aura Component that has LWC in it
+            $Lightning.createComponent("c:paymentTermsAndConditionsComponent",
+                {},
+                "lightning",
+                function (cmp) {
+                    console.log("button was created");
+                    // do some stuff
+                }
+            );
+        });
+    </script>
+</apex:page>

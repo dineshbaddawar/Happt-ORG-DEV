@@ -1,0 +1,11 @@
+<!-- /**
+ * @author [Dinesh B]
+ * @email dinesh.b@utilitarianLab.com
+ * @create date 2023-04-05 14:10:05
+ * @modify date 2023-04-05 14:10:05
+ * @desc [description]
+ */ -->
+
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" controller="PaymentTermApprover" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+</aura:component>

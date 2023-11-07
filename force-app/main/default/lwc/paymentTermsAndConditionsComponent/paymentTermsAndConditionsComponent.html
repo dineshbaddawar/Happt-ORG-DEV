@@ -1,0 +1,125 @@
+<!--
+  @description       : 
+  @author            : Dhanush Babu
+  @group             : 
+  @last modified on  : 03-07-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+	<template if:true={popUpOpen}>
+		<section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+			class="slds-modal slds-fade-in-open slds-modal_small">
+			<div class="slds-modal__container">
+				<div class="slds-modal__content slds-p-around_medium">
+					<lightning-record-view-form record-id={recordId} object-api-name="Quote">
+					</lightning-record-view-form>
+					<template for:each={termSectionList} for:item="termSect">
+						<li style="marker: none;" key={termSect.id}>
+							<br>
+                      {termSect.Name}
+							<div class="slds-tabs_card">
+								<template for:each={termSect.Term_Attribute_Line_Items__r} for:item="termline">
+
+									<div key={termline} class="radio-container">
+										<template if:true={termline.Inputbox__c}>
+											<lightning-input type="number" name={termSect.Id} data-id={termline.Id}
+												data-sectionname={termSect.Name} onchange={handleInputBox}>
+											</lightning-input>
+										</template>
+										<template if:false={termline.Inputbox__c}>
+											<div class="radio-label">
+												<lightning-input type="radio" checked={termline.checkValue}
+													name={termSect.Id} label={termline.Name} value={termline.Id}
+													data-sectionname={termSect.Name} onchange={handleChildSelection}>
+												</lightning-input>
+											</div>
+											<div class="description">{termline.Description__c}</div>
+										</template>
+									</div>
+
+									<template if:true={termline.IsSelected}>
+										<template if:true={termline.Custom_Entry_Require__c}>
+											<lightning-input-rich-text key={termline.Id} data-id={termline.Id}
+												value={termline.Comments__c} data-sectionname={termSect.Name}
+												onchange={handleComments}></lightning-input-rich-text>
+										</template>
+									</template>
+									<br key={d}>
+                        </template>
+							</div>
+
+						</li>
+					</template>
+				</div>
+				<div class="slds-modal__footer">
+					<button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={handleClose}>Cancel</button>
+					<button class="slds-button slds-button_brand" onclick={handleSavetc}>Save</button>
+				</div>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+	</template>
+
+	<template if:true={IsLoaded}>
+
+		<lightning-spinner alternative-text="Loading..." variant="brand">
+
+		</lightning-spinner>
+
+	</template>
+
+	<!-- <template if:true={termsshouldUpdate}> 
+ <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+        <div class="slds-modal__container">
+            <div class="slds-modal__content slds-p-around_medium" >
+                         <lightning-record-view-form
+        record-id={recordId}
+        object-api-name="Quote"
+    >
+          <div class="output-container">
+            <lightning-output-field field-name="Subscription_Billing_Start_Date__c"> </lightning-output-field>
+            <lightning-output-field field-name="Order_form_sign_date__c"></lightning-output-field>
+          </div>
+       
+    </lightning-record-view-form>
+                <template for:each={termSectionList} for:item="termSect">
+                    <li style="marker: none;" key={termSect.id} >
+                        <br>
+                        {termSect.Name}
+                         
+                           <div class="slds-tabs_card">
+                                <template for:each={termSect.Term_Attribute_Line_Items__r} for:item="termline">
+                                   
+                                    <div key={termline} class="radio-container">
+                    <template for:each={termsConditions}  for:item="tremsc">
+                    <div class="radio-label" key={tremsc}>
+                        <lightning-input type="radio" name={termSect.Id}  key={termline} label={termline.Name} value={termline.Id} onchange={handleChildSelection}>
+                                    
+                                   </lightning-input>
+                                      </div>
+                    <div key={termline} class="description">{termline.Description__c}</div>
+                      </template>   
+                </div>
+                                          
+                                      
+                              
+                                 <br key={d}>
+                       
+            
+                            </template>
+                           </div>
+                       
+                    </li>
+                </template>
+            </div>
+             <div class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={handleClose}>Cancel</button>
+                <button class="slds-button slds-button_brand" onclick={handleSavetc}>Save</button>
+            </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+</template> -->
+
+
+</template>

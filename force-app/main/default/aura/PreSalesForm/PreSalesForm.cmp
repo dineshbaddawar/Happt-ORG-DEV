@@ -1,0 +1,93 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" 
+                access="global" controller="PreSalesFormHelper">
+    
+    <aura:attribute name="WrapperRecord" type="Object"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div class="container">
+        <form class="slds-form--stacked">
+            <div class="slds-form-element slds-is-required">
+                <div class="slds-form-element__control">
+                    
+                    <aura:html tag="style">
+                        .slds-modal__container{
+                        max-width: 80% !important;
+                        width:60% !important;
+                        height:90% !important;
+                        }
+                        .slds-modal__footer{
+                        display:none !important;
+                        }   
+                        .slds-modal__container>.modal-body>.baseDefault.forceChatterBasePublisher.forceChatterLightningComponent,
+                        .slds-modal__container>.modal-body>.baseDefault.forceChatterBasePublisher.forceChatterLightningComponent>.forceChatterPublisherPresentationPanel,
+                        .slds-modal__container>.modal-body>.baseDefault.forceChatterBasePublisher.forceChatterLightningComponent>.forceChatterPublisherPresentationPanel>.container.activeState,
+                        .slds-modal__container>.modal-body>.baseDefault.forceChatterBasePublisher.forceChatterLightningComponent>.forceChatterPublisherPresentationPanel>.container.activeState>.cuf-content
+                        {
+                        height:80%;
+                        }
+                        
+                    </aura:html>
+                    
+                    <div style=" font-size:15px; text-align:center">  <b>Pre-Sales Form</b> <br/><br/> </div>
+                    <lightning:input type="text" name="input1" label="Account Name" value="{!v.WrapperRecord.acc.Name}" disabled ="true"/> <br/>
+                    
+                    <lightning:formattedUrl value="{!'/' + v.recordId}" tooltip="Opportunity" label="Opportunity Link" target="_blank" /> <br/>
+                    
+                    
+                    <lightning:select name="selectRegion" label="Region" value="{!v.WrapperRecord.acc.Region_New__c }">
+                        <option value="">--None--</option>
+                        <option value="India">India</option>
+                        <option value="International">International</option>
+                    </lightning:select> 
+                    
+                    <lightning:select name="selectSubRegion" label="Sub-Region" value="{!v.WrapperRecord.acc.Region__c }">
+                        <option value="">--None--</option>
+                        <option value="East">East</option>
+                        <option value="West">West</option>
+                        <option value="North">North</option>
+                        <option value="South">South</option>
+                    </lightning:select> 
+                    
+                    <lightning:input type="text" name="input2" label="HRMs" value="{!v.WrapperRecord.acc.HRMs__c}" />
+                    <lightning:input type="text" name="input3" label="ERP / Accounting Software" value="{!v.WrapperRecord.acc.ERP_Accounting_Software__c}" />
+                    <lightning:input type="text" name="input4" label="Auditor" value="{!v.WrapperRecord.acc.Auditor__c}" />
+                    <lightning:input type="number" name="input5" label="Current MRR" value="{!v.WrapperRecord.acc.Current_MRR__c}" />
+                    <lightning:input type="text" name="input6" label="CRM" value="{!v.WrapperRecord.acc.CRM__c}" />
+                    <lightning:input type="text" name="input7" label="TMC" value="{!v.WrapperRecord.acc.TMC__c}" />
+                    
+                    <lightning:select name="selectGrade" label="Prospect Grade" value="{!v.WrapperRecord.opp.Prospect_Grade__c }">
+                        <option value="">--None--</option>
+                        <option value="Small Size Enterprise">Small Size Enterprise</option>
+                        <option value="Mid Size Enterprise">Mid Size Enterprise</option>
+                        <option value="Large size Enterprise">Large size Enterprise</option>
+                        <option value="Mid to Large Size Enterprise">Mid to Large Size Enterprise</option>
+                    </lightning:select>
+                    
+                    <lightning:input type="datetime" name="input8" label="Demo Date Time" value="{!v.WrapperRecord.opp.Demo_Date_Time__c}"/><br/>
+                    <lightning:textarea name="input9" label="Agenda of the Call" value="{!v.WrapperRecord.opp.Agenda_of_the_Call__c}"/><br/>
+                    <lightning:input type="text" name="input10" label="Requestor Name" value="{!v.WrapperRecord.opp.Owner.Name}" disabled="true"/><br/>
+                    Demo Done? <input type="checkbox" name="input11" value="{!v.WrapperRecord.opp.Demo_Done__c}" checked="{!v.WrapperRecord.opp.Demo_Done__c}" /> <br/> <br/>
+                    <!-- <lightning:input type="number" name="input12" label="No. of Employees" value="{!v.WrapperRecord.acc.NumberOfEmployees}"/> <br/> <br/> -->
+                    <lightning:inputAddress
+                                            addressLabel="Address of the Account's Office"
+                                            streetLabel="Street"
+                                            cityLabel="City"
+                                            countryLabel="Country"
+                                            provinceLabel="State"
+                                            postalCodeLabel="Zip Code"
+                                            street="{!v.WrapperRecord.acc.ShippingStreet}"
+                                            city="{!v.WrapperRecord.acc.ShippingCity}"
+                                            country="{!v.WrapperRecord.acc.ShippingCountry}"
+                                            province="{!v.WrapperRecord.acc.ShippingState}"
+                                            postalCode="{!v.WrapperRecord.acc.ShippingPostalCode}"
+                                            />
+                    <br/>
+                    <div class="slds-align_absolute-center">
+                        <lightning:button iconPosition="left" variant="brand" onclick="{!c.doSave}" name="save" label="Save" class="marginTop"/>
+                        <lightning:button iconPosition="right" variant="destructive" onclick="{!c.doCancel}" name="cancel" label="Cancel" class="marginTop"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</aura:component>

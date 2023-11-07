@@ -1,0 +1,9 @@
+.THIS .green {
+    background-color: green;
+}
+.THIS .accordionClass {
+    --slds-c-accordion-heading-font-size: 1.35rem;
+    --slds-c-accordion-heading-text-color: green;
+    --slds-c-accordion-heading-font-weight: bold;
+     
+}

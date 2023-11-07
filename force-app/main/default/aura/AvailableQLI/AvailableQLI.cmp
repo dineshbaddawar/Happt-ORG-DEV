@@ -1,0 +1,152 @@
+<aura:component controller ="QuoteCalculationHandler" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute name="showErrorClass" type="boolean" default="false"/>
+    
+    <aura:attribute name="sNo" type="string" />
+    <aura:attribute name="singleRec" type="sobject" />
+    <aura:attribute name="EditMode" type="boolean" default="false" />
+    <aura:attribute name="EditEmail" type="boolean" default="false" />
+    <aura:attribute name="EditDescription" type="boolean" default="false" />
+    <aura:attribute name="QuoteLineItemlist" type="List"/>
+    <aura:attribute name="AllQuoteLineItemlist" type="List"/>
+    <aura:attribute name="show" type="Boolean" default="false" />
+    
+  
+    <aura:registerEvent name="ConfiguredProdId" type="c:QuotelineitemEvent"></aura:registerEvent>
+    
+    <aura:if isTrue="{!v.show}">
+        <lightning:spinner aura:id="spinner" variant="brand" size="large" />
+    </aura:if>
+    
+    <table class="slds-table slds-table_bordered slds-no-row-hover slds-table_cell-buffer">
+        <thead>
+            <tr class="slds-text-title-caps">
+                
+                <th scope="col"><div class="slds-truncate" title="Contact Last Name">Selected</div></th>
+                <th scope="col"><div class="slds-truncate" title="Contact Email">Product Name</div></th>
+                <th scope="col"><div class="slds-truncate" title="Contact Description">Offering Type</div></th>
+                <th scope="col"><div class="slds-truncate" title="Contact Description">Account Type</div></th>
+                <th scope="col"><div class="slds-truncate" title="Contact Description">Pricing Type</div></th>
+                <th scope="col"><div class="slds-truncate" title="Contact Description">Type</div></th>
+                <th scope="col"><div class="slds-truncate" title="Contact Description">SAAS Quantity</div></th>
+                <th scope="col"><div class="slds-truncate" title="Contact Description">SAAS Price</div></th>
+                <th scope="col"><div class="slds-truncate" title="Contact Description">OTI Quantity</div></th>
+                <th scope="col"><div class="slds-truncate" title="Contact Description">OTI Price</div></th>
+                <th scope="col"><div class="slds-truncate" title="Contact Description"></div></th>
+                <th scope="col"><div class="slds-truncate" title="Contact Description"></div></th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.QuoteLineItemlist}" var="acc">
+                <tr>
+                    <td>
+                        <lightning:input type="checkbox"  name="input2" checked="{!acc.Selected__c}" disabled="true"/>
+                    </td>
+                    <td>
+                        <aura:if isTrue="{!acc.IsOptionalProduct__c}"> 
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-12">
+                                </div>
+                                <div class="slds-col slds-size_10-of-12">
+                                    <div class="slds-truncate" title="{!acc.Product2.Name}">{!acc.Product2.Name}</div>
+                                </div>
+                            </div>
+                            <aura:set attribute="else">
+                                <div class="slds-truncate" title="{!acc.Product2.Name}">{!acc.Product2.Name}</div>
+                            </aura:set>
+                        </aura:if>
+                    </td>
+                    <td>
+                        <span class="slds-truncate" title="Last Name">{!acc.Travel_Offering_Type__c}</span>
+                    </td>
+                    <td>
+                        <span class="slds-truncate" title="Last Name">{!acc.Account_Type__c}</span>
+                    </td>
+                    <td>
+                        <span class="slds-truncate" title="Last Name">{!acc.Travel_Pricing_Type__c}</span>
+                    </td>
+                    <td>
+                        <span class="slds-truncate" title="Last Name">{!acc.Type__c}</span>            
+                    </td>
+                    
+                    <!---->
+                    
+                    <!--td>
+               <span class="slds-truncate" title="Last Name">{!v.singleRec.Quantity}</span>            
+        </td-->
+                    
+                    <!--td ondblclick="{!c.inlineEditQuantity}" class="{! v.showErrorClass == true ? 'slds-cell-edit slds-has-error' : 'slds-cell-edit'}">
+            <span class="slds-grid slds-grid_align-spread">
+                <aura:if isTrue="{!v.EditEmail == false}">
+                    <span class="slds-truncate" title="Email">{!v.singleRec.Quantity}</span>
+                    <button onclick="{!c.inlineEditQuantity}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Quantity">
+                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                    </button>
+                    
+                    <aura:set attribute="else">
+                        <section  tabindex="0" class="slds-popover slds-popover_edit" role="dialog" style="position: absolute; top: 0px">
+                            <div class="slds-popover__body">
+                                <div class="slds-form-element slds-grid slds-wrap">
+                                    <div class="slds-form-element__control slds-grow">
+                                        <ui:inputText class="slds-input inputFieldWidth"
+                                                      labelClass="slds-form-element__label slds-form-element__label_edit slds-no-flex"
+                                                      aura:id="inputId1"
+                                                      blur="{!c.closeQuantityBox}"
+                                                      change="{!c.onQuantityChange}"
+                                                      required="true"
+                                                      value="{!v.singleRec.Quantity}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <span id="form-end" tabindex="0"></span>
+                        </section>  
+                    </aura:set>  
+                </aura:if> 
+            </span>
+        </td-->
+                    <td>
+                        <div class="slds-truncate" title="{!v.singleRec.Product2.Name}">{!acc.SAAS_Quantity__c}</div>
+                    </td>
+                    <td>
+                        <div class="slds-truncate" title="{!v.singleRec.Product2.Name}">{!acc.SAAS_Price__c}</div>
+                    </td>
+                    
+                     <td>
+                        <div class="slds-truncate" title="{!v.singleRec.Product2.Name}">{!acc.OTI_Quantity__c}</div>
+                    </td>
+                    <td>
+                        <div class="slds-truncate" title="{!v.singleRec.Product2.Name}">{!acc.OTI_Price__c}</div>
+                    </td>
+                    
+                    
+                    <!---->
+                    
+                    <!--td>
+            <aura:if isTrue="{!not(empty(!v.singleRec.NetTotal))}">   
+                <div class="slds-truncate" title="{!v.singleRec.NetTotal}">{!v.singleRec.NetTotal}</div>
+                <aura:set attribute="else">
+                    <div class="slds-truncate" title="{!v.singleRec.Product2.Name}">{!v.singleRec.TotalPrice}</div>
+                </aura:set>
+            </aura:if>     
+        </td-->
+                    <td>
+                        <aura:if isTrue="{!not(acc.IsOptionalProduct__c)}">
+                            <div data-id="{!acc.Id}" onclick="{!c.HandleDelete}">
+                                <lightning:icon  iconName="action:delete" variant="warning" alternativeText="Delete" title="Delete" size="xx-small" text="{!acc.Id}" class="my-icon"/>
+                            </div>
+                        </aura:if>
+                    </td>
+                    <td>
+                        <aura:if isTrue="{!not(acc.IsOptionalProduct__c)}">
+                            <div data-id="{!acc.Id}" onclick="{!c.HandleLineItems}">
+                                <lightning:icon iconName="action:share_poll" variant="warning" alternativeText="Configure Line Items" title="Configure Line Items" size="xx-small" text="{!acc.Id}" class="new-icon"/>
+                            </div>
+                        </aura:if>
+                    </td>
+                </tr>
+                <aura:if isTrue="{!acc.Nested_Parent_Product__c==null}">
+                    <c:ChildAvailableQLI ParentQLiId="{!acc.Id}" AvailbaleQliList="{!v.AllQuoteLineItemlist}"/>
+                </aura:if>
+            </aura:iteration>
+        </tbody>
+    </table>
+  </aura:component>

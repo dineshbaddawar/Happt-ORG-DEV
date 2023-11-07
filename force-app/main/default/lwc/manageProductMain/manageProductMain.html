@@ -1,0 +1,92 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 06-09-2021
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+  Modifications Log 
+  Ver   Date         Author                               Modification
+  1.0   06-09-2021   ChangeMeIn@UserSettingsUnder.SFDoc   Initial Version
+-->
+
+<template>
+
+  <template if:false={hasAccess}>
+    <c-product-error-msg ></c-product-error-msg>
+   
+  </template>
+  <template if:true={hasAccess}>
+    <article class="slds-card" style="padding:10px"> 
+    
+    <p style="color:darkgrey;font-size:16px">Manage Products</p>
+    
+    <!--Custom Lookup with Pre-Populate Value for User Object-->
+    
+   <lightning-layout multiple-rows>
+            <lightning-layout-item size="4" padding="around-small">
+              
+              <c-custom-lookup-advanced 
+                    icon-name="standard:products"
+                    s-object-api-name="Product_Bundle__c"
+                    displayfield ="Name"
+                    fieldstoquery =",Product__r.Description"
+                    label="Search Offerings..."
+                    onlookupupdate={lookupRecord}
+                    placeholder="Search for Products here..."
+                   where-clause=" and Is_Independent__c =true ">
+                    >
+              </c-custom-lookup-advanced>
+
+            </lightning-layout-item>
+            <lightning-layout-item size="2" padding="around-small">
+                <lightning-combobox name="SalesType" required label="Select Sales Type" value={salesTypeSelectedValue} 
+                  options={SalesTypeOption} onchange={handleChange}>
+              </lightning-combobox>
+            </lightning-layout-item>
+            <lightning-layout-item size="2" padding="around-small">
+                
+                <div style="    margin-top: 1.5rem;">
+                    <lightning-button variant="brand" label="Add Product" title="Primary action" onclick={handleAdd} class="slds-m-center_x-small"></lightning-button>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="3" padding="vertical-small">
+                <lightning-layout >
+                    <lightning-layout-item size="5" padding="horizontal-small">
+                       <lightning-input type="number" name="saasDiscount" label="SAAS Discount" value={SAAS_Discount} formatter="percent-fixed" step="0.01" onchange={handleSAASdiscount}></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="5" padding="horizontal-small">
+                         <lightning-input type="number" name="otiDiscount" label="OTI Discount" value={OTI_Discount} formatter="percent-fixed" step="0.01" onchange={handleOTIdiscount}></lightning-input>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-layout-item>
+
+             <lightning-layout-item size="1" padding="around-small">
+                <div style="    margin-top: 1.5rem;">
+                    <lightning-button variant="brand" label="Calculate" title="Calculate" onclick={handleDiscount} class="slds-m-center_x-small"></lightning-button>
+                </div>
+            </lightning-layout-item>
+   </lightning-layout>
+  <template if:true={selectedProduct}>
+  <p><b>Desciption:</b> &nbsp;
+
+<em>{selectedProdDesciption}</em></p>
+<br/>
+   </template>
+
+
+    
+    <div class="slds-box">              
+      <c-product-table item={selectedProduct} itemlist={productItemsInTable} onupdatetableondelete={handleDeleteOps} onrefresh={handleRefresh}> </c-product-table>
+    </div>
+
+
+    <div class="slds-grid slds-align_absolute-center slds-p-top_medium" style="">
+      <lightning-button variant="brand" label="Valdiate" title="Validate" onclick={handleValidate} class="slds-m-left_x-small"></lightning-button>
+      <lightning-button variant="brand" label="Save" title="Save"  onclick={handleSave} disabled={disableSave} class="slds-m-left_x-small"></lightning-button>
+      <lightning-button variant="neutral" label="Close" title="Close"  onclick={handleClose} class="slds-m-left_x-small"></lightning-button>
+    </div>
+     </article>
+  </template>  
+                
+    
+</template>

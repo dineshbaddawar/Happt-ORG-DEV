@@ -1,0 +1,135 @@
+<aura:component controller = "ProductConfiguration" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global">
+
+<aura:attribute name ="bundleQLI" type="QuoteLineItem"/>
+<aura:attribute name = "bundleQLIList" type="List"/>
+<aura:attribute name="parentQLIMap" type = "Map"/>
+<aura:attribute name = "bundleParentQLIList" type="List"/>
+<aura:attribute name="bundleChildQLIList" type="List"/>
+<aura:attribute name="isExpenseProduct" type="boolean" default="false"/>
+<aura:attribute name="isEdit" type="boolean" default ="false"/>
+<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+Initiated
+    inside isedit
+    <lightning:card>
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col">
+                <span><b>Product Name</b></span><br/>
+                <span>{!v.bundleQLI.Product_Name__c}</span>
+            </div>
+            <div class="slds-col">
+                <span><b>Account Type</b></span><br/>
+                <span>{!v.bundleQLI.Account_Type__c}</span>
+            </div>
+            <div class="slds-col">
+                <span><b>Offering Type</b></span><br/>
+                <span>{!v.bundleQLI.Travel_Offering_Type__c}</span>
+            </div>
+            <div class="slds-col">
+                <span><b>Pricing Type</b></span><br/>
+                <span>{!v.bundleQLI.Travel_Pricing_Type__c}</span>
+            </div>
+            <div class="slds-col">
+                <lightning:button label="{!v.deleteButton}" name="{!v.deleteButton}" iconName="utility:delete" iconPosition="right" variant="destructive" onclick="{!c.deleteProduct}"/>
+                <button type="button" onclick="{!c.editProduct}" id="{!bundle.Id}" iconName="utility:edit">Edit</button>
+                <lightning:button label="{!v.deleteButton}" name="{!v.deleteButton}"  iconName="utility:edit" iconPosition="left" variant="brand" onclick="{!c.editProduct}" />
+            </div>
+        </div>
+        <br/>
+        <br/>
+    </lightning:card>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                
+        <thead>
+            <tr class="slds-line-height_reset slds-text-title_caps">
+                <th  class="slds-is-resizable" scope="col">
+                    <div class="slds-truncate" title="Name">
+                        Selected
+                    </div>
+                </th>
+                <th  class="slds-is-resizable" scope="col">
+                    <div class="slds-truncate" title="Name">
+                        Product Name
+                    </div>
+                </th>
+                    <th scope="col">
+                    <div class="slds-truncate" title="Actions">Sub Type</div>
+                </th>
+                
+                <th scope="col">
+                    <div class="slds-truncate" title="Actions">Type</div>
+                </th>
+                <th class="slds-is-resizable" scope="col">
+                    <div class="slds-truncate" title="Industry">
+                        Quantity
+                    </div>
+                </th>
+                <!--th class="slds-is-resizable" scope="col">
+                    <div class="slds-truncate" title="Phone">
+                        Discount
+                    </div>
+                </th-->
+                <th class="slds-is-resizable" scope="col">
+                    <div class="slds-truncate" title="Phone">
+                        SAAS Price
+                    </div>
+                </th>
+                <th  class="slds-is-resizable" scope="col">
+                    <div class="slds-truncate" title="Account Number">
+                        OTI Price
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <!--aura:if isTrue="{!v.bundleParentQLIList.length > 0}">
+            <tbody>
+                
+                <aura:iteration items="{!v.bundleParentQLIList}" var="acc" indexVar="index">
+                    
+                        <tr id ="{!index}"> 
+                        <td>  
+                            <lightning:input type="checkbox" name="Team Member" disabled="true" value="{!acc.Selected__c}" checked="true"/>
+                        </td>
+                        <td>  
+                            <lightning:input type="text" disabled="true" name="Team Member"   value="{!acc.Product_Name__c}" />
+                        </td>
+                        <aura:if  isTrue="{!v.isExpenseProduct}">
+                            <td>  
+                            <lightning:select name="select" label="Select Sub type:"   value="{!acc.Sub_Type__c}">
+                                <aura:iteration items="{!v.subType}" var="subType">
+                                    <option text="{!subType}"></option>
+                                </aura:iteration>
+                            </lightning:select>  
+                        </td>
+                        </aura:if>
+                        
+                        <td>
+                            <lightning:select disabled="true" name="select" label="Select type:" required="true"  value="{!acc.Type__c}">
+                                <aura:iteration items="{!v.Type}" var="type">
+                                    <option text="{!type}"></option>
+                                </aura:iteration>
+                            </lightning:select>  
+                        </td>
+                        <td>  
+                            <aura:if  isTrue="{!acc.Is_Editable__c}">
+                                {!acc.Is_Editable__c}
+                                <lightning:input type="text" name="Quantity"  value="{!acc.Quantity}" />
+                                <aura:set attribute="else">
+                                    <lightning:input type="text" disabled="false" name="Quantity"  value="{!acc.Quantity}" />
+                                </aura:set>
+                            </aura:if>
+                        </td>
+                        <td>  
+                            <lightning:input type="text" disabled="true" name="Saas Price"   value="{!acc.SAAS_Price__c}" />
+                        </td>
+                        <td>  
+                            <lightning:input type="text" disabled="true" name="Oti Price"   value="{!acc.OTI_Price__c}" />
+                        </td>
+                    </tr>
+                    
+                </aura:iteration>
+            </tbody>
+        </aura:if-->
+    </table>
+    
+        
+</aura:component>

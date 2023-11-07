@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION">
+   <aura:attribute name="SelectedparentRecords" type="List"/>
+   <aura:attribute name="Loader" type="Boolean"/>
+</aura:event>

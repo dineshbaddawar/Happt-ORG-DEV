@@ -1,0 +1,79 @@
+<!--
+@author [Dinesh B]
+@email dinesh.b@utilitarianLab.com
+@create date 2023-11-04 19:58:30
+@modify date 2023-11-06 02:46:51
+@desc [description]
+--> 
+<template>
+	<template if:true={popUpOpen}>
+          
+               <div class="slds-p-around_medium">
+                    <h1 style="text-align: center;">
+                         <span class="slds-page-header__title slds-truncate" title="Generate Payment Terms">Generate Payment Terms</span>
+                       </h1>
+                      <br/>
+                    <template for:each={termSectionList} for:item="termSect">
+               <li style="marker: none;" key={termSect.id}>
+                    <br>{termSect.Name}
+               <div class="slds-tabs_card">
+          <template for:each={termSect.Term_Attribute_Line_Items__r} for:item="termline">
+
+               <div key={termline} class="radio-container">
+                    <template if:true={termline.Inputbox__c}>
+                         <lightning-input type="number" name={termSect.Id} data-id={termline.Id}
+                              data-sectionname={termSect.Name} onchange={handleInputNumberValue}>
+                         </lightning-input>
+                    </template>
+                    <template if:false={termline.Inputbox__c}>
+                         <div class="radio-label">
+                              <lightning-input type="radio" checked={termline.checkValue}
+                                   name={termSect.Id} label={termline.Name} value={termline.Id}
+                                   data-sectionname={termSect.Name} onchange={handleChildSelection}>
+                              </lightning-input>
+                         </div>
+                         <div class="description">{termline.Description__c}</div>
+                    </template>
+               </div>
+
+               <div  key={termline}>
+                    <br/>
+                    <template if:true={termline.InputValue}>
+                         <!-- <lightning-input type="checkbox" label="Input Check" name="input1"></lightning-input> -->
+                          <lightning-textarea name="input1" placeholder="Enter description..." data-id={termline.Id} onchange={handleDescriptionChange}  value={inputTextareaValue} ></lightning-textarea>
+                     </template>
+                     <template if:false={termline.InputValue}>
+                         
+                     </template>
+               </div>
+               <br key={d}>
+          </template>
+               </div>
+		    </li>
+		</template>
+
+		</div>
+          <div class="slds-modal__footer">
+               <lightning-button style="margin-right: 4rem;"
+               class="slds-button"
+               variant="neutral"
+               label="Cancel"
+               onclick={handleClose}
+           ></lightning-button>  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+           <lightning-button style="margin-right: 20rem;"
+               class="slds-button slds-m-left_x-small"
+               variant="brand"
+               label="Save"
+               onclick={handleSaveData}
+           ></lightning-button>
+          </div>
+		
+	</template>
+
+	<template if:true={IsLoaded}>
+		<lightning-spinner alternative-text="Loading..." variant="brand">
+		</lightning-spinner>
+	</template>
+
+	
+</template>

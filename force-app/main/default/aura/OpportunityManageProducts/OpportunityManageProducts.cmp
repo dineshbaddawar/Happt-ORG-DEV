@@ -1,0 +1,11 @@
+<aura:component implements="flexipage:availableForRecordHome,force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global" >
+     <aura:html tag="style">
+        .slds-modal__container{
+        max-width: 80rem !important;
+        width:90% !important;
+        }
+    </aura:html>	
+    <c:manageProductMain 
+                             recordId="{!v.recordId}"
+                             sObjectName="Opportunity" onrefresh="{!c.refreshQA}" onclose="{!c.closeQA}" onrefreshclose="{!c.refreshcloseQA}"/>
+</aura:component>

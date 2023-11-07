@@ -1,0 +1,85 @@
+<template>
+    <div class="slds-card slds-m-horizontal_large">
+            <!-- Header -->
+            <div class="slds-card__header slds-p-bottom_small">
+            <header>
+                <lightning-progress-indicator current-step={currentStep} type="base" variant="base">
+                    <lightning-progress-step label="First Page" value="1" onclick={nextPage}>
+                    </lightning-progress-step>
+                    <lightning-progress-step label="Second Page" value="2" onclick={nextPage}>
+                    </lightning-progress-step>
+                </lightning-progress-indicator>
+            </header>
+        </div>
+        <!-- /Header -->
+        <lightning-card>
+            <div class="c-container">
+                <lightning-layout horizontal-align="space">
+                    <lightning-layout-item padding="around-small">
+                        <lightning-combobox name="profile" label="Incentive Profiles" options={profileOptions} value={selectedProfile} onchange={selectOptionChangeValueProfile} ></lightning-combobox>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <br/>
+                        <br/>
+                        <lightning-input type="checkbox" label="Enabled" onchange={handleEnableValueChange} value={isEnabled} checked={isEnabled}> </lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <lightning-input type="date" label="Start Date" onchange={handleStartDateValueChange} value={startDate}> </lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <lightning-input type="date" label="End Date" onchange={handleEndDateValueChange} value={endDate}> </lightning-input>
+                    </lightning-layout-item>                    
+                </lightning-layout>
+            </div>
+    </lightning-card>
+    <br/>
+    
+    </div>
+    <template if:true={showIncentiveDiv}>
+        <div class="slds-card slds-m-horizontal_large">
+        <lightning-card>
+            <template for:each={itemList} for:item="item" for:index="index">
+    
+            <div class="c-container" key={item.id}>
+    
+                <lightning-layout horizontal-align="space" >
+                    <lightning-layout-item padding="around-small">
+                        <lightning-combobox name="object" label="Incentive Objects" options={objectOptions}></lightning-combobox>
+                        <lightning-input type="text" label="Incentive % or Amount" ></lightning-input>                   
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <lightning-combobox name="field" label="Incentive Field" options={fieldOptions}></lightning-combobox>   
+                        <lightning-combobox name="Applicable incentive Type" label="Applicable incentive Type" options={appIncentiveType}></lightning-combobox>                
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <lightning-input type="text" label="Lower Bound"></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <lightning-input type="text" label="Upper Bound"></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <div class="slds-p-top_medium">
+                            <lightning-icon icon-name="action:new" access-key={item.id} id={index}
+                                alternative-text="Add Row" size="small" title="Add Row" onclick={addRow}>
+                            </lightning-icon>
+                            &nbsp; &nbsp;
+                            <lightning-icon icon-name="action:delete" access-key={item.id} id={index}
+                                alternative-text="Delete Row" size="small" title="Delete Row" onclick={removeRow}>
+                            </lightning-icon>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+            </template>
+    </lightning-card>
+     <!-- Footer -->
+     <footer class="slds-modal__footer slds-text-align_right" style="padding: 0.50rem 1rem;">
+              <lightning-button class="slds-p-right_xx-small" label="Cancel" variant="neutral" onclick={onCancel}></lightning-button>
+              <lightning-button variant="success" onclick={createRecords} name="Save" label="Save"></lightning-button>   
+    </footer>
+    </div>
+    
+       
+    </template>
+    
+    </template>

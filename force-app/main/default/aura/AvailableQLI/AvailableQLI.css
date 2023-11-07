@@ -1,0 +1,6 @@
+.THIS .my-icon {
+    --sds-c-icon-color-background: red;
+}
+    .THIS .new-icon {
+    --sds-c-icon-color-background: green;
+}
