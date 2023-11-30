@@ -26,12 +26,12 @@
                     navEvt.fire();
                     dismissActionPanel.fire();  
                 }else{
-                    //var errorMessage = response.getReturnValue();
+                    var errorMessage = response.getReturnValue();
                     var toastEvent = $A.get("e.force:showToast");    
                     toastEvent.setParams({
                         "title": "Error",
                         "type": "error",
-                        "message": recId
+                        "message": errorMessage
                     });
                     toastEvent.fire();
                     // Close the action panel
@@ -55,5 +55,14 @@
         });
         $A.enqueueAction(action);
     },
+    
+    showSpinner: function(component, event, helper) {
+       component.set("v.spinner", true); 
+    },
+     
+    
+    hideSpinner : function(component,event,helper){
+        component.set("v.spinner", false);
+    }
     
 })

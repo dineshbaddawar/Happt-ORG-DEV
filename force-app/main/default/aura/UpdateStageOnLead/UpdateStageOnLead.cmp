@@ -1,0 +1,41 @@
+<aura:component controller="UpdateStageOnLeadController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="LeadRec" type="Lead" default="{'sObjectType':'Lead'}"/>
+    <aura:attribute name="picvalue" type="List"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> 
+    
+    
+    <aura:html tag="style">
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }   
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+    </aura:html>
+    
+    <div class="modal-header slds-modal__header slds-size_1-of-1">
+        <h4 class="title slds-text-heading--medium">Update Status</h4>
+    </div>
+    
+    <div class="slds-modal__content slds-p-around--x-small  slds-size_1-of-1 slds-is-relative">
+        <lightning:select value="{!v.LeadRec.Status}" label="Status">       
+            <option value="choose">Choose one...</option> 
+            <aura:iteration items="{!v.picvalue}" var="s">
+                <option value="{!s}">{!s}</option>
+            </aura:iteration> 
+        </lightning:select>
+    </div>
+    
+    <div class="modal-footer slds-modal__footer slds-size_1-of-1">
+        <lightning:button variant="brand" label="Submit" title="Brand action" onclick="{! c.handleSubmit }" />
+        <lightning:button variant="destructive" label="Cancel" title="Destructive action" onclick="{! c.handleCancel}"/>
+    </div>
+    
+</aura:component>

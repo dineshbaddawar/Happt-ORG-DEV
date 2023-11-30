@@ -18,7 +18,7 @@
                         
                     </div>
                     <div class="slds-col slds-size_10-of-12">
-                        <div class="slds-truncate" title="{!v.singleRec.Product2.Name}">{!ChildQli.Product2.Name}</div>
+                        <div class="slds-truncate" title="">{!ChildQli.Product2.Name}</div>
                     </div>
                 </div> 
             </td>
@@ -34,66 +34,18 @@
             <td>
                 <span class="slds-truncate" title="Last Name">{!ChildQli.Type__c}</span>            
             </td>
-            
-            <!---->
-            
-            <!--td>
-               <span class="slds-truncate" title="Last Name">{!v.singleRec.Quantity}</span>            
-        </td-->
-            
-            <!--td ondblclick="{!c.inlineEditQuantity}" class="{! v.showErrorClass == true ? 'slds-cell-edit slds-has-error' : 'slds-cell-edit'}">
-            <span class="slds-grid slds-grid_align-spread">
-                <aura:if isTrue="{!v.EditEmail == false}">
-                    <span class="slds-truncate" title="Email">{!v.singleRec.Quantity}</span>
-                    <button onclick="{!c.inlineEditQuantity}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Quantity">
-                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
-                    </button>
-                    
-                    <aura:set attribute="else">
-                        <section  tabindex="0" class="slds-popover slds-popover_edit" role="dialog" style="position: absolute; top: 0px">
-                            <div class="slds-popover__body">
-                                <div class="slds-form-element slds-grid slds-wrap">
-                                    <div class="slds-form-element__control slds-grow">
-                                        <ui:inputText class="slds-input inputFieldWidth"
-                                                      labelClass="slds-form-element__label slds-form-element__label_edit slds-no-flex"
-                                                      aura:id="inputId1"
-                                                      blur="{!c.closeQuantityBox}"
-                                                      change="{!c.onQuantityChange}"
-                                                      required="true"
-                                                      value="{!v.singleRec.Quantity}" />
-                                    </div>
-                                </div>
-                            </div>
-                            <span id="form-end" tabindex="0"></span>
-                        </section>  
-                    </aura:set>  
-                </aura:if> 
-            </span>
-        </td-->
              <td>
-                <div class="slds-truncate" title="{!v.singleRec.Product2.Name}">{!ChildQli.SAAS_Quantity__c}</div>
+                <div class="slds-truncate" title="">{!ChildQli.SAAS_Quantity__c}</div>
             </td>
             <td>
-                <div class="slds-truncate" title="{!v.singleRec.Product2.Name}">{!ChildQli.SAAS_Price__c}</div>
+                <div class="slds-truncate" title="">{!ChildQli.SAAS_Price__c}</div>
             </td>
             <td>
-                <div class="slds-truncate" title="{!v.singleRec.Product2.Name}">{!ChildQli.OTI_Quantity__c}</div>
+                <div class="slds-truncate" title="">{!ChildQli.OTI_Quantity__c}</div>
             </td>
             <td>
-                <div class="slds-truncate" title="{!v.singleRec.Product2.Name}">{!ChildQli.OTI_Price__c}</div>
+                <div class="slds-truncate" title="">{!ChildQli.OTI_Price__c}</div>
             </td>
-            
-            
-            <!---->
-            
-            <!--td>
-            <aura:if isTrue="{!not(empty(!v.singleRec.NetTotal))}">   
-                <div class="slds-truncate" title="{!v.singleRec.NetTotal}">{!v.singleRec.NetTotal}</div>
-                <aura:set attribute="else">
-                    <div class="slds-truncate" title="{!v.singleRec.Product2.Name}">{!v.singleRec.TotalPrice}</div>
-                </aura:set>
-            </aura:if>     
-        </td-->
             <td>
                 <aura:if isTrue="{!not(ChildQli.IsOptionalProduct__c)}">
                     <div data-id="{!ChildQli.Id}" onclick="{!c.HandleDelete}">

@@ -34,10 +34,10 @@ public without sharing  class AccountBasedOnLeadCIN {
                     leadListWithsimDomain = ListOfResultsforLead[0];
                     system.debug('leadListWithsimDomain'+leadListWithsimDomain);
                     sodw.SimDomLeadList = leadListWithsimDomain;
-                    sobjectData.add(sodw);
+                    
                     //AccountData.add(leadListWithsimDomain);
                 }
-                
+                sobjectData.add(sodw);
                 if(sobjectData.size() > 0){
                     system.debug('AccountData'+AccountData);
                     return sobjectData;

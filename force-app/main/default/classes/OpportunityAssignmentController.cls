@@ -201,7 +201,8 @@ public class OpportunityAssignmentController {
             accIdByTeamMember.put(acc.AccountId,acc);
         }
         for(Opportunity opp : OppsToBeAssigned){
-            if(accIdByTeamMember.containsKey(opp.AccountId) && accIdByTeamMember.get(opp.AccountId).UserId != null){
+            if(accIdByTeamMember.containsKey(opp.AccountId) && accIdByTeamMember.get(opp.AccountId).UserId != null && 
+               opp.Product_Interested__c != 'Epic Cards'){
                 opp.OwnerId = accIdByTeamMember.get(opp.AccountId).UserId;
             }
         }

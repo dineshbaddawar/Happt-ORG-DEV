@@ -24,26 +24,26 @@ export default class PaymentTermsAndConditionsComponent extends LightningElement
   termsConditions = [];
   termsshouldUpdate = false;
 
-  @wire(getTermsAndConditions, { quoteId: '$recordId' })
-  debugger;
-  wiredTermsAndConditions({ error, data }) {
-    if (data) {
-      this.termsAndConditions = data;
-      this.error = undefined;
-    } else if (error) {
-      this.error = error;
-      this.termsAndConditions = undefined;
-    }
-  }
+  // @wire(getTermsAndConditions, { quoteId: '$recordId' })
+  // debugger;
+  // wiredTermsAndConditions({ error, data }) {
+  //   if (data) {
+  //     this.termsAndConditions = data;
+  //     this.error = undefined;
+  //   } else if (error) {
+  //     this.error = error;
+  //     this.termsAndConditions = undefined;
+  //   }
+  // }
 
-  get termsAndConditionsColumns() {
-    return [
-      { label: 'Name', fieldName: 'termName', editable: false },
-      { label: 'Term Attribute Line Item', fieldName: 'termAttributeLineItemName', editable: false },
-      { label: 'Term Section Line Item', fieldName: 'termSectionLineItemName', editable: false },
-      { label: 'Quote Name', fieldName: 'quoteName', editable: false },
-    ];
-  }
+  // get termsAndConditionsColumns() {
+  //   return [
+  //     { label: 'Name', fieldName: 'termName', editable: false },
+  //     { label: 'Term Attribute Line Item', fieldName: 'termAttributeLineItemName', editable: false },
+  //     { label: 'Term Section Line Item', fieldName: 'termSectionLineItemName', editable: false },
+  //     { label: 'Quote Name', fieldName: 'quoteName', editable: false },
+  //   ];
+  // }
 
   connectedCallback() {
     debugger;

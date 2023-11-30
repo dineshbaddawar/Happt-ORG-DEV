@@ -19,7 +19,7 @@ trigger OpportunityTrigger on Opportunity (after insert,after update,before dele
         OpportunityTriggerHandler.onBeforeUpdate(Trigger.new,Trigger.oldMap);
     }
     else if ( isAfterInsert) {   
-        //OpportunityTriggerHandler.onAfterInsert(Trigger.new);
+        OpportunityTriggerHandler.onAfterInsert(Trigger.new);
         OpportunityTriggerHandler.pmToolUtility(trigger.newMap, trigger.oldMap);        
         CloneOpportunityHandler.callCustOpp(trigger.new);    
     }

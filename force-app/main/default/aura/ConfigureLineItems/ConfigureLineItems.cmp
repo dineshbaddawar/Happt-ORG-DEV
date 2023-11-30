@@ -1,14 +1,12 @@
 <aura:component controller="QuoteConfigurationEditLine" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
-	<aura:attribute name="isFourVisible" type="Boolean" default="false" />
-  <aura:attribute name="systemNames" type="List" default="['red', 'blue', 'green']"/>
-  <aura:attribute name="selectedQLI" type="List"/>
-  <aura:attribute name="contacts" type="SObject[]" />
-  <aura:attribute name="Categories" type="List" />
-  <aura:attribute name="SelectedProductOptions" type="List"/>
-  <aura:attribute name="productIds" type="String[]"/>
-  <aura:attribute name ="deleteqliId" type="String[]"/>
-    <!--aura:attribute name="accountType" type="string"/-->
-    <!--aura:attribute name="commitment" type="string"/-->
+    <aura:attribute name="isFourVisible" type="Boolean" default="false" />
+    <aura:attribute name="systemNames" type="List" default="['red', 'blue', 'green']"/>
+    <aura:attribute name="selectedQLI" type="List"/>
+    <aura:attribute name="contacts" type="SObject[]" />
+    <aura:attribute name="Categories" type="List" />
+    <aura:attribute name="SelectedProductOptions" type="List"/>
+    <aura:attribute name="productIds" type="String[]"/>
+    <aura:attribute name ="deleteqliId" type="String[]"/>
     <aura:attribute name="AllProductOptions" type="List"/>
     <Aura:attribute name ="ProductName" type="String"/>
     <Aura:attribute name ="AccountType" type="String"/>
@@ -20,23 +18,17 @@
     <aura:attribute name="QuoteLineItemRelatedToXQuote" type="List"/>
     
     
-  <aura:registerEvent name="featuresXOptions" type="c:QuotelineitemEvent"></aura:registerEvent>
+    <aura:registerEvent name="featuresXOptions" type="c:QuotelineitemEvent"></aura:registerEvent>
     
-  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
     <lightning:tabset>
         <aura:iteration items="{!v.Categories}" var="sys">
-               <lightning:tab label="{!sys}" id="{!sys}">  
+            <lightning:tab label="{!sys}" id="{!sys}">  
                 <c:childfeaturescreen featureList="{!v.contacts}" categorieType="{!sys}" SelectedProductOptions="{!v.SelectedProductOptions}" selectedQLI="{!v.selectedQLI}" deleteqliId="{!v.deleteqliId}"  ProductName="{!v.ProductName}" AccountType="{!v.AccountType}" SelectedOffering="{!v.SelectedOffering}" SelectedPricing="{!v.SelectedPricing}" Commitment="{!v.Commitment}" AllProductOptions="{!v.AllProductOptions}" NumberOfBooking="{!v.NumberOfBooking}"/>
-                </lightning:tab>
-          </aura:iteration>
+            </lightning:tab>
+        </aura:iteration>
         
     </lightning:tabset>
     
-     <lightning:button variant="brand" label="Save" title="Success" onclick="{!c.handleClickSave}"  class="slds-align_absolute-center "/>                     
-    
-    
-    
-    <!--aura:iteration items="{!v.selectedQLI}" var="item">
-        <p>{!item.Name}</p>
-    </aura:iteration-->
+    <lightning:button variant="brand" label="Save" title="Success" onclick="{!c.handleClickSave}"  class="slds-align_absolute-center "/>                     
 </aura:component>

@@ -2,7 +2,7 @@
     doInit : function(component, event, helper) {
         debugger;
         var action = component.get("c.getAccount");
-        var accId = 
+        
         action.setParams({
             "recordId" : component.get('v.recordId')
         });

@@ -12,10 +12,6 @@
             "recordId" : component.get("v.QuoterecordId")
             
         });
-        //component.get("v.recordId")
-        //var quoteRecId=component.get("v.recordId");
-        //console.log('quoteRecId',JSON.stringify(quoteRecId));
-        //component.set("v.QuoterecordId",quoteRecId);
         
         action.setCallback(this, function(response) {
             var state = response.getState();
@@ -25,6 +21,17 @@
                 var QuoteLineItemList=responseValue;
                 component.set("v.QuoteLineItemRelatedToXQuote",QuoteLineItemList);
                 component.set("v.AllQuoteLineItemlist",QuoteLineItemList);
+                
+                if(QuoteLineItemList.length > 0){
+                    QuoteLineItemList.forEach(item =>{
+                         if(item.Is_Travel_Product__c==true && item.Travel_Offering_Type__c!=null){
+                            component.set("v.IsTravelQuoteLineItemExist",true);
+                        }else if(item.Is_Travel_Product__c==false && item.Travel_Offering_Type__c==null){
+                            component.set("v.IsExpenseQuoteLineItemExist",true);
+                        }
+                    })
+                    component.set("v.QuoteLineItemExist",true);
+                }
                 
                 for(let i=0;i<QuoteLineItemList.length;i++){
                     if(QuoteLineItemList[i].Nested_Parent_Product__c==null){
@@ -127,7 +134,7 @@
         }
         // $A.enqueueAction(action);
     },
-    
+    //Not Used
     selectSinglerec: function(component, event, helper){
         debugger;
         var TempProducts=[];
@@ -220,18 +227,6 @@
                 component.set("v.SelectedProductOptions",responseValue);
             }   
         });
-        /*if(Tempvariable==true){
-           
-        var action = component.get("c.AllMaps");
-        action.setCallback(this, function(response) {
-            var state = response.getState();
-              if(state==='SUCCESS'){
-                    var responseValue = response.getReturnValue();
-                    console.log('responseValue In AllMaps--',JSON.stringify(responseValue));
-                    //component.set("v.SelectedProductOptions",responseValue);
-              }   
-        });
-     }*/
         $A.enqueueAction(action);
         
     },
@@ -398,6 +393,21 @@
                 "message": QuantityError,
             });
         }else {
+            if(totalOptions.length==0){
+                //component.set("v.prodId",null);
+                component.set("v.show", false);
+                component.set("v.showalert", true);
+                component.set("v.ProductOptionScreen",true);
+                component.set("v.ProductTableScreen",false);
+                component.set("v.QuoteTableScreen",false);
+                component.find('notifyId').showNotice({
+                    "variant": "error",
+                    "header": "Please Select Any Product To Proceed Further!",
+                    "message": "Please Select Any Product To Proceed Further",
+                });
+                
+                return;
+            }
             
             component.set("v.ProductOptionScreen",false);
             component.set("v.ProductTableScreen",false);
@@ -415,7 +425,6 @@
                 "accountType":component.get("v.accTypeCalculated"),
                 "Commitment":NumberOfBooking
             });
-            //component.get("v.recordId")
             action.setCallback(this, function(response) {
                 var state = response.getState();
                 if(state==='SUCCESS'){
@@ -435,16 +444,8 @@
                             NotNestedQuoteLineItme.push(QLIList[i]);
                         }
                     }
-                    component.set("v.QuoteLineItemlist",NotNestedQuoteLineItme);
-                    
-                    //component.set("v.QuoteLineItemlist",responseValue);
-                    
-                    //$A.get('e.force:refreshView').fire();
-                    
-                    //component.set("v.SelectedOptionlist",TempEmptyArray);
-                    
-                }
-                
+                    component.set("v.QuoteLineItemlist",NotNestedQuoteLineItme);              
+                }  
                 
             });
             $A.enqueueAction(action); 
@@ -463,6 +464,10 @@
         var pricingType = '';
         var offType = '';
         var commitment=0;
+        var DedicatedSandboxEnvironmentRecord;
+        var CommonSandboxEnvironmentRecord;
+        var DedicatedRecord;
+        var CommonRecord;
         console.log('selectedId',JSON.stringify(selectedId));
         console.log('ParentId',JSON.stringify(ParentId));
         if(selectedId!=undefined){
@@ -481,10 +486,81 @@
                         offType = selectedqli[i].Travel_Offering_Type__c;
                     }
                 }
-                
+                   if(selectedqli[i].Product2.Name=='Dedicated Sandbox Environment' && selectedqli[i].Is_Travel_Product__c==false){
+                        DedicatedSandboxEnvironmentRecord= selectedqli[i];
+                       if(DedicatedSandboxEnvironmentRecord!=undefined){
+                           DedicatedRecord= {"IsPrice_IsQuantity_Editable__c":DedicatedSandboxEnvironmentRecord.IsPrice_IsQuantity_Editable__c,
+                                             "Quantity_0__c":false,
+                                             "Type__c":DedicatedSandboxEnvironmentRecord.Type__c,
+                                             "Id":DedicatedSandboxEnvironmentRecord.Id,
+                                             "Base_SAAS_Price__c":DedicatedSandboxEnvironmentRecord.SAAS_Price__c,
+                                             "SAAS_Price__c":DedicatedSandboxEnvironmentRecord.SAAS_Price__c,
+                                             "IsMultiplybyBooking__c":DedicatedSandboxEnvironmentRecord.IsMultiplybyBooking__c,
+                                             "Base_OTI_Price__c":1500000,
+                                             "OTI_Price__c":1500000,
+                                             "Is_Subtype_Editable__c":false,
+                                             "OTI_Quantity__c":DedicatedSandboxEnvironmentRecord.OTI_Quantity__c,
+                                             "SAAS_Quantity__c":DedicatedSandboxEnvironmentRecord.SAAS_Quantity__c,
+                                             "OTI_Quantity_Editable__c":true,
+                                             "SAAS_Quantity_Editable__c":false,
+                                             "Account_Type__c":DedicatedSandboxEnvironmentRecord.Account_Type__c,
+                                             "Is_Travel_Product__c":false,
+                                             "Bundle_Product__c":"01tC20000008eBZIAY",
+                                             "Editable__c":true,
+                                             "FeatureId__c":"a18C20000008kwvIAA",
+                                             "Mandatory__c":true,
+                                             "Multiply_Prices_Based_on_Quantity__c":"OTI",
+                                             "OTI_API_Pricing__c":0,
+                                             "OTI_Custome_API_Price__c":0,
+                                             "OTI_SFTP_Pricing__c":0,
+                                             "Pricing_Type__c":DedicatedSandboxEnvironmentRecord.Travel_Pricing_Type__c,
+                                             "Product__c":DedicatedSandboxEnvironmentRecord.Product2Id,
+                                             "Product_Name__c":DedicatedSandboxEnvironmentRecord.Product2.Name,
+                                             "SAAS_API_Pricing__c":0,
+                                             "SAAS_Custome_API_Pricing__c":0,
+                                             "SAAS_SFTP_Pricing__c":0,
+                                             "Selected__c":true,
+                                             "FeatureId__r":{"Name":"Expense Bundle","Id":"a18C20000008kwvIAA"}}
+                       }
+                    }else if(selectedqli[i].Product2.Name=='Common Sandbox Environment'&& selectedqli[i].Is_Travel_Product__c==false){
+                        CommonSandboxEnvironmentRecord=    selectedqli[i];
+                        if(CommonSandboxEnvironmentRecord!=undefined){
+                             CommonRecord= {"IsPrice_IsQuantity_Editable__c":CommonSandboxEnvironmentRecord.IsPrice_IsQuantity_Editable__c,
+                                             "Quantity_0__c":false,
+                                             "Type__c":CommonSandboxEnvironmentRecord.Type__c,
+                                             "Id":CommonSandboxEnvironmentRecord.Id,
+                                             "Base_SAAS_Price__c":CommonSandboxEnvironmentRecord.SAAS_Price__c,
+                                             "SAAS_Price__c":CommonSandboxEnvironmentRecord.SAAS_Price__c,
+                                             "IsMultiplybyBooking__c":CommonSandboxEnvironmentRecord.IsMultiplybyBooking__c,
+                                             "Base_OTI_Price__c":200000,
+                                             "OTI_Price__c":200000,
+                                             "Is_Subtype_Editable__c":false,
+                                             "OTI_Quantity__c":CommonSandboxEnvironmentRecord.OTI_Quantity__c,
+                                             "SAAS_Quantity__c":CommonSandboxEnvironmentRecord.SAAS_Quantity__c,
+                                             "OTI_Quantity_Editable__c":true,
+                                             "SAAS_Quantity_Editable__c":false,
+                                             "Account_Type__c":CommonSandboxEnvironmentRecord.Account_Type__c,
+                                             "Is_Travel_Product__c":false,
+                                             "Bundle_Product__c":"01tC20000008eBZIAY",
+                                             "Editable__c":true,
+                                             "FeatureId__c":"a18C20000008kwvIAA",
+                                             "Mandatory__c":true,
+                                             "Multiply_Prices_Based_on_Quantity__c":"OTI",
+                                             "OTI_API_Pricing__c":0,
+                                             "OTI_Custome_API_Price__c":0,
+                                             "OTI_SFTP_Pricing__c":0,
+                                             "Pricing_Type__c":CommonSandboxEnvironmentRecord.Travel_Pricing_Type__c,
+                                             "Product__c":CommonSandboxEnvironmentRecord.Product2Id,
+                                             "Product_Name__c":CommonSandboxEnvironmentRecord.Product2.Name,
+                                             "SAAS_API_Pricing__c":0,
+                                             "SAAS_Custome_API_Pricing__c":0,
+                                             "SAAS_SFTP_Pricing__c":0,
+                                             "Selected__c":true,
+                                             "FeatureId__r":{"Name":"Expense Bundle","Id":"a18C20000008kwvIAA"}}
+                        }
+                    } 
             }   
         }
-        
         component.set("v.AccountType", accountType);
         component.set("v.SelectedOffering", offType);
         component.set("v.SelectedPricing", pricingType);
@@ -502,7 +578,8 @@
         component.set("v.ProductTableScreen",ValueOfProductTableScreen);
         component.set("v.QuoteTableScreen",ValueOfProductQuoteLineScreen);
         var proIds = component.get("v.AllProductIds");
-        component.set("v.prodId",selectedId); 
+        component.set("v.prodId",selectedId);
+        var IsTravelProduct;
         
         
         var action = component.get("c.ShowAllOptions");
@@ -520,12 +597,15 @@
                 var responseValue = response.getReturnValue();
                 console.log('responseValue In AllMaps in event--',JSON.stringify(responseValue));
                 var OptionList=responseValue; 
+                OptionList.forEach((score) => {
+                    IsTravelProduct=score.Is_Travel_Product__c; 
+                });
                 for(let j=0;j<OptionList.length;j++){
                     for(let i=0;i<selectedqli.length;i++){
-                        if(OptionList[j].Product__c==selectedqli[i].Product2Id){
+                        if((OptionList[j].Product__c==selectedqli[i].Product2Id) && (OptionList[j].Pricing_Type__c == selectedqli[i].Travel_Pricing_Type__c) && (OptionList[j].Travel_Offering_Type__c == selectedqli[i].Travel_Offering_Type__c)){
                             OptionList[j].Selected__c = true;
-                            OptionList[j].Id			= selectedqli[i].Id;
-                            OptionList[j].SAAS_Quantity__c = selectedqli[i].SAAS_Quantity__c;
+                            OptionList[j].Id			   = selectedqli[i].Id;
+                            OptionList[j].SAAS_Quantity__c = selectedqli[i].SAAS_Quantity__c; 
                             OptionList[j].OTI_Quantity__c = selectedqli[i].OTI_Quantity__c;
                             OptionList[j].checkbox=true;
                             OptionList[j].Sub_Type__c = selectedqli[i].Sub_Type__c;
@@ -537,7 +617,7 @@
                                    OptionList[j].SAAS_Price__c=OptionList[j].SAAS_Custome_API_Pricing__c;
                                    OptionList[j].OTI_Price__c=OptionList[j].OTI_Custome_API_Price__c;
                                 }else if(selectedqli[i].Sub_Type__c=='API'){
-                                    OtionList[j].SAAS_Price__c=OptionList[j].SAAS_API_Pricing__c;
+                                    OptionList[j].SAAS_Price__c=OptionList[j].SAAS_API_Pricing__c;
                                    OptionList[j].OTI_Price__c=OptionList[j].OTI_API_Pricing__c;
                                 }else if(selectedqli[i].Sub_Type__c=='SFTP'){
                                     OptionList[j].SAAS_Price__c=OptionList[j].SAAS_SFTP_Pricing__c;
@@ -548,20 +628,52 @@
                                 }else if(selectedqli[i].Sub_Type__c=='Premium'){
                                     OptionList[j].SAAS_Price__c=OptionList[j].SAAS_Premium_Pricing__c;
                                    OptionList[j].OTI_Price__c=OptionList[j].OTI_Premium_Pricing__c;
+                                }else if(selectedqli[i].Sub_Type__c=='Google Maps'){
+                                    if(selectedqli[i].SAAS_Quantity__c <= 20000){
+                                        OptionList[j].SAAS_Price__c=OptionList[j].Google_Maps_SAAS__c;
+                                    }else if(selectedqli[i].SAAS_Quantity__c > 20000 && selectedqli[i].SAAS_Quantity__c < 50000){
+                                        OptionList[j].SAAS_Price__c=7;
+                                    }else if(selectedqli[i].SAAS_Quantity__c > 50000){
+                                        OptionList[j].SAAS_Price__c=6;
+                                    }
+                                   OptionList[j].OTI_Price__c=OptionList[j].Google_Maps_OTI__c; 
+                                }else if(selectedqli[i].Sub_Type__c=='Map My India'){
+                                   if(selectedqli[i].SAAS_Quantity__c <= 20000){
+                                        OptionList[j].SAAS_Price__c=OptionList[j].Map_My_India_SAAS__c;
+                                    }else if(selectedqli[i].SAAS_Quantity__c > 20000 && selectedqli[i].SAAS_Quantity__c < 50000){
+                                        OptionList[j].SAAS_Price__c=1.75;
+                                    }else if(selectedqli[i].SAAS_Quantity__c > 50000){
+                                        OptionList[j].SAAS_Price__c=1.5;
+                                    }
+                                   OptionList[j].OTI_Price__c=OptionList[j].Map_My_India_OTI__c;
                                 }
                             }else{
-                               OptionList[j].SAAS_Price__c=OptionList[j].SAAS_Price__c; 
-                               OptionList[j].OTI_Price__c=OptionList[j].OTI_Price__c; 
+                                if(selectedqli[i].Product2.Name=='Offline TMC (Cab/Train/Bus)' || selectedqli[i].Product2.Name=='Offline TMC'){
+                                    if(selectedqli[i].OTI_Quantity__c > 2){
+                                        OptionList[j].OTI_Price__c=25000*(selectedqli[i].OTI_Quantity__c-2); 
+                                    }else if(selectedqli[i].OTI_Quantity__c <= 2){
+                                        OptionList[j].OTI_Price__c=0; 
+                                    }
+                                    OptionList[j].SAAS_Price__c=OptionList[j].SAAS_Price__c;
+                                }else{
+                            		OptionList[j].IsOtiPriceEditable__c==true ? (selectedqli[i].OTI_Price__c!=0 && selectedqli[i].OTI_Price__c >0) ? OptionList[j].OTI_Price__c=(selectedqli[i].OTI_Price__c/selectedqli[i].OTI_Quantity__c) : OptionList[j].OTI_Price__c=OptionList[j].OTI_Price__c:OptionList[j].OTI_Price__c=OptionList[j].OTI_Price__c;
+                            		OptionList[j].IsSaasPriceEditable__c==true ? (selectedqli[i].SAAS_Price__c!=0 && selectedqli[i].SAAS_Price__c >0) ? OptionList[j].SAAS_Price__c=(selectedqli[i].SAAS_Price__c/selectedqli[i].SAAS_Quantity__c) : OptionList[j].SAAS_Price__c=OptionList[j].SAAS_Price__c:OptionList[j].SAAS_Price__c=OptionList[j].SAAS_Price__c; 
+                                }
                             }
                             commitment=selectedqli[i].Minimum_Commitment__c;
                             break;
                         } else{
-                            OptionList[j].checkbox=false
+                            OptionList[j].checkbox=false;
                         } 
                     }
                     
                 }
-                console.log('OptionList--',JSON.stringify(OptionList)); 
+                console.log('OptionList--',JSON.stringify(OptionList));
+                 if(DedicatedSandboxEnvironmentRecord!=undefined && IsTravelProduct==false){
+                    OptionList.push(DedicatedRecord);
+                 }else if(CommonSandboxEnvironmentRecord!=undefined && IsTravelProduct==false){
+                     OptionList.push(CommonRecord); 
+                 }
                 component.set("v.SelectedProductOptions",OptionList);
                 component.set("v.show", false);
             }
@@ -579,41 +691,115 @@
         component.set("v.show", true);
         var selectedProductName=component.get("v.SelectedProductName");
         console.log('selectedProductName--',JSON.stringify(selectedProductName));
-        //var prodID = component.get("v.selected")[0].Id;
-        //var ValueOfProductTableScreen=false;
-        //component.set("v.ProductTableScreen",ValueOfProductTableScreen);
         var prodID =component.get("v.SelectedProduct");
-        //var IsTravelProd=component.get("v.selected")[0].Is_Travel_Product__c;
-        //var ProdName=component.get("v.selected")[0].Name;
-        //console.log('IsTravelProd--',IsTravelProd)
         component.set("v.prodId",prodID);
         var offType = component.get("v.selectedofferingType");
         var pricingType = component.get("v.selectedpricingType");
         var numOfBookings = parseInt(component.get("v.numberOfBookings"));
+        if(isNaN(numOfBookings)){
+            numOfBookings = undefined;
+        }
         var minCommitment = parseInt(component.get("v.minimumCommitment"));
         var accountType = '';
-        if(prodID != '01tC20000008eBZIAY' && (offType == '' || offType == undefined)){
-            alert('Kindly select offering type to proceed');
+        
+        if(prodID == "" || prodID == undefined){
+            component.set("v.show", false);
+            component.set("v.showalert", true);
+            component.find('notifyId').showNotice({
+                "variant": "error",
+                "header": "Kindly Choose Product to proceed !!!!",
+                "message": "🚫Kindly Choose Product to proceed !!!!.",
+            });
             return;
         }
-        //01tC20000007Z5tIAE
-        
-        if(pricingType == '' || offType == pricingType){
-            alert('Kindly select Pricing type to proceed');
-            return;
+       
+        if(selectedProductName=='Travel Bundle'){
+            if(offType == '' || offType == undefined || offType == '-None-'){
+                component.set("v.show", false);
+                component.set("v.showalert", true);
+                component.find('notifyId').showNotice({
+                    "variant": "error",
+                    "header": "Kindly select offering type to proceed !!!!",
+                    "message": "🚫Kindly select offering type to proceed !!!!.",
+                });
+                return;
+            }
         }
         
-        if(minCommitment == '' || minCommitment == undefined){
+        if(pricingType == '' || pricingType == undefined){
+            component.set("v.show", false);
+            component.set("v.showalert", true);
+            component.find('notifyId').showNotice({
+                "variant": "error",
+                "header": "Kindly select Pricing type to proceed !!!!",
+                "message": "🚫Kindly select Pricing type to proceed !!!!.",
+            });
+            return;
+        } 
+        
+        
+        /*if(minCommitment == '' || minCommitment == undefined){
             alert('Kindly fill minimum commitment to proceed');
             return;
-        }
+        }*/
         
-        if(numOfBookings == '' || numOfBookings == undefined){
-            alert('Kindly fill number of booking to proceed');
+        if(numOfBookings == '' || numOfBookings == undefined || numOfBookings == "0" || numOfBookings === NaN){
+            //alert('Kindly fill number of booking to proceed');
+            component.set("v.show", false);
+            component.set("v.showalert", true);
+            component.find('notifyId').showNotice({
+                "variant": "error",
+                "header": "Kindly fill number of booking to proceed !!!!",
+                "message": "🚫Kindly fill number of booking to proceed!!!!.",
+            });
             return;
         }
         
-        //If (expense || Travel)
+        if(selectedProductName=='Expense Bundle'){
+            var numOfBook= parseInt(numOfBookings);
+            if(numOfBook < 30){
+                component.set("v.show", false);
+                component.set("v.showalert", true);
+                component.find('notifyId').showNotice({
+                    "variant": "error",
+                    "header": "Number of booking Must be Minimum 30 Or Greater Than 30 !!!!",
+                    "message": "🚫Number of booking Must be Minimum 30 Or Greater Than 30 !!!!.",
+                });
+                return;
+            }
+         }
+        
+        if(selectedProductName=='Travel Bundle'){
+            var numOfBook= parseInt(numOfBookings);
+            if(offType=='SBT' && pricingType == 'Per Booking' && numOfBook < 300){
+                component.set("v.show", false);
+                component.set("v.showalert", true);
+                component.find('notifyId').showNotice({
+                    "variant": "error",
+                    "header": "Number of booking Must be Minimum 300 Or Greater Than 300",
+                    "message": "🚫Number of booking Must be Minimum 300 Or Greater Than 300 !!!!.",
+                });
+                return;
+            }else if(offType=='SBT' && pricingType == 'Per Trip' && numOfBook < 300){
+                component.set("v.show", false);
+                component.set("v.showalert", true);
+                component.find('notifyId').showNotice({
+                    "variant": "error",
+                    "header": "Number of booking Must be Minimum 300 Or Greater Than 300",
+                    "message": "🚫Number of booking Must be Minimum 300 Or Greater Than 300 !!!!.",
+                });
+                return;
+            }else if(offType=='TRF' && pricingType == 'Per Trip' && numOfBook < 300){
+                component.set("v.show", false);
+                component.set("v.showalert", true);
+                component.find('notifyId').showNotice({
+                    "variant": "error",
+                    "header": "Number of booking Must be Minimum 300 Or Greater Than 300",
+                    "message": "🚫Number of booking Must be Minimum 300 Or Greater Than 300 !!!!.",
+                });
+                return;
+            } 
+        }
         
         if(pricingType == 'Per Booking'){
             if(numOfBookings >= 36000){
@@ -626,13 +812,13 @@
                 accountType = 'Small';
             }
         }else if(pricingType == 'Per Trip'){
-            if(numOfBookings >= 12000){
+            if(numOfBookings >= 36000){
                 accountType = 'Large';
-            }else if (numOfBookings >= 7000 && numOfBookings < 12000){
+            }else if (numOfBookings >= 20000 && numOfBookings < 36000){
                 accountType = 'Medium Large';
-            }else if(numOfBookings >= 4000 && numOfBookings < 7000){
+            }else if(numOfBookings >= 12000 && numOfBookings < 20000){
                 accountType = 'Medium';
-            }else if(numOfBookings > 0 && numOfBookings < 4000){
+            }else if(numOfBookings > 0 && numOfBookings < 11000){
                 accountType = 'Small';
             }
         }else if(pricingType == 'Per Report' || pricingType == 'Per User' ){
@@ -673,19 +859,11 @@
             }
         }
         component.set("v.accTypeCalculated", accountType);
-        component.set("v.selectedprodType", '-None-');
-        // helper.getAccountType(component, event, helper);
-        //var a = component.get('c.getAllProducts');
-        //$A.enqueueAction(a);
-        //component.set("v.ProductName", ProdName);
         component.set("v.AccountType", accountType);
         component.set("v.SelectedOffering", offType);
         component.set("v.SelectedPricing", pricingType);
         component.set("v.Commitment", minCommitment);
         component.set("v.NumberOfBooking", numOfBookings);
-        
-        
-        
         var quoteLineItems= component.get("v.QuoteLineItemlist");
         for(let i=0;i<quoteLineItems.length;i++){
             if(quoteLineItems[i].Product2Id==prodID && quoteLineItems[i].Travel_Offering_Type__c==offType){
@@ -698,7 +876,6 @@
             } else{
                 var NextScreen=true;
             } 
-            
         }
         if(NextScreen==false){
             var spinner=component.get("v.show");
@@ -776,7 +953,6 @@
     NavigateBackToQuotelineItem:function(component, event, helper) {
         debugger;
         component.set("v.QuoteTableScreen", true);
-        // component.set("v.ShowProducts", false);
         component.set("v.ProductOptionScreen", false);
     },
     doSomething:function(component, event, helper) {
@@ -795,7 +971,6 @@
         var OfferingValue = component.get("v.selectedpricingType");
         var LabelValue=component.get("v.NumberOfBookingLabel");
         if(OfferingValue=='Per User'){
-            //LabelValue="Number of Bookings"+'/'+OfferingValue;
             LabelValue=" Number of Bookings/# of Users";
         }else if(OfferingValue=='Per Report'){
             LabelValue=" Number of Bookings/# of Reports (Monthly)"
@@ -806,7 +981,6 @@
         }else if(OfferingValue=='Per Trip'){
             LabelValue=" Number of Bookings/# of Trips (Monthly)"
         }
-        //LabelValue=LabelValue.toString();
         component.set("v.NumberOfBookingLabel",LabelValue);
     },
     handleClickCalculateDiscount:function(component, event, helper) {
@@ -850,8 +1024,7 @@
         debugger;
         component.set("v.showCalculateModal",true); 
     },
-    closeModel: function(component, event, helper) {
-        // Set isModalOpen attribute to false  
+    closeModel: function(component, event, helper) { 
         component.set("v.showCalculateModal", false);
     },
     handleChange:function(component, event, helper) {
@@ -867,6 +1040,17 @@
         if(selectedProductName=='Expense Bundle'){
             var SBTPricingType=['-None-','Per Report','Per User'];
             component.set("v.pricingType", SBTPricingType);
+        }else if(selectedProductName=='Travel Bundle'){
+            var SBTPricingType=['-None-'];
+            component.set("v.pricingType", SBTPricingType);
+            var OfferingValue = component.get("v.selectedofferingType");
+            if(OfferingValue=="SBT"){
+                var SBTPricingType=['-None-','Per Booking','Per Trip','Per Report'];
+                component.set("v.pricingType", SBTPricingType);
+            }else if(OfferingValue=="TRF"){
+                var SBTPricingType=['-None-','Per Trip','Per Report'];
+                component.set("v.pricingType", SBTPricingType);
+            } 
         }
     }
 })

@@ -1,52 +1,309 @@
 <!-- /**
- * @author [Dinesh B]
- * @email dinesh.b@utilitarianLab.com
- * @create date 2023-04-05 14:10:29
- * @modify date 2023-04-05 14:10:29
- * @desc [description]
- */ -->
+* @author [Dinesh B]
+* @email dinesh.b@utilitarianLab.com
+* @create date 2023-04-05 14:10:29
+* @modify date 2023-04-05 14:10:29
+* @desc [description]
+*/ -->
 
 <apex:page showHeader="false" sidebar="false"  docType="html-5.0" applyBodyTag="false" renderAs="pdf" applyHtmlTag="false"  standardController="Quote" extensions="HappyOrderFormVFController">
-
-	<head>
+    
+    <head>
         <style>
             @page {
             margin-top: 1cm;
             margin-right:1cm;
             }
         </style>
-	    </head>
+    </head>
     
-        <body>
+    <body>
+        
+        <div style="width:100%">
+            <div style="width:70%;float:right;">
+                <img src="{!$Resource.HappayLogo}" width="40%" height="70%" align="right"/>
+            </div>
+            <div style="width:50%;float:left">
+                
+            </div>
+        </div>
+        
+        <br/>  <br/>  <br/>  <br/>
+        <br/>  <br/>  <br/>  <br/>  
+        <br/>  <br/>  <br/>  <br/>  
+        <br/>  <br/>  <br/>  <br/>  
+        <br/>  <br/>  <br/>  <br/>  
+        <br/>  <br/> <br/> <br/>
+        <div>
+            <img src="{!$Resource.logo1}" width="50%" height="80%" align="left"/>
+        </div>
+        <br/>   <br/><br/> 
+        <br/>  <br/>  <br/>  <br/>  
+        <br/>  <br/>  <br/>  <br/>  
+        <br/>  <br/>  <br/>  <br/>   
+        <br/>  <br/>  <br/>  <br/>   
+        <br/>  <br/>  <br/>  <br/>
+        <br/>  <br/>  <br/>  <br/>
+        <br/>  <br/>  <br/>  <br/>
+        
+        <div class="content">
             
             <div style="width:100%">
                 <div style="width:70%;float:right;">
                     <img src="{!$Resource.heaserlogo}" width="60%" height="100%" align="right"/>
                 </div>
                 <div style="width:50%;float:left">
-                   <b style="color:#00b26f;font-size:17px;font-weight: bold;">HAPPAY ORDER FORM</b>
+                    <b style="color:#00b26f;font-size:17px;font-weight: bold;">HAPPAY ORDER FORM</b>
                 </div>
             </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
             
-            <br/>  <br/>  <br/>  <br/>
-            <br/>  <br/>  <br/>  <br/>  
-            <br/>  <br/>  <br/>  <br/>  
-            <br/>  <br/>  <br/>  <br/>  
-            <br/>  <br/>  <br/>  <br/>  
-            <br/>  <br/> <br/> <br/>
             <div>
-                 <img src="{!$Resource.logo1}" width="50%" height="80%" align="left"/>
+                <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Proposal Reference Number</td>
+                        <td style="border:1px solid black;padding:10px;">{!getQuotedata.QuoteNumber}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Billing contact Name</td>
+                        <td style="border:1px solid black;padding:10px;">{!getContactDetails.Name}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Billing contact Email</td>
+                        <td style="border:1px solid black;padding:10px;">{!getContactDetails.Email}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Proposed By</td>
+                        <td style="border:1px solid black;padding:10px;">{!$User.FirstName} {!$User.LastName}</td>
+                    </tr>
+                </table>
+                
             </div>
-            <br/>   <br/><br/> 
-            <br/>  <br/>  <br/>  <br/>  
-            <br/>  <br/>  <br/>  <br/>  
-            <br/>  <br/>  <br/>  <br/>   
-            <br/>  <br/>  <br/>  <br/>   
-            <br/>  <br/>  <br/>  <br/>
-            <br/>  <br/>  <br/>  <br/>
-            <br/>  <br/>  <br/>  <br/>
-
-            <div class="content">
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            
+            <!-- SERVICE PROVIDER DETAILS -->
+            <div>
+                <table style="width:100%; border-left-style: solid;border-collapse:collapse;">
+                    <tr>
+                        <td style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;;"><b style="margin-left:10px;Font-size:100%;">SERVICE PROVIDER DETAILS</b></td>
+                    </tr>
+                </table>
+                <br/>
+                <br/>
+                <b style="font-size:13px;font-family: Noto Sans,Helvetica,sans-serif;">{!serviceData.Name}</b> <br/>
+                <br/> <span style="">{!serviceData.StreetAddress__c}</span> 
+                <br/> <span style="">{!serviceData.StreetArea__c}</span>
+                <br/> <span style="">{!serviceData.StreetRoad__c}</span>
+                <br/> <span style="">{!serviceData.CityArea__c}</span>
+                <br/> <span style="">{!serviceData.CityStatePincode__c}</span>
+            </div>
+            <!-- SERVICE PROVIDER DETAILS -->
+            
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            
+            <div>
+                <table style="width:100%; border-left-style: solid;border-collapse:collapse;">
+                    <tr>
+                        <td style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;"><b style="margin-left:10px;Font-size:100%;">CLIENT DETAILS</b></td>
+                    </tr>
+                </table>
+                <br/>
+                <br/>
+                <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Client Entity Name</td>
+                        <td style="border:1px solid black;padding:10px;">{!getAccountDetails.Name}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Registered Address</td>
+                        <td style="border:1px solid black;padding:10px;"><span>{!getAccountDetails.BillingStreet}, {!getAccountDetails.BillingCity} {!getAccountDetails.BillingState}  {!getAccountDetails.BillingPostalCode}, {!getAccountDetails.BillingCountry} </span></td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;">CIN / Registration Number</td>
+                        <td style="border:1px solid black;padding:10px;">{!getAccountDetails.CIN__c}</td>
+                    </tr>
+                </table>
+            </div>
+            
+            
+            
+            <div style="page-break-after: always"/>
+            
+            <div style="width:100%">
+                <div style="width:70%;float:right;">
+                    <img src="{!$Resource.heaserlogo}" width="60%" height="100%" align="right"/>
+                </div>
+                <div style="width:50%;float:left">
+                    <b style="color:#00b26f;font-size:17px;font-weight: bold;">HAPPAY ORDER FORM</b>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/> 
+            <br/>
+            <br/>
+            <div style="width:1000%;float:left">
+                <b style="font-size:17px;font-weight: bold;">TERMS:</b>
+            </div>
+            <br/>
+            <br/>
+            <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                <tr>
+                    <td style="border:1px solid black;background-color: #e0dddd;padding:10px;">Payment Terms </td>
+                    <td style="border:1px solid black;background-color: #e0dddd;padding:10px;">Term Attribute Line Item</td>
+                </tr>
+                <!-- Add dynamic data from the object here -->
+                
+                <apex:repeat value="{!terms}" var="term">
+                    <tr>
+                        <td style="border:1px solid black;padding:10px;">{!term.Term_Section_Line_Item__r.Name}</td>
+                        <td style="border:1px solid black;padding:10px;">
+                            
+                            <apex:outputText rendered="{!(term.Term_Section_Line_Item__r.Name != 'Delay Payment Interest' && 
+                                                       term.Term_Section_Line_Item__r.Name != 'YoY | PUPM/Report 50-100' && 
+                                                       term.Term_Section_Line_Item__r.Name != 'YoY | PUPM/Report >100' && 
+                                                       term.Term_Section_Line_Item__r.Name != 'YoY | AMC 10-20% of ARR')}">
+                                {!term.Term_Attribute_Line_Item__r.Name}  
+                            </apex:outputText>
+                            
+                            <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'Billing Type'}">
+                                <apex:outputText rendered="{!NOT(ISBLANK(term.Comments__c))}"  escape="false"/>
+                                <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                            </apex:outputText>
+                            
+                             <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'SAAS Start Date'}">
+                                <apex:outputText rendered="{!NOT(ISBLANK(term.Comments__c))}"  escape="false"/> 
+                                <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                            </apex:outputText>
+                            
+                            <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'Payment Due Date'}">
+                                <apex:outputText rendered="{!NOT(ISBLANK(term.Comments__c))}"  escape="false"/> 
+                                <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                            </apex:outputText>
+                            
+                            <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'OTI Payment Milestone'}">
+                                <apex:outputText rendered="{!NOT(ISBLANK(term.Comments__c))}"  escape="false"/> 
+                                <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                            </apex:outputText>
+                            
+                            <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'Change Request'}">
+                                <apex:outputText rendered="{!NOT(ISBLANK(term.Comments__c))}"  escape="false"/>
+                                <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                            </apex:outputText>
+                            
+                            <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'Lock In Perod'}">
+                                <apex:outputText rendered="{!NOT(ISBLANK(term.Comments__c))}"  escape="false"/>
+                                <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                            </apex:outputText>
+                            
+                            <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'Contract Period'}">
+                                <apex:outputText rendered="{!NOT(ISBLANK(term.Comments__c))}"  escape="false"/>
+                                <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                            </apex:outputText>
+                            
+                            <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'Delay Payment Interest'}">
+                                <apex:outputText rendered="{!term.Late_Payment_Interest__c !=null}">{!term.Late_Payment_Interest__c}</apex:outputText>
+                                <apex:outputText rendered="{!term.Late_Payment_Interest__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                            </apex:outputText>
+                            
+                            <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'YoY | PUPM/Report 50-100'}">
+                                <apex:outputText rendered="{!term.YoY_PUPM_Report__c !=null}">{!term.YoY_PUPM_Report__c}</apex:outputText>
+                                <apex:outputText rendered="{!term.YoY_PUPM_Report__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                            </apex:outputText>
+                            
+                            <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'YoY | PUPM/Report >100'}">
+                                <apex:outputText rendered="{!term.YoY_PUPM_Report_100__c !=null}">{!term.YoY_PUPM_Report_100__c}</apex:outputText>
+                                <apex:outputText rendered="{!term.YoY_PUPM_Report_100__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                            </apex:outputText>
+                            
+                            <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'YoY | AMC 10-20% of ARR'}">
+                                <apex:outputText rendered="{!term.YoY_AMC_10_20_of_ARR__c !=null}">{!term.YoY_AMC_10_20_of_ARR__c} </apex:outputText>
+                                <apex:outputText rendered="{!term.YoY_AMC_10_20_of_ARR__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </apex:repeat>
+            </table>
+            
+            <div style="width:100%">
+                             
+            </div>
+            <!-- SUBSCRIPTION PAYMENT TERMS -->
+            
+            
+            
+            <br/>
+            <!-- SOLUTION OFFERED -->
+            <div style="width:1000%;float:left">
+                <b style="font-size:17px;font-weight: bold;">SOLUTION OFFERED:</b>
+            </div>
+            <br/>
+            <br/>
+            <div>
+                <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Happay Offerings</td>
+                        <td style="border:1px solid black;padding:10px;">EM standard</td>
+                    </tr>
+                </table>
+            </div>
+            <!-- SOLUTION OFFERED -->
+            
+            <!-- QuoteLineitem -->                              
+            <br/>
+            <br/>             
+            <div style="width:1000%;float:left">
+                <b style="font-size:17px;font-weight: bold;">PRICING DETAILS:</b>
+            </div>
+            <br/>
+            <br/>
+            
+            <div>
+                <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Total Expense Price</td>
+                        <td style="border:1px solid black;padding:10px;text-align:center;">
+                            <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!SubTotalExpense}"/></apex:outputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Total Travel Price </td>
+                        <td style="border:1px solid black;padding:10px;text-align:center;">
+                            <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!SubtotalTravel}"/></apex:outputText>
+                        </td>                    
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;"><b>Sub-Total</b></td>
+                        <td style="border:1px solid black;padding:10px;text-align:center;">
+                            <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!TotalExpTra}"/></apex:outputText>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            
+            <br/>
+            <br/>
+            
+            <apex:outputText rendered="{!IsTravelDataTrue == true}"> 
+                
+                <div style="page-break-after: always"/>
                 
                 <div style="width:100%">
                     <div style="width:70%;float:right;">
@@ -61,604 +318,493 @@
                 <br/>
                 <br/>
                 <br/>
+                <br/>     
+                <div style="width:1000%;float:left">
+                    <b style="font-size:17px;font-weight: bold;">TRAVEL DETAILS:</b>
+                </div>
                 <br/>
+                <br/> 
+                <apex:outputText rendered="{!getTravelSAASList.size>0}">          
+                    <div style="width:1000%;float:left">
+                        <b style="font-size:14px;font-weight: bold;">SAAS MODULES:</b>
+                    </div>
+                    <br/>
+                    <br/>
+                    
+                    <table style="width:100%;border:1px solid black;border-collapse:collapse;">               
+                        <tr >
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">PRODUCT NAME</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">ACCOUNT TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL OFFERING TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL PRICING TYPE </th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">SAAS PRICE </th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">OTI PRICE</th>
+                        </tr>
+                        
+                        <apex:repeat value="{!getTravelSAASList}" var="trvSAASList">
+                            <tr>
+                                <!-- <apex:variable var="index" value="{!(index+1)}"/> -->
+                                <!-- <td style="border:1px solid black;padding:10px;"><apex:outputText value="{!index}"/></td> -->
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!trvSAASList.Product2.Name}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!trvSAASList.Account_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvSAASList.Travel_Offering_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvSAASList.Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvSAASList.Travel_Pricing_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
+                                    <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!trvSAASList.SAAS_Price__c}"/></apex:outputText>
+                                </td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
+                                    <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!trvSAASList.OTI_Price__c}"/></apex:outputText>
+                                </td>
+                            </tr>
+                            
+                        </apex:repeat>
+                        
+                    </table>
+                </apex:outputText>
+                <br/>
+                <br/>
+                <apex:outputText rendered="{!getTravelOTTList.size>0}">        
+                    <div style="width:1000%;float:left">
+                        <b style="font-size:14px;font-weight: bold;">OTI MODULES:</b>
+                    </div>
+                    <br/>
+                    <br/>
+                    
+                    <table style="width:100%;border:1px solid black;border-collapse:collapse;">               
+                        <tr >
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">PRODUCT NAME</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">ACCOUNT TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL OFFERING TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL PRICING TYPE </th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">SAAS PRICE </th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">OTI PRICE</th>
+                        </tr>
+                        
+                        <apex:repeat value="{!getTravelOTTList}" var="trvOTIList">
+                            <tr>
+                                <!-- <apex:variable var="index" value="{!(index+1)}"/> -->
+                                <!-- <td style="border:1px solid black;padding:10px;"><apex:outputText value="{!index}"/></td> -->
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!trvOTIList.Product2.Name}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!trvOTIList.Account_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvOTIList.Travel_Offering_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvOTIList.Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvOTIList.Travel_Pricing_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
+                                    <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!trvOTIList.SAAS_Price__c}"/></apex:outputText>
+                                </td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
+                                    <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!trvOTIList.OTI_Price__c}"/></apex:outputText>
+                                </td>
+                            </tr>
+                            
+                        </apex:repeat>
+                        
+                    </table>
+                </apex:outputText>   
                 <br/>
                 <br/>
                 
-                <div>
-                    <table style="width:100%;border:1px solid black;border-collapse:collapse;">
-                        <tr>
-                            <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Proposal Reference Number</td>
-                             <td style="border:1px solid black;padding:10px;">{!getQuotedata.QuoteNumber}</td>
+                <apex:outputText rendered="{!getTravelOTTSAASList.size>0}">       
+                    <div style="width:1000%;float:left">
+                        <b style="font-size:14px;font-weight: bold;">SAAS AND OTI MODULES:</b>
+                    </div>
+                    <br/>
+                    <br/>
+                    
+                    <table style="width:100%;border:1px solid black;border-collapse:collapse;">               
+                        <tr >
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">PRODUCT NAME</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">ACCOUNT TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL OFFERING TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL PRICING TYPE </th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">SAAS PRICE </th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">OTI PRICE</th>
                         </tr>
-                      <tr>
-                             <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Billing contact Name</td>
-                             <td style="border:1px solid black;padding:10px;">{!getContactDetails.Name}</td>
-                        </tr>
-                        <tr>
-                             <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Billing contact Email</td>
-                             <td style="border:1px solid black;padding:10px;">{!getContactDetails.Email}</td>
-                        </tr>
-                         <tr>
-                             <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Proposed By</td>
-                             <td style="border:1px solid black;padding:10px;">{!$User.FirstName} {!$User.LastName}</td>
-                        </tr>
+                        <apex:repeat value="{!getTravelOTTSAASList}" var="trvSAASOTIList">
+                            <tr>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!trvSAASOTIList.Product2.Name}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!trvSAASOTIList.Account_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvSAASOTIList.Travel_Offering_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvSAASOTIList.Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvSAASOTIList.Travel_Pricing_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
+                                    <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!trvSAASOTIList.SAAS_Price__c}"/></apex:outputText>
+                                </td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
+                                    <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!trvSAASOTIList.OTI_Price__c}"/></apex:outputText>
+                                </td>
+                            </tr>
+                        </apex:repeat>
                     </table>
                     
-                </div>
-                 <br/>
-                  <br/>
-                  <br/>
-                <br/>
-
-                <!-- SERVICE PROVIDER DETAILS -->
-                <div>
-                    <b style="font-size:18px;">SERVICE PROVIDER DETAILS</b>
-                    <br/>
-                    <br/>
-                    <b style="font-size:13px;font-family: Noto Sans,Helvetica,sans-serif;">{!serviceData.Name}</b> <br/>
-                   <br/> <span style="">{!serviceData.StreetAddress__c}</span> 
-                   <br/> <span style="">{!serviceData.StreetArea__c}</span>
-                    <br/> <span style="">{!serviceData.StreetRoad__c}</span>
-                     <br/> <span style="">{!serviceData.CityArea__c}</span>
-                     <br/> <span style="">{!serviceData.CityStatePincode__c}</span>
-                </div>
-                 <!-- SERVICE PROVIDER DETAILS -->
+                </apex:outputText>   
+            </apex:outputText>
+            
+            <div style="page-break-after: always"/>
+            
+            <apex:outputText rendered="{!IsExpenseDataTrue == true}">            
                 
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                
-                <div>
-                     <b style="font-size:18px;">CLIENT DETAILS</b>
-                    <br/>
-                    <br/>
-                    <table style="width:100%;border:1px solid black;border-collapse:collapse;">
-                      <tr>
-                             <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Client Entity Name</td>
-                             <td style="border:1px solid black;padding:10px;">{!getAccountDetails.Name}</td>
-                        </tr>
-                        <tr>
-                             <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Registered Address</td>
-                             <td style="border:1px solid black;padding:10px;"><span>{!getAccountDetails.BillingStreet}, {!getAccountDetails.BillingCity} {!getAccountDetails.BillingState}  {!getAccountDetails.BillingPostalCode}, {!getAccountDetails.BillingCountry} </span></td>
-                        </tr>
-                         <tr>
-                             <td style="border:1px solid black;background-color: #dddddd;padding:10px;">CIN / Registration Number</td>
-                             <td style="border:1px solid black;padding:10px;">{!getAccountDetails.CIN__c}</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div style="page-break-after: always"/>
-                    <!-- SUBSCRIPTION PAYMENT TERMS -->
-                  <div style="width:100%">
+                <div style="width:100%">
                     <div style="width:70%;float:right;">
                         <img src="{!$Resource.heaserlogo}" width="60%" height="100%" align="right"/>
                     </div>
                     <div style="width:50%;float:left">
-                        <b style="font-size:17px;font-weight: bold;">SUBSCRIPTION PAYMENT TERMS</b>
+                        <b style="color:#00b26f;font-size:17px;font-weight: bold;">HAPPAY ORDER FORM</b>
+                    </div>
+                </div>
+                
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>  
+                
+                <div style="width:1000%;float:left">
+                    <b style="font-size:17px;font-weight: bold;">EXPENSE DETAILS:</b>
+                </div>
+                <br/>
+                <br/> 
+                <apex:outputText rendered="{!getExpenseSAASList.size>0}">
+                    <div style="width:1000%;float:left">
+                        <b style="font-size:14px;font-weight: bold;">SAAS MODULES:</b>
+                    </div> 
+                    <br/>
+                    <br/>                    
+                    <table style="width:100%;border:1px solid black;border-collapse:collapse;">               
+                        <tr >
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">PRODUCT NAME</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">ACCOUNT TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL OFFERING TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL EXP PRICING TYPE </th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">SAAS PRICE </th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">OTI PRICE</th>
+                        </tr>
+                        <apex:repeat value="{!getExpenseSAASList}" var="expSAASList">
+                            <tr>
+                                <!-- <apex:variable var="index" value="{!(index+1)}"/> -->
+                                <!-- <td style="border:1px solid black;padding:10px;"><apex:outputText value="{!index}"/></td> -->
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!expSAASList.Product2.Name}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!expSAASList.Account_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expSAASList.Travel_Offering_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expSAASList.Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expSAASList.Travel_Pricing_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
+                                    <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!expSAASList.SAAS_Price__c}"/></apex:outputText>
+                                </td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
+                                    <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!expSAASList.OTI_Price__c}"/></apex:outputText>
+                                </td>
+                            </tr>                      
+                        </apex:repeat>
+                    </table> 
+                </apex:outputText>
+                <br/>
+                <br/> 
+                
+                <apex:outputText rendered="{!getExpenseOTTList.size>0}">         
+                    <div style="width:1000%;float:left">
+                        <b style="font-size:14px;font-weight: bold;">OTI MODULES:</b>
                     </div>
                     <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-
-                    <table style="width:100%;border:1px solid black;border-collapse:collapse;">
-                        <tr>
-                            <td colspan="2" style="border:1px solid black;background-color: #dddddd;padding:10px;">Offered Commercials validity up to &nbsp;
-                                <apex:outputText value="{0, date,dd MMM yyyy}">
-                                    <apex:param value="{!getQuotedata.ExpirationDate}" />
-                                </apex:outputText>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="border:1px solid black;background-color: #dddddd;padding:10px;width: 366px;">Description</td>
-                            <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Amounts (INR)</td>
-                        </tr>
-                        <tr>
-                            <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Subscription Billing Start Date</td>
-                            <td style="border:1px solid black;padding:10px;">
-                                <apex:outputText value="{0, date,dd MMM yyyy}">
-                                    <apex:param value="{!getQuotedata.Subscription_Billing_Start_Date__c}" />
-                                </apex:outputText>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Advance Billing Cycle</td>
-                            <td style="border:1px solid black;padding:10px;">{!getQuotedata.Advance_Billing_Cycle__c}</td>
-                        </tr>
-                        <tr>
-                            <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Payment Due Date</td>
-                            <td style="border:1px solid black;padding:10px;">{!getQuotedata.Payment_Due_Date__c}</td>
-                        </tr>
-                        <tr>
-                            <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Delayed Payment Interest</td>
-                            <td style="border:1px solid black;padding:10px;">{!getQuotedata.Delayed_Payment_Interest__c}% p.a.</td>
-                        </tr>
-                        <tr>
-                            <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Subscription Term</td>
-                            <td style="border:1px solid black;padding:10px;">{!getQuotedata.Subscription_Term__c} </td>
-                        </tr>
-                        <tr>
-                            <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Yearly Price Escalation</td>
-                            <td style="border:1px solid black;padding:10px;">
-                                <span>{!happcardData.Year_1__c}</span> <br/> <span>{!happcardData.Year2__c}</span> <br/> <span>{!happcardData.Year3__c}</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Per Man Day Charges (for Change Request)</td>
-                            <td style="border:1px solid black;padding:10px;">{!serviceData.Charges__c}</td>
-                        </tr>
+                    <br/>       
                     
+                    <table style="width:100%;border:1px solid black;border-collapse:collapse;">               
+                        <tr >
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">PRODUCT NAME</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">ACCOUNT TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL OFFERING TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL EXP PRICING TYPE </th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">SAAS PRICE </th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">OTI PRICE</th>
+                        </tr>
+                        
+                        <apex:repeat value="{!getExpenseOTTList}" var="expOTIList">
+                            <tr>
+                                <!-- <apex:variable var="index" value="{!(index+1)}"/> -->
+                                <!-- <td style="border:1px solid black;padding:10px;"><apex:outputText value="{!index}"/></td> -->
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!expOTIList.Product2.Name}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!expOTIList.Account_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expOTIList.Travel_Offering_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expOTIList.Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expOTIList.Travel_Pricing_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
+                                    <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!expOTIList.SAAS_Price__c}"/></apex:outputText>
+                                </td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
+                                    <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!expOTIList.OTI_Price__c}"/></apex:outputText>
+                                </td>
+                            </tr>                      
+                        </apex:repeat>
+                        
                     </table>
-
-                </div>
-<!-- SUBSCRIPTION PAYMENT TERMS -->
-
+                </apex:outputText>       
+                
                 <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <!-- SOLUTION OFFERED -->
-                <div style="width:1000%;float:left">
-                    <b style="font-size:17px;font-weight: bold;">SOLUTION OFFERED:</b>
-                </div>
-                <br/>
-                <br/>
-                <div>
-                    <table style="width:100%;border:1px solid black;border-collapse:collapse;">
-                        <tr>
-                               <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Happay Offerings</td>
-                               <td style="border:1px solid black;padding:10px;">EM standard</td>
-                          </tr>
-                      </table>
-                </div>
-  <!-- SOLUTION OFFERED -->
-
-  <div style="page-break-after: always"/>
-
-  <!-- QuoteLineitem -->
-
-  <div style="width:1000%;float:left">
-    <b style="font-size:17px;font-weight: bold;">PRICING DETAILS:</b>
-</div>
-<br/>
-<br/>
-<br/>
-  <div>
-    <table style="width:100%;border:1px solid black;border-collapse:collapse;">
-        <tr>
-               <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Total Expense Price</td>
-               <td style="border:1px solid black;padding:10px;text-align:center;">{!SubTotalExpense}</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid black;background-color: #dddddd;padding:10px;">Total Travel Price </td>
-            <td style="border:1px solid black;padding:10px;text-align:center;">{!SubtotalTravel}</td>
-       </tr>
-       <tr>
-        <td style="border:1px solid black;background-color: #dddddd;padding:10px;"><b>Sub-Total</b></td>
-        <td style="border:1px solid black;padding:10px;text-align:center;"><b>{!TotalExpTra}</b></td>
-   </tr>
-      </table>
-</div>
-<br/>
-<br/>
-<br/>
-
-  
-  <table style="width:100%;border:1px solid black;border-collapse:collapse;">
-    <tr >
-        <!-- <th  style="border:1px solid black;background-color: #dddddd;padding:10px;">No.</th> -->
-        <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">PRODUCT NAME</th>
-        <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">OFFERING TYPE</th>
-        <!-- <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">ACCOUNT TYPE</th> -->
-        <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">PRICING TYPE</th>
-        <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TYPE</th>
-        <!-- <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">QUANTITY </th>
-        <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">SAAS PRICE </th>
-        <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">OTI PRICE</th> -->
-    </tr>
-    <!-- <apex:variable var="index" value="{!0}"/> -->
-    <apex:repeat value="{!getQuoteLineitemList}" var="lineItems">
-        <tr>
-            <!-- <apex:variable var="index" value="{!(index+1)}"/> -->
-            <!-- <td style="border:1px solid black;padding:10px;"><apex:outputText value="{!index}"/></td> -->
-            <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!lineItems.Product2.Name}</td>
-            <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!lineItems.Travel_Offering_Type__c}</td>
-            <!-- <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!lineItems.Account_Type__c}</td> -->
-            <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!lineItems.Travel_Pricing_Type__c}</td>
-            <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!lineItems.Type__c}</td>
-            <!-- <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!lineItems.Quantity}</td>
-            <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!lineItems.SAAS_Price__c}</td>
-            <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!lineItems.OTI_Price__c}</td> -->
-        </tr>
-    </apex:repeat>
-   
-    <!-- Travel -->
-    <!-- <apex:outputText rendered="{!IsTravelTrue ==true}">   
-    <tr>
-        <td colspan="6" style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;background-color: #dddddd;">Travel Total</td>
-        <td style="border:1px solid black;background-color: #dddddd;text-align:center;">{!getQuotedata.Travel_Total_SAAS__c}</td>
-        <td style="border:1px solid black;background-color: #dddddd;text-align:center;">{!getQuotedata.Travel_Total_OTI__c}</td>
-    </tr>
-    <tr>
-        <td colspan="6" style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;background-color: #dddddd;">Travel Discount</td>
-        <td style="border:1px solid black;background-color: #dddddd;text-align:center;">{!getQuotedata.Travel_ARR_Discount__c}</td>
-        <td style="border:1px solid black;background-color: #dddddd;text-align:center;">{!getQuotedata.Travel_OTI_Discount__c}</td>
-    </tr>
-    <tr>
-        <td colspan="6" style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;background-color: #dddddd;">Travel Discounted</td>
-        <td style="border:1px solid black;background-color: #dddddd;text-align:center;">{!getQuotedata.Travel_ARR_Discounted__c}</td>
-        <td style="border:1px solid black;background-color: #dddddd;text-align:center;">{!getQuotedata.Travel_OTI_Discounted__c}</td>
-    </tr>
-</apex:outputText>
-    <apex:outputText rendered="{!IsExpenseTrue == true}">
-     
-    <tr>
-        <td colspan="6" style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;background-color: #dddddd;">Expense Total</td>
-        <td style="border:1px solid black;background-color: #dddddd;text-align:center;">{!getQuotedata.Travel_Total_SAAS__c}</td>
-        <td style="border:1px solid black;background-color: #dddddd;text-align:center;">{!getQuotedata.Travel_Total_OTI__c}</td>
-    </tr>
-    <tr>
-        <td colspan="6" style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;background-color: #dddddd;">Expense Discount</td>
-        <td style="border:1px solid black;background-color: #dddddd;text-align:center;">{!getQuotedata.Expense_ARR_Discount__c}</td>
-        <td style="border:1px solid black;background-color: #dddddd;text-align:center;">{!getQuotedata.Expense_OTI_Discount__c}</td>
-    </tr>
-    <tr>
-        <td colspan="6" style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;background-color: #dddddd;">Expense Discounted</td>
-        <td style="border:1px solid black;background-color: #dddddd;text-align:center;">{!getQuotedata.Expense_ARR_Discounted__c}</td>
-        <td style="border:1px solid black;background-color: #dddddd;text-align:center;">{!getQuotedata.Expense_OTI_Discounted__c}</td>
-    </tr>
-</apex:outputText> 
-
-    <tr>
-        <td colspan="6" style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;background-color: #dddddd;"><b>Sub-Total</b> </td>
-        <td style="border:1px solid black;background-color: #dddddd;text-align:center;"><b>{!SubtotalTravel}</b></td>
-        <td style="border:1px solid black;background-color: #dddddd;text-align:center;"><b>{!SubTotalExpense}</b></td>
-    </tr>
-    -->
-    
- <!-- Travel -->
-
- <!-- Expense -->
-    <!-- <apex:outputText rendered="{!IsExpenseTrue == true}">   
-        <tr>
-            <td colspan="6" style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;background-color: #dddddd;">Total Expense</td>
-            <td style="border:1px solid black;background-color: #dddddd;text-align:center;">{!getQuotedata.Expense_Total_SAAS__c}</td>
-            <td style="border:1px solid black;background-color: #dddddd;text-align:center;">{!getQuotedata.Expense_Total_OTI__c}</td>
-        </tr>
-        <tr>
-            <td colspan="6" style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;background-color: #dddddd;">OTI Discounted</td>
-            <td style="border:1px solid black;background-color: #dddddd;text-align:center;">{!getQuotedata.Expense_ARR_Discounted__c}</td>
-            <td style="border:1px solid black;background-color: #dddddd;text-align:center;">{!getQuotedata.Expense_OTI_Discounted__c}</td>
-        </tr>
-    </apex:outputText> -->
-<!-- Expense -->
-    
-   
-  </table>
-  <div style="page-break-after: always"/>
-
-  <!-- QuoteLineitem -->
-
-  <!-- SUBSCRIPTION FEES  -->
-  <!-- <div style="width:100%">
-    <div style="width:70%;float:right;">
-        <img src="{!$Resource.heaserlogo}" width="60%" height="100%" align="right"/>
-    </div>
-    <div style="width:50%;float:left">
-        <b style="font-size:17px;font-weight: bold;">SUBSCRIPTION FEES :</b>
-    </div>
-    <br/>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <table style="width:100%;border:1px solid black;border-collapse:collapse;">
-           <tr>
-            <th style="border:1px solid black;background-color: #dddddd;padding:10px;">Product Name</th>
-            <th style="border:1px solid black;background-color: #dddddd;padding:10px;">Pricing Type</th>
-            <th style="border:1px solid black;background-color: #dddddd;padding:10px;">Minimum Billing Quantity</th>
-            <th style="border:1px solid black;background-color: #dddddd;padding:10px;">Total Price</th>
-          </tr>
-          <tr>
-            <td style="border:1px solid black;padding:10px;">Sub-Total Monthly Price</td>
-            <td style="border:1px solid black;padding:10px;">User based</td>
-            <td style="border:1px solid black;padding:10px;">70</td>
-            <td style="border:1px solid black;padding:10px;">300</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid black;padding:10px;">Discount</td>
-            <td style="border:1px solid black;padding:10px;"></td>
-            <td style="border:1px solid black;padding:10px;"></td>
-            <td style="border:1px solid black;padding:10px;"></td>
-          </tr>
-          <tr>
-            <td style="border:1px solid black;padding:10px;">Total Monthly Price</td>
-            <td style="border:1px solid black;padding:10px;"></td>
-            <td style="border:1px solid black;padding:10px;"></td>
-            <td style="border:1px solid black;padding:10px;">700</td>
-          </tr>
-          <tr>
-            <td colspan="4" style="border:1px solid black;padding:5px;font-size:12px;">
-                <p style="text-align:left;">
-                    For Billing purposes, the additional number of user(s) invoices shall be INR 100 per user. The number of users as mentioned under Minimum Billing column
-                    above or as registered on Client’s dashboard on the date of invoice generation, whichever is higher.
-                </p>
-            </td>
-          </tr>
-  </table>
-  </div> -->
-  <!-- SUBSCRIPTION FEES-->
-  <!-- <br/>
-  <br/> -->
-
-  <!-- DIRECT IMPLEMENTATION SERVICES FEES &amp; PAYMENT TERMS( IF AVAILED) -->
-  <!-- <div style="width:100%">
-    <div style="width:100%;float:left">
-        <b style="font-size:17px;font-weight: bold;">DIRECT IMPLEMENTATION SERVICES FEES &amp; PAYMENT TERMS( IF AVAILED)</b>
-    </div>
-    <br/>
-    <br/>
-    <br/>
-    <table style="width:100%;border:1px solid black;border-collapse:collapse;">
-        <tr>
-         <td style="border:1px solid black;padding:10px;">Implementation Service Partner: HAPPAY</td>
-         <td style="border:1px solid black;padding:10px;"></td>
-         <td style="border:1px solid black;padding:10px;"></td>
-       </tr>
-       <tr>
-         <td style="border:1px solid black;padding:10px;background-color: #dddddd;">Description</td>
-         <td style="border:1px solid black;padding:10px;background-color: #dddddd;">Price</td>
-         <td style="border:1px solid black;padding:10px;border-bottom: hidden;"><span>Payment Schedule</span> <br/> <span> 100% on signing off the Order Forms </span> </td>
-       </tr>
-       <tr>
-         <td style="border:1px solid black;padding:10px;background-color: #dddddd;">Expense Policies - OTI</td>
-         <td style="border:1px solid black;padding:10px;">₹130,000.00</td>
-         <td style="border:1px solid black;padding:10px;"></td>
-       </tr>
-       <tr>
-        <td style="border:1px solid black;padding:10px;background-color: #dddddd;">TOTAL</td>
-        <td style="border:1px solid black;padding:10px;"></td>
-        <td style="border:1px solid black;padding:10px;">₹130,000.00</td>
-      </tr>
-      <tr>
-        <td style="border:1px solid black;padding:10px;background-color: #dddddd;">Payment Due Date</td>
-        <td style="border:1px solid black;padding:10px;"></td>
-        <td style="border:1px solid black;padding:10px;">Net 30 days from the date of invoice</td>
-      </tr>
-      <tr>
-        <td style="border:1px solid black;padding:10px;background-color: #dddddd;">Delayed Payment Interest</td>
-        <td style="border:1px solid black;padding:10px;"></td>
-        <td style="border:1px solid black;padding:10px;">18.00%</td>
-      </tr>
-</table>
-  </div> -->
-    <!-- DIRECT IMPLEMENTATION SERVICES FEES &amp; PAYMENT TERMS( IF AVAILED) -->
-
-    <!-- <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/> -->
-
-    <!-- HAPPAY CARDS (IF AVAILED) -->
-    <div style="width:100%">
-        <div style="width:70%;float:right;">
-            <img src="{!$Resource.heaserlogo}" width="60%" height="100%" align="right"/>
-        </div>
-        <div style="width:50%;float:left">
-           <b style="color:#00b26f;font-size:17px;font-weight: bold;">HAPPAY ORDER FORM</b>
-        </div>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-
-        <b style="font-size:18px;">CLIENT DETAILS</b>
+                <br/> 
+                <apex:outputText rendered="{!getExpenseOTTSAASList.size>0}">        
+                    <div style="width:1000%;float:left">
+                        <b style="font-size:14px;font-weight: bold;">SAAS AND OTI MODULES:</b>
+                    </div> 
                     <br/>
-                    <br/>
-                    <table style="width:100%;border:1px solid black;border-collapse:collapse;">
-                      <tr>
+                    <br/>        
+                    <table style="width:100%;border:1px solid black;border-collapse:collapse;">               
+                        <tr >
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">PRODUCT NAME</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">ACCOUNT TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL OFFERING TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL EXP PRICING TYPE </th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">SAAS PRICE </th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">OTI PRICE</th>
+                        </tr>
+                        
+                        <apex:repeat value="{!getExpenseOTTSAASList}" var="expSAASOTIList">
+                            <tr>
+                                <!-- <apex:variable var="index" value="{!(index+1)}"/> -->
+                                <!-- <td style="border:1px solid black;padding:10px;"><apex:outputText value="{!index}"/></td> -->
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!expSAASOTIList.Product2.Name}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!expSAASOTIList.Account_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expSAASOTIList.Travel_Offering_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expSAASOTIList.Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expSAASOTIList.Travel_Pricing_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
+                                    <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!expSAASOTIList.SAAS_Price__c}"/></apex:outputText>
+                                </td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
+                                    <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!expSAASOTIList.OTI_Price__c}"/></apex:outputText>
+                                </td>
+                            </tr>                      
+                        </apex:repeat>
+                        
+                    </table>
+                </apex:outputText>
+                
+            </apex:outputText>    
+            <!-- Expense -->
+            
+            
+            
+            <div style="page-break-after: always"/>
+            
+            
+            <!-- HAPPAY CARDS (IF AVAILED) -->
+            <div style="width:100%">
+                <div style="width:70%;float:right;">
+                    <img src="{!$Resource.heaserlogo}" width="60%" height="100%" align="right"/>
+                </div>
+                <div style="width:50%;float:left">
+                    <b style="color:#00b26f;font-size:17px;font-weight: bold;">HAPPAY ORDER FORM</b>
+                </div>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                
+                <b style="font-size:17px;">CLIENT DETAILS</b>
+                <br/>
+                <br/>
+                <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                    <tr>
                         <td style="border:1px solid black;background-color: #e0dddd;padding:10px;">Welcome Kit + Card Printing Cost</td>
                         <td style="border:1px solid black;padding:10px;">{!happcardData.Welcome__c}</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    <tr>
                         <td style="border:1px solid black;background-color: #e0dddd;padding:10px;">Happay Card Replacement Fee</td>
                         <td style="border:1px solid black;padding:10px;">{!happcardData.Happay_Fee__c}</td>
-                       </tr>
-                       <tr>
+                    </tr>
+                    <tr>
                         <td style="border:1px solid black;background-color: #e0dddd;padding:10px;">ATM Withdrawal Fee*</td>
                         <td style="border:1px solid black;padding:10px;">{!happcardData.ATM_Withdrawal_Fee__c}</td>
-                       </tr>
-                       <tr>
+                    </tr>
+                    <tr>
                         <td style="border:1px solid black;background-color: #e0dddd;padding:10px;">ATM Balance Inquiry*</td>
                         <td style="border:1px solid black;padding:10px;">{!happcardData.ATM_Balance_Inquiry__c}</td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    <tr>
                         <td style="border:1px solid black;background-color: #e0dddd;padding:10px;">ATM Pin Reissuance Fee*</td>
                         <td style="border:1px solid black;padding:10px;">{!happcardData.ATM_Pin_Reissuance_Fee__c	}</td>
-                       </tr>
-                        <tr>
+                    </tr>
+                    <tr>
                         <td style="border:1px solid black;background-color: #e0dddd;padding:10px;">Operational cost subject to revision</td>
                         <td style="border:1px solid black;padding:10px;">{!happcardData.Operational__c}</td>
-                      </tr>
-                    </table>
-                   
-                    <br/>
-                    <b style="font-size:10px;"><span>*Operational cost subject to revision</span></b> <br/> <span style="font-size:10px;">- Happay Cards dispatch is subject to receipt of payment from the Client</span>
-
-    </div>
-    <!-- HAPPAY CARDS (IF AVAILED) -->
-    <br/>
-    <br/>
-    <br/>
-
-    <!-- HAPPAY WALLET TO BANK TRANSFER CHARGES -->
-    <div style="width:1000%;float:left">
-        <b style="font-size:17px;font-weight: bold;">HAPPAY WALLET TO BANK TRANSFER CHARGES</b>
-    </div>
-    <br/>
-    <br/>
-    <div>
-        <table style="width:100%;border:1px solid black;border-collapse:collapse;">
-            <tr>
-                   <td style="border:1px solid black;background-color: #dddddd;padding:7px;width:40%">Wallet to Bank transfer charges*</td>
-                   <td style="border:1px solid black;padding:7px;">{!happcardData.Wallet_to_Bank_transfer_charges__c}</td>
-              </tr>
-          </table>
-    </div>
-
-    <div style="page-break-after: always"/>
-    <!-- HAPPAY WALLET TO BANK TRANSFER CHARGES -->
-    <!-- <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/> -->
-
-    <!-- TERMS -->
-    <div style="width:100%">
-        <div style="width:70%;float:right;">
-            <img src="{!$Resource.heaserlogo}" width="60%" height="100%" align="right"/>
-        </div>
-        <div style="width:50%;float:left">
-           <b style="color:#00b26f;font-size:17px;font-weight: bold;">HAPPAY ORDER FORM</b>
-        </div>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <div style="width:1000%;float:left">
-            <b style="font-size:17px;font-weight: bold;">TERMS &amp; CONDITIONS</b>
-        </div>
-         <br/>
-         <br/>
-         <p>1. {!termsmetaData.Term1__c}</p>
-          <p>2. {!termsmetaData.Term2__c}</p>
-          <p>3. {!termsmetaData.Term3__c}</p>
-          <p>4. {!termsmetaData.Term4__c}</p>
-          <p>5. {!termsmetaData.Term5__c}</p>
-          <p>6. {!termsmetaData.Term6__c}</p>
-          <p>7. {!termsmetaData.Term7__c}</p>
-          <p>8. {!termsmetaData.Term8__c}</p>
-          <p>9. {!termsmetaData.Term9__c}</p>
-          <p>10. {!termsmetaData.Term10__c}</p>
-          <p>11. {!termsmetaData.Term11__c}</p> 
-          <br/>
-          <br/>
-    </div>
-     <!-- TERMS -->
-    <br/>
-
- <!-- TERMS -->
-    <div style="width:100%">
-        <div style="width:70%;float:right;">
-            <img src="{!$Resource.heaserlogo}" width="60%" height="100%" align="right"/>
-        </div>
-        <div style="width:50%;float:left">
-           <b style="color:#00b26f;font-size:17px;font-weight: bold;">HAPPAY ORDER FORM</b>
-        </div>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <p>12. {!termsmetaData.Term12__c}</p>
-        <p>13. {!termsmetaData.Term13__c}</p>
-        <p>14. {!termsmetaData.Term14__c}</p>
-        
-    </div>
-     <!-- TERMS -->
-
-     <!-- ACKNOWLEDGEMENT -->
-    <div style="width:1000%;float:left">
-        <b style="font-size:17px;font-weight: bold;">ACKNOWLEDGEMENT</b>
-    </div>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
+                    </tr>
+                </table>
                 
-    <div>
-        <table style="width:100%;border:1px solid black;border-collapse:collapse;">
-            <tr>
-                   <td style="border:1px solid black;width:50%;padding:30px;">FOR AND ON BEHALF OF THE CLIENT</td>
-                   <td style="border:1px solid black;width:50%;padding:30px;">FOR AND ON BEHALF OF THE SERVICE PROVIDER</td>
-              </tr>
-              <tr>
-                <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;text-align:center;">
-                    Authorised Signatory <br/>
-                    <hr/>
-                </td>
-                <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;text-align:center;">
-                    Authorised Signatory <br/>
-                    <hr/>
-                </td>
-           </tr>
-              <tr>
-                <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Name:</td>
-                <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Name: <span >{!getContactDetails.Name}</span> </td>
-           </tr>
-
-           <tr>
-            <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Designation:</td>
-            <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Designation:</td>
-           </tr>
-           <tr>
-            <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Date:</td>
-            <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Date:</td>
-           </tr>
-           <tr>
-            <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Place:</td>
-            <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Place:</td>
-           </tr>
-          
-            
-          </table>
-    </div>
+                <br/>
+                <b style="font-size:10px;"><span>*Operational cost subject to revision</span></b> <br/> <span style="font-size:10px;">- Happay Cards dispatch is subject to receipt of payment from the Client</span>
                 
-<!-- ACKNOWLEDGEMENT -->
             </div>
-           
-        </body>
-
+            
+            
+            <!-- HAPPAY CARDS (IF AVAILED) -->
+            <br/>
+            <br/>
+            <br/>
+            
+            <!-- HAPPAY WALLET TO BANK TRANSFER CHARGES -->
+            <div style="width:1000%;float:left">
+                <b style="font-size:17px;font-weight: bold;">HAPPAY WALLET TO BANK TRANSFER CHARGES</b>
+            </div>
+            <br/>
+            <br/>
+            <div>
+                <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:7px;width:40%">Wallet to Bank transfer charges*</td>
+                        <td style="border:1px solid black;padding:7px;">{!happcardData.Wallet_to_Bank_transfer_charges__c}</td>
+                    </tr>
+                </table>
+            </div>
+            <br/>
+            <br/>           
+            <div style="width:1000%;float:left">
+                <b style="font-size:17px;font-weight: bold;">NOTES</b>
+            </div>
+            <br/>
+            <br/>          
+            <div>
+                <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                    <tr>
+                        <!--<apex:pageBlock>
+<apex:pageBlockSection>
+<apex:outputLabel value="Rich Text Field:" for="richText"/>
+<apex:outputField value="{!getQuotedata.Notes__c}" id="richText"/>
+</apex:pageBlockSection>
+</apex:pageBlock>-->
+                        <td style="border:1px solid black;padding:10px;">
+                            <apex:outputText value="{!getQuotedata.Notes__c}" escape="false" />
+                            
+                        </td>
+                    </tr> 
+                </table>
+                
+            </div>                   
+            
+            <div style="page-break-after: always"/>
+            <!-- TERMS -->
+            <div style="width:100%">
+                <div style="width:70%;float:right;">
+                    <img src="{!$Resource.heaserlogo}" width="60%" height="100%" align="right"/>
+                </div>
+                <div style="width:50%;float:left">
+                    <b style="color:#00b26f;font-size:17px;font-weight: bold;">HAPPAY ORDER FORM</b>
+                </div>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <div style="width:1000%;float:left">
+                    <b style="font-size:17px;font-weight: bold;">TERMS &amp; CONDITIONS</b>
+                </div>
+                <br/>
+                <br/>
+                <p>1. {!termsmetaData.Term1__c}</p>
+                <p>2. {!termsmetaData.Term2__c}</p>
+                <p>3. {!termsmetaData.Term3__c}</p>
+                <p>4. {!termsmetaData.Term4__c}</p>
+                <p>5. {!termsmetaData.Term5__c}</p>
+                <p>6. {!termsmetaData.Term6__c}</p>
+                <p>7. {!termsmetaData.Term7__c}</p>
+                <p>8. {!termsmetaData.Term8__c}</p>
+                <p>9. {!termsmetaData.Term9__c}</p>
+                <p>10. {!termsmetaData.Term10__c}</p>
+                <p>11. {!termsmetaData.Term11__c}</p> 
+                <br/>
+                <br/>
+            </div>
+            <!-- TERMS -->
+            <br/>
+            
+            <!-- TERMS -->
+            <div style="width:100%">
+                <div style="width:70%;float:right;">
+                    <img src="{!$Resource.heaserlogo}" width="60%" height="100%" align="right"/>
+                </div>
+                <div style="width:50%;float:left">
+                    <b style="color:#00b26f;font-size:17px;font-weight: bold;">HAPPAY ORDER FORM</b>
+                </div>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <p>12. {!termsmetaData.Term12__c}</p>
+                <p>13. {!termsmetaData.Term13__c}</p>
+                <p>14. {!termsmetaData.Term14__c}</p>
+                
+            </div>
+            <!-- TERMS -->
+            
+            <!-- ACKNOWLEDGEMENT -->
+            <div style="width:1000%;float:left">
+                <b style="font-size:17px;font-weight: bold;">ACKNOWLEDGEMENT</b>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            
+            <div>
+                <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                    <tr>
+                        <td style="border:1px solid black;width:50%;padding:30px;">FOR AND ON BEHALF OF THE CLIENT</td>
+                        <td style="border:1px solid black;width:50%;padding:30px;">FOR AND ON BEHALF OF THE SERVICE PROVIDER</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;text-align:center;">
+                            Authorised Signatory <br/>
+                            <hr/>
+                        </td>
+                        <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;text-align:center;">
+                            Authorised Signatory <br/>
+                            <hr/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Name:</td>
+                        <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Name: <span >{!getContactDetails.Name}</span> </td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Designation:</td>
+                        <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Designation:</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Date:<span> <apex:outputText value="{0,date,MM/dd/yy}"> <apex:param value="{!getQuotedata.Subscription_Billing_Start_Date__c}" /> </apex:outputText></span></td>
+                        <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Date:<span> <apex:outputText value="{0,date,MM/dd/yy}"> <apex:param value="{!getQuotedata.Subscription_Billing_Start_Date__c}" /> </apex:outputText></span></td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Place:</td>
+                        <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Place:</td>
+                    </tr>
+                    
+                    
+                </table>
+            </div>
+            <br/>
+            <br/>
+            <br/>      
+            
+            <!-- ACKNOWLEDGEMENT -->
+        </div>
+        
+    </body>
+    
 </apex:page>

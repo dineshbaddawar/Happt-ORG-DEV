@@ -5,7 +5,7 @@ public class OpportunityTriggerHandler {
     }
     
     public static void AssOppTeamMember(List<Opportunity> newList) {
-        OpportunityAssignmentController.assignOppTeamMembers(newList);
+        //OpportunityAssignmentController.assignOppTeamMembers(newList);
     }
     
     public static void onBeforeInsert(List<Opportunity> newList) {
@@ -17,7 +17,8 @@ public class OpportunityTriggerHandler {
     }
     
     public static void onAfterInsert(List<Opportunity> newList) {
-        OpportunityTriggerService.createOpportunityTeam(newList);
+        //OpportunityTriggerService.createOpportunityTeam(newList);
+        OpportunityTriggerService.tagOppTeamMemberEpic(newList);
     }
     
     public static void onAfterUpdate(Map<Id, Opportunity> newMap, Map<Id, Opportunity> oldMap) {
@@ -25,6 +26,8 @@ public class OpportunityTriggerHandler {
     }
     
     public static void onBeforeUpdate(List<Opportunity> newOppList, Map<Id, Opportunity> oldMap) {
+        OpportunityTriggerService.teamMemberValidation(newOppList,oldMap);
+        OpportunityTriggerService.mandatoryFields1stStageEPIC(newOppList, oldMap);
         OpportunityTriggerService.mandatoryFields2ndStageEPIC(newOppList, oldMap);
         OpportunityTriggerService.mandatoryFields3rdStageEPIC(newOppList, oldMap);
         OpportunityTriggerService.mandatoryFieldsAtWonStageEPIC(newOppList, oldMap);
@@ -86,6 +89,7 @@ ErrorLogger.createLogError('OpportunityTriggerHandler', 'Apex Class',ex.getTypeN
             Set<Id>acIds = new Set<Id>();
             for(Opportunity op:oppList)
             {
+                System.debug('op.Product_Interested__c::::'+op.Product_Interested__c);
                 if(op.Product_Interested__c == 'Employee Tax Benefits')
                     op.RecordTypeId  = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Employee Tax Benefits').getRecordTypeId();
                 if(op.Product_Interested__c == 'Travel & Expense (T&E)')    {
@@ -93,6 +97,7 @@ ErrorLogger.createLogError('OpportunityTriggerHandler', 'Apex Class',ex.getTypeN
                     op.StageName 		= 'Sales qualification';	
                 }
                 if(op.Product_Interested__c == 'Epic Cards')    {
+                    System.debug('Line 99:::');
                     op.RecordTypeId  	= Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('EPIC').getRecordTypeId();
                     op.StageName 		= 'Documents Shared - Qualifying';	
                 }
@@ -129,6 +134,8 @@ ErrorLogger.createLogError('OpportunityTriggerHandler', 'Apex Class',ex.getTypeN
                                        'setOppName', ex.getStackTraceString());
         }
     }
+    
+    
     public static void setLastStageChangedDate(List<Opportunity> oppList, Map<Id, Opportunity> oldOppMap){
         
         for(Opportunity opp:oppList)

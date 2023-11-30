@@ -83,82 +83,54 @@ public class CalculateQuoteDetails {
                 }
                 
             }
-            
-            /*if(!quoteListTobeUpdate.isEmpty()){
-                
-                String ParentQuoteLineItem;
-                String NestedParentProductQLIId;
-                String ExpenseAccountType;
-                String ExpensePricingType;
-                Decimal TotalExpenseACV=0;
-                
-                for(Quote qc:quoteListTobeUpdate){
-                    
-                    List<QuoteLineItem> QliRecList=mapofQuoteIdByQLIList.get(qc.Id);
-                    
-                    if(!QliRecList.IsEmpty()){
-                        QuoteLineItem QLIRec=new QuoteLineItem();
-                        for(QuoteLineItem QLI:QliRecList){
-                            
-                            if(QLI.Is_Travel_Product__c==false){
-                                
-                                if(QLI.Parent_Quote_Line_Item__c!=null){
-                                    ParentQuoteLineItem= QLI.Parent_Quote_Line_Item__c;
-                                }
-                                if(QLI.Product2Id!=null && QLI.Product2Id=='01tC2000000src2IAA'){//Sandboxes & Route Tracker
-                                    NestedParentProductQLIId=QLI.Id;
-                                } 
-                                if(QLI.Account_Type__c!=null){
-                                    ExpenseAccountType=QLI.Account_Type__c;
-                                }
-                                if(QLI.Travel_Pricing_Type__c!=null){
-                                    ExpensePricingType=QLI.Travel_Pricing_Type__c;
-                                }
-                            }
-                        }
-                        if((qc.Expense_Total_SAAS__c != 0 &&  qc.Expense_Total_SAAS__c > 0)|| (qc.Expense_Total_OTI__c != 0 && qc.Expense_Total_SAAS__c > 0)){
-                            TotalExpenseACV=qc.Expense_Total_SAAS__c + qc.Expense_Total_OTI__c;
-                        }
-                        system.debug('TotalExpenseACV--'+TotalExpenseACV); 
-                        if(Integer.valueOf(TotalExpenseACV) > 7000000){
-                            QLIRec.QuoteId=qc.Id;
-                            QLIRec.Account_Type__c=ExpenseAccountType;
-                            QLIRec.Travel_Pricing_Type__c=ExpensePricingType;
-                            QLIRec.Product2Id='01tC20000008dpTIAQ';//Dedicated Sandbox Environment
-                            QLIRec.Parent_Quote_Line_Item__c=ParentQuoteLineItem;
-                            QLIRec.Nested_Parent_Product__c=NestedParentProductQLIId;
-                            QLIRec.OTI_Price__c=1500000;
-                            QLIRec.SAAS_Price__c=0;
-                            QLIRec.UnitPrice=1000;
-                            QLIRec.Quantity=1;
-                            QLIRec.PricebookEntryId='01uC20000009xIbIAI';
-                            QuoteLineToInsert.add(QLIRec);
-                        }else if(Integer.valueOf(TotalExpenseACV) > 2000000){
-                            QLIRec.QuoteId=qc.Id;
-                            QLIRec.Account_Type__c=ExpenseAccountType;
-                            QLIRec.Travel_Pricing_Type__c=ExpensePricingType;
-                            QLIRec.Product2Id='01tC20000008dpSIAQ';//Common Sandbox Environment
-                            QLIRec.Parent_Quote_Line_Item__c=ParentQuoteLineItem;
-                            QLIRec.Nested_Parent_Product__c=NestedParentProductQLIId;
-                            QLIRec.OTI_Price__c=200000;
-                            QLIRec.SAAS_Price__c=0;
-                            QLIRec.UnitPrice=1000;
-                            QLIRec.Quantity=1;
-                            QLIRec.PricebookEntryId='01uC20000009xIbIAI';
-                            QuoteLineToInsert.add(QLIRec);
-                        }
-                    }
-                }
-                if(!QuoteLineToInsert.IsEmpty()){
-                    Insert QuoteLineToInsert;
-                }
-            }*/
         }
         
     }
     
     @Auraenabled
-    public static Quote calculateQuoteDiscount(Quote quoteRec){
+    public static Quote calculateQuoteDiscount(Quote quoteRec){ 
+        
+        Set<String> ProductName                  =new Set<String>();
+        Map<String,Id> ProductNameAndProductId   =new Map<String,Id>();
+        Boolean CommonSandBoxExist               =false;
+        Boolean DedicatedSandBoxExist            =false;
+        Decimal SubtractSandBoxPrice=0;
+        
+        List<Products__mdt> mcs = Products__mdt.getAll().values();
+        
+        if(!mcs.IsEmpty()){
+            for(Products__mdt mt:mcs){
+                ProductName.add(mt.Product_Name_to_Configure__c);
+            }
+        }
+        if(!ProductName.IsEmpty()){
+            List<Product2> ProductRec=[Select Id,Name From Product2 Where Name=:ProductName];
+            if(!ProductRec.IsEmpty()){
+                for(Product2 Prd:ProductRec){
+                    ProductNameAndProductId.put(Prd.Name,Prd.Id);
+                }
+            }
+        }
+        
+        List<QuoteLineItem>quoteRecList=[Select Id,IsMultiplybyBooking__c,QuoteId,Sub_Type__c,OTI_Quantity__c,Nested_Parent_Product__c,SAAS_Quantity__c,Selected__c,Type__c,Account_Type__c,Travel_Offering_Type__c,Travel_Pricing_Type__c,SAAS_Price__c,OTI_Price__c,Product2.Name,Parent_Quote_Line_Item__c,IsOptionalProduct__c,Product2Id,Product2.Description,Quantity,ListPrice,
+                                         UnitPrice,Discount,TotalPrice,Minimum_Commitment__c,Is_Travel_Product__c From QuoteLineItem Where QuoteId=:quoteRec.Id];
+        
+        if(!quoteRecList.IsEmpty()){
+            for(QuoteLineItem QLI:quoteRecList){
+                if(QLI.Is_Travel_Product__c==false){
+                    if(QLI.Product2Id!=null && QLI.Product2Id==ProductNameAndProductId.get('Dedicated Sandbox Environment')){
+                        DedicatedSandBoxExist=true;
+                        SubtractSandBoxPrice=QLI.OTI_Price__c;
+                    }
+                    if(QLI.Product2Id!=null && QLI.Product2Id==ProductNameAndProductId.get('Common Sandbox Environment')){
+                        CommonSandBoxExist=true;
+                        SubtractSandBoxPrice=QLI.OTI_Price__c;
+                    }
+                }
+            }
+        }
+        system.debug('CommonSandBoxExist--'+CommonSandBoxExist); 
+        system.debug('DedicatedSandBoxExist--'+DedicatedSandBoxExist);
         if(quoteRec.Travel_ARR_Discount__c != null && quoteRec.Travel_Total_SAAS__c != null){
             quoteRec.Travel_ARR_Discounted__c = quoteRec.Travel_Total_SAAS__c - (quoteRec.Travel_Total_SAAS__c * quoteRec.Travel_ARR_Discount__c) / 100;
         }
@@ -167,7 +139,20 @@ public class CalculateQuoteDetails {
         }
         
         if(quoteRec.Expense_OTI_Discount__c != null && quoteRec.Expense_Total_OTI__c != null){
+            if(DedicatedSandBoxExist==true){
+                quoteRec.Expense_Total_OTI__c = quoteRec.Expense_Total_OTI__c-SubtractSandBoxPrice;
+            }else if(CommonSandBoxExist==true){
+                quoteRec.Expense_Total_OTI__c = quoteRec.Expense_Total_OTI__c-SubtractSandBoxPrice;
+            }
             quoteRec.Expense_OTI_Discounted__c = quoteRec.Expense_Total_OTI__c - (quoteRec.Expense_Total_OTI__c * quoteRec.Expense_OTI_Discount__c)/100;
+            if(quoteRec.Expense_OTI_Discounted__c!=null){
+                quoteRec.Expense_OTI_Discounted__c=quoteRec.Expense_OTI_Discounted__c+SubtractSandBoxPrice;
+                if(DedicatedSandBoxExist==true){
+                    quoteRec.Expense_Total_OTI__c = quoteRec.Expense_Total_OTI__c+SubtractSandBoxPrice;
+                }else if(CommonSandBoxExist==true){
+                    quoteRec.Expense_Total_OTI__c = quoteRec.Expense_Total_OTI__c+SubtractSandBoxPrice;
+                }
+            }
         }
         if(quoteRec.Expense_ARR_Discount__c != null && quoteRec.Expense_Total_SAAS__c != null){
             quoteRec.Expense_ARR_Discounted__c = quoteRec.Expense_Total_SAAS__c - (quoteRec.Expense_Total_SAAS__c * quoteRec.Expense_ARR_Discount__c)/100;
@@ -177,18 +162,25 @@ public class CalculateQuoteDetails {
             if(quoteRec.Expense_ARR_Discounted__c==null){
                 quoteRec.Expense_ARR_Discounted__c=0; 
             }
-            quoteRec.Overall_ARR_Discount__c = ((quoteRec.Travel_Total_SAAS__c + quoteRec.Expense_Total_SAAS__c) - (quoteRec.Travel_ARR_Discounted__c + quoteRec.Expense_ARR_Discounted__c))/(quoteRec.Travel_Total_SAAS__c + quoteRec.Expense_Total_SAAS__c) * 100;
+            if(quoteRec.Travel_ARR_Discounted__c==null){
+                quoteRec.Travel_ARR_Discounted__c=0; 
+            }
+            
+            
+            
         }
         if(quoteRec.Travel_Total_OTI__c + quoteRec.Expense_Total_OTI__c != 0){
             if(quoteRec.Expense_OTI_Discounted__c==null){
                 quoteRec.Expense_OTI_Discounted__c=0; 
             }
-            quoteRec.Overall_OTI_Discount__c = ((quoteRec.Travel_Total_OTI__c + quoteRec.Expense_Total_OTI__c) - (quoteRec.Travel_OTI_Discounted__c + quoteRec.Expense_OTI_Discounted__c))/(quoteRec.Travel_Total_OTI__c + quoteRec.Expense_Total_OTI__c) * 100;
+            if(quoteRec.Travel_OTI_Discounted__c==null){
+                quoteRec.Travel_OTI_Discounted__c=0; 
+            }
+            
         }
         update  quoteRec;
         
-        List<QuoteLineItem>quoteRecList=[Select Id,IsMultiplybyBooking__c,QuoteId,Sub_Type__c,OTI_Quantity__c,Nested_Parent_Product__c,SAAS_Quantity__c,Selected__c,Type__c,Account_Type__c,Travel_Offering_Type__c,Travel_Pricing_Type__c,SAAS_Price__c,OTI_Price__c,Product2.Name,Parent_Quote_Line_Item__c,IsOptionalProduct__c,Product2Id,Product2.Description,Quantity,ListPrice,
-                                               UnitPrice,Discount,TotalPrice,Minimum_Commitment__c,Is_Travel_Product__c From QuoteLineItem Where QuoteId=:quoteRec.Id];
+        
         InsertQLIOnExpense(quoteRecList);
         return quoteRec;
     }

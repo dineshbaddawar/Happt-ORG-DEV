@@ -1,3 +1,11 @@
+/**
+ * @author [Dinesh B]
+ * @email dinesh.b@utilitarianLab.com
+ * @create date 2023-11-08 11:56:16
+ * @modify date 2023-11-08 11:56:16
+ * @desc [description]
+ */
+
 public without sharing class NewPaymentTermsCondtionController {
     
     public class WrapperTermConditionClass {
@@ -13,8 +21,11 @@ public without sharing class NewPaymentTermsCondtionController {
         public integer pumaReportgreaterthan_100Map { get; set; }
         @AuraEnabled 
         public integer pumaReport20_ARRMap { get; set; }
+        @AuraEnabled
+        public String attributeDescription { get; set; }
     }
     
+    // Wrapper for storing the comments 
     public class ALIidDescriptionWrapper{
         @AuraEnabled 
         public String attributeLineId { get; set; }
@@ -22,7 +33,8 @@ public without sharing class NewPaymentTermsCondtionController {
         public String attributeDescription { get; set; }
     }
     
-    public class TermsAndConditionsWrapper {
+    // wrapper for creating TC records
+        public class TermsAndConditionsWrapper {
         @AuraEnabled public Id termId;
         @AuraEnabled public String termName;
         @AuraEnabled public Id termAttributeLineItemId;
@@ -32,7 +44,10 @@ public without sharing class NewPaymentTermsCondtionController {
         @AuraEnabled public Id quoteId;
         @AuraEnabled public String quoteName;
     }
+
+    // =====================================================================================================================================================================================================
     
+    // Method to get All Section LI & Attribute LI based on User Profile Name
     @AuraEnabled
     public static  list<Term_Section_Line_Item__c>  getActivePaymentTermselectionItem() {
         try{
@@ -56,9 +71,9 @@ public without sharing class NewPaymentTermsCondtionController {
                         }
                 else if(profileName == Constant.PROFILE_AM_TEAM){
                     TermSectionLineItemsList = new Set<String>{'OTI Payment Milestone', 'SAAS Start Date', 'Billing Type', 'Delay Payment Interest', 'Change Request', 'Payment Due Date', 'Lock In Perod', 'Contract Period', 'Contract Period', 'YoY | PUPM/Report 50-100', 'YoY | PUPM/Report >100', 'YoY | AMC 10-20% of ARR'};
-                        }else{
-                            TermSectionLineItemsList = new Set<String>{'OTI Payment Milestone', 'SAAS Start Date', 'Billing Type', 'Delay Payment Interest', 'Change Request', 'Payment Due Date', 'Lock In Perod', 'Contract Period', 'Contract Period', 'YoY | PUPM/Report 50-100', 'YoY | PUPM/Report >100', 'YoY | AMC 10-20% of ARR'};
-                                } 
+                }else{
+                    TermSectionLineItemsList = new Set<String>{'OTI Payment Milestone', 'SAAS Start Date', 'Billing Type', 'Delay Payment Interest', 'Change Request', 'Payment Due Date', 'Lock In Perod', 'Contract Period', 'Contract Period', 'YoY | PUPM/Report 50-100', 'YoY | PUPM/Report >100', 'YoY | AMC 10-20% of ARR'};
+                    } 
             }   
             Set<Id> TeamAttLI = new Set<Id>();
             Set<Id> TermSLI = new Set<Id>();
@@ -66,11 +81,13 @@ public without sharing class NewPaymentTermsCondtionController {
             for(Approval_Matrix__c app : getProfileBaseAppMatList){
                 TeamAttLI.add(app.Term_Attribute_Line_Item__c);
             }     
+
             List<Term_Attribute_Line_Item__c> ListOfALI = [SELECT Id,Name,Description__c,Term_Section_Line_Item__c FROM Term_Attribute_Line_Item__c WHERE Id NOT IN:TeamAttLI];
             for(Term_Attribute_Line_Item__c tali : ListOfALI){
                 TermSLI.add(tali.Term_Section_Line_Item__c);
             }
-            list<Term_Section_Line_Item__c> TermSectionLineItemList =  [Select Id, Name,(SELECT Term_Section_Line_Item__c,Sequence__c,Inputbox__c,Comments__c,Description__c,Change_Request__c,Late_Payment_Interest__c, Name,Custom_Entry_Require__c, Id FROM Term_Attribute_Line_Items__r  ORDER BY Sequence__c ASC ) from Term_Section_Line_Item__c WHERE Name IN:TermSectionLineItemsList AND Is_Active__c=:true ORDER BY Sequence__c ASC];
+            
+            list<Term_Section_Line_Item__c> TermSectionLineItemList =  [Select Id, Name,(SELECT Term_Section_Line_Item__c,Sequence__c,Inputbox__c,Comments__c,Description__c,Change_Request__c,Late_Payment_Interest__c,Waiver_Off_Check__c, Name,Custom_Entry_Require__c, Id FROM Term_Attribute_Line_Items__r  ORDER BY Sequence__c ASC ) from Term_Section_Line_Item__c WHERE Name IN:TermSectionLineItemsList AND Is_Active__c=:true ORDER BY Sequence__c ASC];
             System.debug('TermSectionLineItemList ==== Size == >'+TermSectionLineItemList.size());
             return TermSectionLineItemList;
         }catch(Exception e){
@@ -79,9 +96,13 @@ public without sharing class NewPaymentTermsCondtionController {
         return null;
     } 
     
+        // =====================================================================================================================================================================================================
+
+    // Method for creating TC Records 
     @AuraEnabled
     public static string createTermasCondition(string wrapperJsonList,String recordId,string descriptiontalidList){
         System.debug('wrapperJsonList ==== >'+wrapperJsonList);
+        System.debug('descriptiontalidList ==== >'+descriptiontalidList);
         try{
             if(wrapperJsonList !=null && recordId !=null){
                 string st;
@@ -112,8 +133,9 @@ public without sharing class NewPaymentTermsCondtionController {
                     if(wrapper.LatePaymentInterest !=null){
                         termRecord.Late_Payment_Interest__c=wrapper.LatePaymentInterest; 
                     }
-                    if(mapOfSecaliDescription.get(wrapper.attributeLineItemValue) !=null){
-                        termRecord.Comments__c=mapOfSecaliDescription.get(wrapper.attributeLineItemValue); 
+                    if(wrapper.attributeDescription!=null){
+                       // termRecord.Comments__c=mapOfSecaliDescription.get(wrapper.attributeLineItemValue); 
+                       termRecord.Comments__c=wrapper.attributeDescription; 
                     }
                     if(wrapper.YoYPUPMReport_50_100 !=null){
                         termRecord.YoY_PUPM_Report__c=wrapper.YoYPUPMReport_50_100;
@@ -127,8 +149,18 @@ public without sharing class NewPaymentTermsCondtionController {
                     termRecords.add(termRecord);
                 }
                 if(!termRecords.isEmpty()){
+                    System.debug('termRecords--'+termRecords);
                     upsert termRecords;
                     system.debug('Inserted Record Size ====>'+ termRecords.size());
+                    Quote updateQuote = [SELECt Id,Name,Status FROM Quote WHERE Id =:recordId];
+                    if(updateQuote !=null){
+                        if(updateQuote.Status != 'Draft'){
+                            updateQuote.Status = 'Draft';
+                            update updateQuote;
+                            system.debug('Update Quote Record === >'+updateQuote);
+                            return 'success';
+                        }
+                    }
                 }
                 st = 'success';
             }
@@ -138,11 +170,7 @@ public without sharing class NewPaymentTermsCondtionController {
         return null;
     }
     
-    @AuraEnabled(cacheable=true)
-    public static list<Terms_and_condition__c> getTermsConditions(id recordId){
-        return [Select Id, name,Quote__c,Term_Attribute_Line_Item__c,Late_Payment_Interest__c,Change_Request__c,Term_Section_Line_Item__c,Comments__c from Terms_and_condition__c Where Quote__c =: recordId];
-    }
-    
+     /*
     @AuraEnabled(cacheable=true)
     public static List<TermsAndConditionsWrapper> getTermsAndConditions(Id quoteId) {
         List<Terms_and_condition__c> termsAndConditions = [SELECT Id, Name, Term_Attribute_Line_Item__c, Term_Attribute_Line_Item__r.Name, Term_Section_Line_Item__c, Term_Section_Line_Item__r.Name, Quote__c, Quote__r.Name FROM Terms_and_condition__c WHERE Quote__c = :quoteId];
@@ -161,6 +189,67 @@ public without sharing class NewPaymentTermsCondtionController {
         }
         System.debug('Size === >'+termsAndConditionsWrappers.size());
         return termsAndConditionsWrappers;
+    }
+    */
+    
+    //  Method old
+    /*
+    @AuraEnabled(Cacheable = true)
+    public static  list<Term_Section_Line_Item__c>  PaymentTermselectionItem() {
+        String ProfileId = UserInfo.getProfileId();
+        String profileName = [select Id, Name from Profile WHERE Id=:ProfileId].Name; 
+        Set<String> TermSectionLineItemsList = new Set<String>();
+
+        if(String.isNotBlank(profileName)){
+            if(profileName == 'Inside Sales'){
+                TermSectionLineItemsList = new Set<String>{'Saas Start Date','Payment Due Date','Delay Payment Interest','OTI payment Milestone','Change Request','YoY | PUPM/Report >100','Lock In Perod','Contract Period'};
+            }
+            else if(profileName == 'Enterprise'){
+                TermSectionLineItemsList = new Set<String>{'Saas Start Date','Payment Due Date','OTI payment Milestone','Change Request','YoY | PUPM/Report 50-100','Lock In Perod','Contract Period','Delay Payment Interest'};
+            }
+            else if(profileName == 'AM'){
+                TermSectionLineItemsList = new Set<String>{'Saas Start Date','Payment Due Date','OTI payment Milestone','Change Request','YoY | PUPM < 50','Delay Payment Interest','Lock In Perod','Contract Period'};
+            }else{
+                TermSectionLineItemsList = new Set<String>{'OTI Payment Milestone', 'SAAS Start Date', 'Billing Type', 'Delay Payment Interest', 'Change Request', 'Payment Due Date', 'Lock In Perod', 'Contract Period', 'Contract Period', 'YoY | PUPM/Report 50-100', 'YoY | PUPM/Report >100', 'YoY | AMC 10-20% of ARR'};
+            } 
+        }
+        System.debug('profileName ====> '+profileName);
+        System.debug('TermSectionLineItemsList ====> '+TermSectionLineItemsList);
+
+        Set<Id> TeamAttLI = new Set<Id>();
+        Set<Id> TermSLI = new Set<Id>();
+        List<Approval_Matrix__c> getProfileBaseAppMatList = [SELECT Id,Name,Profiles__c,Term_Attribute_Line_Item__c	 FROM Approval_Matrix__c WHERE Profiles__c =:profileName];
+        for(Approval_Matrix__c app : getProfileBaseAppMatList){
+            System.debug('App Profile Nmae === >'+app.Profiles__c);
+            TeamAttLI.add(app.Term_Attribute_Line_Item__c);
+        }
+      //  System.debug('TeamAttLI === >'+TeamAttLI);        
+        List<Term_Attribute_Line_Item__c> ListOfALI = [SELECT Id,Name,Description__c,Term_Section_Line_Item__c FROM Term_Attribute_Line_Item__c WHERE Id NOT IN:TeamAttLI];
+      //  System.debug('ListOfALI Size === >'+ListOfALI.size());
+      //  System.debug('ListOfALI Record === >'+ListOfALI);
+        for(Term_Attribute_Line_Item__c tali : ListOfALI){
+            TermSLI.add(tali.Term_Section_Line_Item__c);
+        }
+      // System.debug('TermSLI === >'+TermSLI);
+        
+      //  opportunityWrapper newWrap = new opportunityWrapper ();
+       // for Profile Name Filter list<Term_Section_Line_Item__c> TermSectionLineItemList =  [Select Id, Name,(SELECT Term_Section_Line_Item__c,Sequence__c,Inputbox__c,Comments__c,Description__c,Change_Request__c,Late_Payment_Interest__c, Name,Custom_Entry_Require__c, Id FROM Term_Attribute_Line_Items__r WHERE ID NOT IN:TeamAttLI  ORDER BY Sequence__c ASC ) from Term_Section_Line_Item__c WHERE ID IN:TermSLI];
+        list<Term_Section_Line_Item__c> TermSectionLineItemList =  [Select Id, Name,(SELECT Term_Section_Line_Item__c,Sequence__c,Inputbox__c,Comments__c,Number_Input__c,Description__c,Change_Request__c,Late_Payment_Interest__c, Name,Custom_Entry_Require__c, Id FROM Term_Attribute_Line_Items__r  ORDER BY Sequence__c ASC ) from Term_Section_Line_Item__c WHERE Name IN:TermSectionLineItemsList AND Is_Active__c=:true];
+        
+        for(Term_Section_Line_Item__c termsection: TermSectionLineItemList){
+            System.debug('TSLI Name === >'+termsection.Name);
+           // newWrap.termsectionlist.add (termsection);
+        }
+        System.debug('TermSectionLineItemList ==== Size == >'+TermSectionLineItemList.size());
+        return TermSectionLineItemList;
+    }
+   */
+    
+    // Getting Existing Record
+     @AuraEnabled(cacheable=true)
+    public static list<Terms_and_condition__c> getExistingTermsConditions(id recordId){
+        return [Select Id, name,Quote__c,Term_Attribute_Line_Item__c,Late_Payment_Interest__c,Change_Request__c,Term_Section_Line_Item__c,Comments__c,YoY_PUPM_Report__c,YoY_PUPM_Report_100__c,YoY_AMC_10_20_of_ARR__c from Terms_and_condition__c Where Quote__c =: recordId];
+        
     }
     
 }

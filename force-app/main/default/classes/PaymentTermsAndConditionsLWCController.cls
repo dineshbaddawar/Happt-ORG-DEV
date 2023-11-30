@@ -103,7 +103,7 @@ public with sharing class PaymentTermsAndConditionsLWCController {
         
         opportunityWrapper newWrap = new opportunityWrapper ();
        // for Profile Name Filter list<Term_Section_Line_Item__c> TermSectionLineItemList =  [Select Id, Name,(SELECT Term_Section_Line_Item__c,Sequence__c,Inputbox__c,Comments__c,Description__c,Change_Request__c,Late_Payment_Interest__c, Name,Custom_Entry_Require__c, Id FROM Term_Attribute_Line_Items__r WHERE ID NOT IN:TeamAttLI  ORDER BY Sequence__c ASC ) from Term_Section_Line_Item__c WHERE ID IN:TermSLI];
-        list<Term_Section_Line_Item__c> TermSectionLineItemList =  [Select Id, Name,(SELECT Term_Section_Line_Item__c,Sequence__c,Inputbox__c,Comments__c,Number_Input__c,Description__c,Change_Request__c,Late_Payment_Interest__c, Name,Custom_Entry_Require__c, Id FROM Term_Attribute_Line_Items__r  ORDER BY Sequence__c ASC ) from Term_Section_Line_Item__c WHERE Name IN:TermSectionLineItemsList AND Is_Active__c=:true];
+        list<Term_Section_Line_Item__c> TermSectionLineItemList =  [Select Id, Name,(SELECT Term_Section_Line_Item__c,Sequence__c,Inputbox__c,Comments__c,Number_Input__c,Description__c,Change_Request__c,Late_Payment_Interest__c,Waiver_Off_Check__c, Name,Custom_Entry_Require__c, Id FROM Term_Attribute_Line_Items__r  ORDER BY Sequence__c ASC ) from Term_Section_Line_Item__c WHERE Name IN:TermSectionLineItemsList AND Is_Active__c=:true];
         
         for(Term_Section_Line_Item__c termsection: TermSectionLineItemList){
             System.debug('TSLI Name === >'+termsection.Name);
@@ -144,7 +144,7 @@ public with sharing class PaymentTermsAndConditionsLWCController {
         for(Term_Attribute_Line_Item__c tali : ListOfALI){
             TermSLI.add(tali.Term_Section_Line_Item__c);
         }
-        list<Term_Section_Line_Item__c> TermSectionLineItemList =  [Select Id, Name,(SELECT Term_Section_Line_Item__c,Sequence__c,Inputbox__c,Comments__c,Description__c,Change_Request__c,Late_Payment_Interest__c, Name,Custom_Entry_Require__c, Id FROM Term_Attribute_Line_Items__r  ORDER BY Sequence__c ASC ) from Term_Section_Line_Item__c WHERE Name IN:TermSectionLineItemsList AND Is_Active__c=:true];
+        list<Term_Section_Line_Item__c> TermSectionLineItemList =  [Select Id, Name,(SELECT Term_Section_Line_Item__c,Sequence__c,Inputbox__c,Comments__c,Description__c,Change_Request__c,Late_Payment_Interest__c,Waiver_Off_Check__c, Name,Custom_Entry_Require__c, Id FROM Term_Attribute_Line_Items__r  ORDER BY Sequence__c ASC ) from Term_Section_Line_Item__c WHERE Name IN:TermSectionLineItemsList AND Is_Active__c=:true];
         System.debug('TermSectionLineItemList ==== Size == >'+TermSectionLineItemList.size());
         return TermSectionLineItemList;
     } 

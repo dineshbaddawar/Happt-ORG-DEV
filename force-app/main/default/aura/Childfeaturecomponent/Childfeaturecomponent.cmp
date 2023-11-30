@@ -14,13 +14,6 @@
     <aura:attribute name="AllProductOptions" type="List"/>
     <aura:attribute name="selectedSubtype" type="String"/>
     <aura:attribute name="show" type="Boolean" default="false" />
-    
-    <!--aura:method name="myChildComponentMethod" action="{!c.executeFunction}">
-        <aura:attribute name="param1" type="string"></aura:attribute>
-        <aura:attribute name="param2" type="boolean"></aura:attribute>
-        <aura:attribute name="ParentXChild" type="List"></aura:attribute>
-    </aura:method-->
-    
     <aura:handler action="{!c.getEvents}" event="c:ParentSelectedOptionId"/>
     
     <aura:if isTrue="{!v.show}">
@@ -61,83 +54,80 @@
                 <aura:set attribute="else">
                     <td>
                         <div data-id ="{!ProductOption.Id}" > 
-                        <aura:if isTrue="{!ProductOption.Is_Subtype_Editable__c}">
-                           <aura:if isTrue="{!ProductOption.Product_Name__c!='Route Tracker (txns per month)'}">
-                            <lightning:select  name="select" label=""  value="{!ProductOption.Sub_Type__c}" onchange="{!c.SubTypechange}">
-                                <option value="None">None</option>
-                                <!--option value="Pro" text="Pro"></option--> <!-- {!ProductOption.Id}-->
-                                <!--option value="Premium" text="Premium"></option-->
-                                <!--option value="Elite" text="Elite"></option-->
-                                <option value="Custom API" text="Custom API"></option>
-                                <option value="API" text="API"></option>
-                                <option value="SFTP" text="SFTP"></option>
-                            </lightning:select>
-                               <aura:set attribute="else">
-                                   <lightning:select  name="select" label=""  value="{!ProductOption.Sub_Type__c}" onchange="{!c.SubTypechange}">
-                                       <option value="None">None</option>
-                                       <option value="Google Maps" text="Google Maps"></option> <!-- {!ProductOption.Id}-->
-                                       <option value="Map My India" text="Map My India"></option> <!-- {!ProductOption.Id}-->
-                                   </lightning:select>
-                                </aura:set>
+                            <aura:if isTrue="{!ProductOption.Is_Subtype_Editable__c}">
+                                <aura:if isTrue="{!ProductOption.Product_Name__c!='Route Tracker (txns per month)'}">
+                                    <lightning:select  name="select" label=""  value="{!ProductOption.Sub_Type__c}" onchange="{!c.SubTypechange}">
+                                        <option value="None">None</option>
+                                        <option value="Custom API" text="Custom API"></option>
+                                        <option value="API" text="API"></option>
+                                        <option value="SFTP" text="SFTP"></option>
+                                    </lightning:select>
+                                    <aura:set attribute="else">
+                                        <lightning:select  name="select" label=""  value="{!ProductOption.Sub_Type__c}" onchange="{!c.SubTypechange}">
+                                            <option value="None">None</option>
+                                            <option value="Google Maps" text="Google Maps"></option> <!-- {!ProductOption.Id}-->
+                                            <option value="Map My India" text="Map My India"></option> <!-- {!ProductOption.Id}-->
+                                        </lightning:select>
+                                    </aura:set>
+                                </aura:if>
+                                <aura:set attribute="else">
+                                    <lightning:select  disabled="true" name="select" label=""   value="{!ProductOption.Sub_Type__c}">
+                                        <option value="None">None</option>
+                                        <option value="Pro" text="Pro"></option>
+                                        <option value="Premium" text="Premium"></option>
+                                        <option value="Elite" text="Elite"></option>
+                                        <option value="Custom API" text="Custom API"></option>
+                                        <option value="API" text="API"></option>
+                                        <option value="SFTP" text="SFTP"></option>
+                                    </lightning:select>
+                                </aura:set>  
                             </aura:if>
-                            <aura:set attribute="else">
-                                <lightning:select  disabled="true" name="select" label=""   value="{!ProductOption.Sub_Type__c}">
-                                    <option value="None">None</option>
-                                    <option value="Pro" text="Pro"></option>
-                                    <option value="Premium" text="Premium"></option>
-                                    <option value="Elite" text="Elite"></option>
-                                    <option value="Custom API" text="Custom API"></option>
-                                    <option value="API" text="API"></option>
-                                    <option value="SFTP" text="SFTP"></option>
-                                </lightning:select>
-                            </aura:set>  
-                        </aura:if>
-                            </div>
+                        </div>
                     </td>
                 </aura:set>
             </aura:if>
             <td >
                 <div class="slds-truncate" title="{!ProductOption.Type__c}">{!ProductOption.Type__c}</div>  
             </td>
-            <!--td >
-                        <div class="slds-truncate" title="{!ProductOption.Type__c}">{!ProductOption.Multiply_Prices_Based_on_Quantity__c}</div>  
-                    </td-->
-            <!--td >
-                <aura:if isTrue="{!ProductOption.Editable__c}">
-                    <input type="number" id="text-input-id-49" placeholder="Enter Quantity"  class="slds-input" value="{!ProductOption.Quantity__c}" data-Id ="{!ProductOption.Product__c}" onchange="{!c.onChange}"/>
-                    <aura:set attribute="else">
-                        <input type="number" id="text-input-id-49" placeholder="Enter Quantity"  class="slds-input" value="{!ProductOption.Quantity__c}" data-Id ="{!ProductOption.Product__c}" onchange="{!c.onChange}" disabled="true"/>
-                    </aura:set>
-                </aura:if> 
-            </td-->
             <td>
-                <!--lightning:formattedRichText class="slds-cell-wrap" style="white-space: normal;" value="{!ProductOption.Description__c}"/-->
-                <div class="slds-truncate" title="{!ProductOption.Description__c}">{!ProductOption.SAAS_Price__c}</div>  
+                <aura:if isTrue="{!ProductOption.IsSaasPriceEditable__c}">
+                    <div data-id ="{!ProductOption.Product__c}">
+                        <lightning:input name="SAAS Price" type="number" label=""  variant="label-hidden" value="{!ProductOption.SAAS_Price__c}"  onchange="{!c.HandleSAASPrice}"/> 
+                    </div>
+                    <aura:set attribute="else">
+                        <div class="slds-truncate slds-align_absolute-center" title="">{!ProductOption.SAAS_Price__c}</div> 
+                    </aura:set>
+                </aura:if>
             </td>
             <td>
-                <!--lightning:formattedRichText class="slds-cell-wrap" style="white-space: normal;" value="{!ProductOption.Description__c}"/-->
-                <!--div class="slds-truncate" title="{!ProductOption.Description__c}">{!ProductOption.SAAS_Quantity__c}</div--> 
                 <aura:if isTrue="{!and(ProductOption.SAAS_Quantity_Editable__c,ProductOption.Editable__c)}">
-                    <input type="number" id="text-input-id-49" placeholder="Enter Quantity"  class="slds-input" value="{!ProductOption.SAAS_Quantity__c}" data-Id ="{!ProductOption.Product__c}" onchange="{!c.HandleSAASquantity}"/>
+                    <div data-id ="{!ProductOption.Product__c}">
+                        <lightning:input name="SAAS Quantity" type="number" label=""  variant="label-hidden" value="{!ProductOption.SAAS_Quantity__c}"  onchange="{!c.HandleSAASquantity}"/>
+                    </div>                    
                     <aura:set attribute="else">
                         <input type="number" id="text-input-id-49" placeholder="Enter Quantity"  class="slds-input" value="{!ProductOption.SAAS_Quantity__c}" data-Id ="{!ProductOption.Product__c}" onchange="{!c.HandleSAASquantity}"  disabled="true"/>
                     </aura:set>
                 </aura:if>
-                
             </td>
-            <td >
-                <div class="slds-truncate" title="{!ProductOption.List_Price__c}">{!ProductOption.OTI_Price__c}</div>  
+            <td > 
+                <aura:if isTrue="{!ProductOption.IsOtiPriceEditable__c}">
+                    <div data-id ="{!ProductOption.Product__c}">
+                        <lightning:input name="OTI Price" type="number" label=""  variant="label-hidden" value="{!ProductOption.OTI_Price__c}"  onchange="{!c.HandleOTIPrice}"/> 
+                    </div>
+                    <aura:set attribute="else">
+                        <div class="slds-truncate slds-align_absolute-center" title="">{!ProductOption.OTI_Price__c}</div>
+                    </aura:set>
+                </aura:if>
             </td>
             <td>
-                <!--lightning:formattedRichText class="slds-cell-wrap" style="white-space: normal;" value="{!ProductOption.Description__c}"/-->
-                <!--div class="slds-truncate" title="{!ProductOption.Description__c}">{!ProductOption.OTI_Quantity__c}</div-->
-                 <aura:if isTrue="{!and(ProductOption.OTI_Quantity_Editable__c,ProductOption.Editable__c)}">
-                    <input type="number" id="text-input-id-49" placeholder="Enter Quantity"  class="slds-input" value="{!ProductOption.OTI_Quantity__c}" data-Id ="{!ProductOption.Product__c}" onchange="{!c.HandleOTIquantity}"/>
+                <aura:if isTrue="{!and(ProductOption.OTI_Quantity_Editable__c,ProductOption.Editable__c)}">
+                    <div data-id ="{!ProductOption.Product__c}">
+                        <lightning:input name="OTI Quantity" type="number" label=""  variant="label-hidden" value="{!ProductOption.OTI_Quantity__c}"  onchange="{!c.HandleOTIquantity}"/>
+                    </div>
                     <aura:set attribute="else">
                         <input type="number" id="text-input-id-49" placeholder="Enter Quantity"  class="slds-input" value="{!ProductOption.OTI_Quantity__c}" data-Id ="{!ProductOption.Product__c}" onchange="{!c.HandleOTIquantity}"  disabled="true"/>
                     </aura:set>
                 </aura:if>
-                
             </td>
         </tr>
     </aura:iteration> 

@@ -21,15 +21,15 @@
 
                <div key={termline} class="radio-container">
                     <template if:true={termline.Inputbox__c}>
-                         <lightning-input type="number" name={termSect.Id} data-id={termline.Id}
+                         <lightning-input type="number" name={termSect.Id} data-id={termline.Id} value={termline.InputBoxValue}
                               data-sectionname={termSect.Name} onchange={handleInputNumberValue}>
                          </lightning-input>
                     </template>
                     <template if:false={termline.Inputbox__c}>
                          <div class="radio-label">
-                              <lightning-input type="radio" checked={termline.checkValue}
+                              <lightning-input type="radio"  checked={termline.checkValue}
                                    name={termSect.Id} label={termline.Name} value={termline.Id}
-                                   data-sectionname={termSect.Name} onchange={handleChildSelection}>
+                                   data-sectionname={termSect.Name}  onchange={handleChildSelection} class={termline.hideClass}>
                               </lightning-input>
                          </div>
                          <div class="description">{termline.Description__c}</div>
@@ -39,10 +39,16 @@
                <div  key={termline}>
                     <br/>
                     <template if:true={termline.InputValue}>
-                         <!-- <lightning-input type="checkbox" label="Input Check" name="input1"></lightning-input> -->
-                          <lightning-textarea name="input1" placeholder="Enter description..." data-id={termline.Id} onchange={handleDescriptionChange}  value={inputTextareaValue} ></lightning-textarea>
+                          <lightning-textarea name="input1" placeholder="Enter description..." data-id={termline.Id} onchange={handleDescriptionChange}  value={termline.inputTextareaValue} ></lightning-textarea>
                      </template>
                      <template if:false={termline.InputValue}>
+                         
+                     </template>
+
+                       <template if:true={termSect.wavercheck}>
+                        <lightning-input type="checkbox" label="Waiver Off Check" checked={termline.Waiver_Off_Check__c}></lightning-input>
+                     </template>
+                     <template if:false={termSect.wavercheck}>
                          
                      </template>
                </div>
@@ -54,13 +60,13 @@
 
 		</div>
           <div class="slds-modal__footer">
-               <lightning-button style="margin-right: 4rem;"
+               <lightning-button style="margin-right: 1rem;"
                class="slds-button"
                variant="neutral"
                label="Cancel"
                onclick={handleClose}
-           ></lightning-button>  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
-           <lightning-button style="margin-right: 20rem;"
+           ></lightning-button>
+           <lightning-button style="margin-right: 22rem;"
                class="slds-button slds-m-left_x-small"
                variant="brand"
                label="Save"
