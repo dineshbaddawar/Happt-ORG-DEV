@@ -818,30 +818,44 @@
                 accountType = 'Medium Large';
             }else if(numOfBookings >= 12000 && numOfBookings < 20000){
                 accountType = 'Medium';
-            }else if(numOfBookings > 0 && numOfBookings < 11000){
+            }else if(numOfBookings > 0 && numOfBookings < 12000){
                 accountType = 'Small';
             }
         }else if(pricingType == 'Per Report' || pricingType == 'Per User' ){
             if(selectedProductName=='Expense Bundle'){
-                if(numOfBookings >= 50400){
-                    accountType = 'Large';
-                }else if (numOfBookings >= 36000 && numOfBookings < 50400){
-                    accountType = 'Medium Large';
-                }else if(numOfBookings >= 25000 && numOfBookings < 36000){
-                    accountType = 'Medium';
-                }else if(numOfBookings >= 15000 && numOfBookings < 25000){
-                    accountType = 'Small Medium';
-                }else if(numOfBookings > 0 && numOfBookings < 15000){
-                    accountType = 'Small';
+                if(pricingType == 'Per Report'){
+                    if(numOfBookings >= 100000){
+                        accountType = 'Large';
+                    }else if (numOfBookings >= 60000 && numOfBookings < 100000){
+                        accountType = 'Medium Large';
+                    }else if(numOfBookings >= 30000 && numOfBookings < 60000){
+                        accountType = 'Medium';
+                    }else if(numOfBookings >= 12000 && numOfBookings < 30000){
+                        accountType = 'Small Medium';
+                    }else if(numOfBookings > 0 && numOfBookings < 12000){
+                        accountType = 'Small';
+                    }
+                }else if(pricingType == 'Per User'){
+                    if(numOfBookings >= 10000){
+                        accountType = 'Large';
+                    }else if (numOfBookings >= 5000 && numOfBookings < 10000){
+                        accountType = 'Medium Large';
+                    }else if(numOfBookings >= 2500 && numOfBookings < 5000){
+                        accountType = 'Medium';
+                    }else if(numOfBookings >= 1000 && numOfBookings < 2500){
+                        accountType = 'Small Medium';
+                    }else if(numOfBookings > 0 && numOfBookings < 1000){
+                        accountType = 'Small';
+                    }
                 }
             }else{
-                if(numOfBookings >= 50400){
+                if(numOfBookings >= 36000){
                     accountType = 'Large';
-                }else if (numOfBookings >= 36000 && numOfBookings < 50400){
+                }else if (numOfBookings >= 20000 && numOfBookings < 36000){
                     accountType = 'Medium Large';
-                }else if(numOfBookings >= 15000 && numOfBookings < 36000){
+                }else if(numOfBookings >= 12000 && numOfBookings < 20000){
                     accountType = 'Medium';
-                }else if(numOfBookings > 0 && numOfBookings < 15000){
+                }else if(numOfBookings > 0 && numOfBookings < 12000){
                     accountType = 'Small';
                 }
             }

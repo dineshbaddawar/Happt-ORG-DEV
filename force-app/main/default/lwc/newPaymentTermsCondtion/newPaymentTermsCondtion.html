@@ -80,6 +80,33 @@
 		<lightning-spinner alternative-text="Loading..." variant="brand">
 		</lightning-spinner>
 	</template>
-
+     <template if:true={showConformationBox}>
+                    <lightning-modal-header label="" class="my-modal-header">
+                        <h2 style="background:green;color:white;font-size:20px;">Update Terms</h2>
+                    </lightning-modal-header>
+                    <lightning-modal-body>
+                    <p style="font-size:17px;">You are trying to update the Terms. Quote status would be changed to Draft stage.</p>
+                    <p style="font-size:17px;">Confirm if you want to proceed further with changes.</p>
+                    </lightning-modal-body>
+                    <lightning-modal-footer>
+                       <lightning-button class="slds-p-right_small" variant="destructive" label="Cancel" title="titleName" onclick={handleClickCancel}></lightning-button>
+                       <lightning-button variant="brand" label="Confirm" title="titleName" onclick={handleClickConfirm}></lightning-button>
+                    </lightning-modal-footer>
+          <!--section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+          <div class="slds-modal__container">
+          <div class="slds-modal__header" style="background-color:green;">
+               <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate"><span style="color:white;">Update Terms</span></h1>
+          </div>
+          <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+               <p>You are trying to update the Terms. Quote status would be changed to Draft stage. Confirm if you want to proceed further with changes.</p>
+          </div>
+          <div class="slds-modal__footer">
+               <lightning-button class="slds-p-right_small" variant="destructive" label="Cancel" title="titleName" onclick={handleClickCancel}></lightning-button>
+               <lightning-button variant="brand" label="Confirm" title="titleName" onclick={handleClickConfirm}></lightning-button>
+          </div>
+          </div>
+          </section>
+         <div class="slds-backdrop slds-backdrop_open" role="presentation"></div-->
+     </template>
 	
 </template>

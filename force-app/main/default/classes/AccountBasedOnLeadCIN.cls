@@ -1,4 +1,4 @@
-public without sharing  class AccountBasedOnLeadCIN {
+public without sharing class AccountBasedOnLeadCIN {
     
     @AuraEnabled
     public static List<SobjectsWrapper>  getAccount( string recordId){

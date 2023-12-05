@@ -25,6 +25,7 @@ public class OrderFormOfWithCardDeals_Ctrl {
     public Static Decimal SubtotalTravel {get;set;}
     public Static Decimal SubTotalExpense {get;set;}
     Public Static Decimal TotalExpTra  {get;set;}
+    Public Static Decimal TotalACV  {get;set;}
     
     public OrderFormOfWithCardDeals_Ctrl(ApexPages.StandardController controller) {
         
@@ -43,36 +44,43 @@ public class OrderFormOfWithCardDeals_Ctrl {
                 happcardData = [SELECT Id,Welcome__c,Wallet_to_Bank_transfer_charges__c,Operational__c,Happay_Fee__c,ATM_Withdrawal_Fee__c,ATM_Pin_Reissuance_Fee__c,ATM_Balance_Inquiry__c,Year_1__c,Year2__c,Year3__c FROM HappyCard__c LIMIT 1];
                 termsmetaData = [SELECT Term1__c,Term10__c,Term11__c,Term12__c,Term13__c,Term14__c,Term2__c,Term3__c,Term4__c,Term5__c,Term6__c,Term7__c,Term8__c,Term9__c FROM TermsCondtion__mdt LIMIT 1];
                 terms = [ SELECT Id, Name,Comments__c, Quote__c, Late_Payment_Interest__c, YoY_PUPM_Report__c, YoY_PUPM_Report_100__c, YoY_AMC_10_20_of_ARR__c, Term_Attribute_Line_Item__r.Name,  Term_Section_Line_Item__r.Name FROM Terms_and_condition__c  WHERE Quote__c =:recordId  ]; 
-                System.debug('terms ===>'+terms); 
-                getQuotedata = [SELECT Id,Name,Travel_Final_ARR__c,Expense_FInal_ARR__c,AccountId,Travel_Total_OTI__c,Travel_ARR_Discount__c,Expense_ARR_Discount__c,Expense_OTI_Discount__c,Travel_OTI_Discounted__c,Expense_ARR_Discounted__c,Travel_OTI_Discount__c,Travel_ARR_Discounted__c,Travel_Total_SAAS__c,Expense_Total_OTI__c,Expense_OTI_Discounted__c,Expense_Total_SAAS__c,QuoteNumber,ExpirationDate,OpportunityId,Description,Subscription_Billing_Start_Date__c,Advance_Billing_Cycle__c,Payment_Due_Date__c,Delayed_Payment_Interest__c,Subscription_Term__c,Notes__c,Yearly_Price_Escalation__c FROM Quote WHERE Id=:recordId];
+             //   System.debug('terms ===>'+terms); 
+                getQuotedata = [SELECT Id,Name,Travel_Final_ARR__c,Total_ACV__c,Expense_FInal_ARR__c,AccountId,Travel_Total_OTI__c,Travel_ARR_Discount__c,Expense_ARR_Discount__c,Expense_OTI_Discount__c,Travel_OTI_Discounted__c,Expense_ARR_Discounted__c,Travel_OTI_Discount__c,Travel_ARR_Discounted__c,Travel_Total_SAAS__c,Expense_Total_OTI__c,Expense_OTI_Discounted__c,Expense_Total_SAAS__c,QuoteNumber,ExpirationDate,OpportunityId,Description,Subscription_Billing_Start_Date__c,Advance_Billing_Cycle__c,Payment_Due_Date__c,Delayed_Payment_Interest__c,Subscription_Term__c,Notes__c,Yearly_Price_Escalation__c FROM Quote WHERE Id=:recordId];
+
+                if(getQuotedata.Total_ACV__c !=null){
+                    TotalACV = getQuotedata.Total_ACV__c;
+                }else{
+                    TotalACV = 0;
+                }
+
                 if(getQuotedata.Travel_Total_OTI__c !=null || getQuotedata.Travel_Total_OTI__c != 0){
                     IsTravelTrue = true;
-                    System.debug('IsTravelTrue ===> '+IsTravelTrue);
+                  //  System.debug('IsTravelTrue ===> '+IsTravelTrue);
                     if(getQuotedata.Travel_ARR_Discounted__c !=null && getQuotedata.Expense_ARR_Discounted__c !=null){
                         SubtotalTravel = getQuotedata.Travel_ARR_Discounted__c + getQuotedata.Expense_ARR_Discounted__c;  
-                        System.debug('SubtotalTravel ==> '+SubtotalTravel);
+                     //   System.debug('SubtotalTravel ==> '+SubtotalTravel);
                     }
                 }else{
                     IsTravelTrue = false;
                 }
                 if(getQuotedata.Expense_Total_OTI__c !=null || getQuotedata.Expense_Total_OTI__c != 0){
                     IsExpenseTrue = true;
-                    System.debug('IsExpenseTrue ==> '+IsExpenseTrue);
+                  //  System.debug('IsExpenseTrue ==> '+IsExpenseTrue);
                     if(getQuotedata.Travel_OTI_Discounted__c !=null && getQuotedata.Expense_OTI_Discounted__c !=null){
                         SubTotalExpense = getQuotedata.Travel_OTI_Discounted__c + getQuotedata.Expense_OTI_Discounted__c;
-                        System.debug('SubTotalExpense ==> '+SubTotalExpense);
+                      //  System.debug('SubTotalExpense ==> '+SubTotalExpense);
                     }
                 }else{
                     IsExpenseTrue = false;
                 }
-                System.debug('getQuoteda(ta ====> '+getQuotedata);
+               // System.debug('getQuoteda(ta ====> '+getQuotedata);
                 if(SubtotalTravel !=null && SubTotalExpense !=null){
                     TotalExpTra = SubtotalTravel + SubTotalExpense;
                 }
-                System.debug('TotalExpTra ====> '+TotalExpTra);
+              //  System.debug('TotalExpTra ====> '+TotalExpTra);
                 getQuoteLineitemList = [SELECT Id,Product2Id,Is_Travel_Product__c,UnitPrice,Product2.Name,TotalPrice,Travel_Offering_Type__c,Account_Type__c,Travel_Pricing_Type__c,Type__c,Quantity,SAAS_Price__c,OTI_Price__c FROM QuoteLineItem WHERE QuoteId =:recordId ];
-                System.debug('getQuoteLineitemList Size ====> '+getQuoteLineitemList.size());
-                System.debug('getQuoteLineitemList Recprd ====> '+getQuoteLineitemList);
+               // System.debug('getQuoteLineitemList Size ====> '+getQuoteLineitemList.size());
+               // System.debug('getQuoteLineitemList Recprd ====> '+getQuoteLineitemList);
                 if (!getQuoteLineitemList.isEmpty()) {
                     for (QuoteLineItem quoteLItem : getQuoteLineitemList) {
                         system.debug('quoteLItem--' + quoteLItem);
@@ -80,45 +88,46 @@ public class OrderFormOfWithCardDeals_Ctrl {
                             if (quoteLItem.Is_Travel_Product__c) {
                                 if(quoteLItem.Type__c == 'SAAS'){
                                     getTravelSAASList.add(quoteLItem);
-                                    system.debug('getTravelSAASList--' + getTravelSAASList + ' getTravelSAASList size:' + getTravelSAASList.size());
+                                    system.debug('getTravelSAASList size === >' + getTravelSAASList.size());
                                 } else if (quoteLItem.Type__c == 'OTI') {
                                     getTravelOTTList.add(quoteLItem);
-                                    system.debug('getTravelOTTList--' + getTravelOTTList + ' getTravelOTTList size:' + getTravelOTTList.size());
+                                    system.debug(' getTravelOTTList size: ===> ' + getTravelOTTList.size());
                                 } else if (quoteLItem.Type__c == 'OTI + SAAS') {
                                     getTravelOTTSAASList.add(quoteLItem);
-                                    system.debug('getTravelOTTSAASList--' + getTravelOTTSAASList + ' getTravelOTTSAASList size:' + getTravelOTTSAASList.size());
+                                    system.debug('getTravelOTTSAASList size: === >' + getTravelOTTSAASList.size());
                                 } 
                                 getTravelList.add(quoteLItem);
-                                system.debug('Inside If');
-                                system.debug('getTravelList--' + getTravelList + ' getTravelList size:' + getTravelList.size());
+                               // system.debug('Inside If');
+                                system.debug(' getTravelList size: ===== >' + getTravelList.size());
                             } else if (quoteLItem.Is_Travel_Product__c == false) {
                                 if(quoteLItem.Type__c == 'SAAS'){
+                                    System.debug('quoteLItem Travel_Offering_Type__c === >'+quoteLItem.Travel_Offering_Type__c);
                                     getExpenseSAASList.add(quoteLItem);
-                                    system.debug('getExpenseSAASList--' + getExpenseSAASList + ' getExpenseSAASList size:' + getExpenseSAASList.size());
+                                    system.debug(' getExpenseSAASList size: === >' + getExpenseSAASList.size());
                                 } else if (quoteLItem.Type__c == 'OTI') {
                                     getExpenseOTTList.add(quoteLItem);
-                                    system.debug('getExpenseOTTList--' + getExpenseOTTList + ' getExpenseOTTList size:' + getExpenseOTTList.size());
+                                    system.debug(' getExpenseOTTList size: == >' + getExpenseOTTList.size());
                                 } else if (quoteLItem.Type__c == 'OTI + SAAS') {
                                     getExpenseOTTSAASList.add(quoteLItem);
-                                    system.debug('getExpenseOTTSAASList--' + getExpenseOTTSAASList + ' getExpenseOTTSAASList size:' + getExpenseOTTSAASList.size());
+                                    system.debug(' getExpenseOTTSAASList size === >' + getExpenseOTTSAASList.size());
                                 } 
                                 getExpenseList.add(quoteLItem);
-                                system.debug('Inside else');
-                                system.debug('getExpenseList--' + getExpenseList + ' getExpenseList size:' + getExpenseList.size());
+                               // system.debug('Inside else');
+                                system.debug(' getExpenseList size: == >' + getExpenseList.size());
                             } 
                         }
                     }
                     
                     if(getTravelSAASList.size()>0 || getTravelOTTList.size()>0  || getTravelOTTSAASList.size()>0){
                         IsTravelDataTrue = true;
-                        system.debug('IsTravelDataTrue::::'+IsTravelDataTrue);
+                       // system.debug('IsTravelDataTrue::::'+IsTravelDataTrue);
                     }else{
                         IsTravelDataTrue = false;
                     }
                     
                     if(getExpenseSAASList.size()>0 || getExpenseOTTList.size()>0 || getExpenseOTTSAASList.size()>0){
                         IsExpenseDataTrue = true;
-                        system.debug('IsExpenseDataTrue::::'+IsExpenseDataTrue);
+                       // system.debug('IsExpenseDataTrue ===> '+IsExpenseDataTrue);
                     }else{
                         IsExpenseDataTrue = false;
                     }
@@ -136,7 +145,7 @@ public class OrderFormOfWithCardDeals_Ctrl {
                 }
                 if (getQuotedata != null) {
                     getTermCondtionsDetailList = [Select id,Name,Approval_Matrix__r.Name,Quote__r.Name,Term_Attribute_Line_Item__r.Name,Term_Section_Line_Item__r.Name,Billing_Type__c,Comments__c,OwnerId,Change_Request__c,Late_Payment_Interest__c,YoY_PUPM_Report__c,YoY_PUPM_Report_100__c,YoY_AMC_10_20_of_ARR__c From Terms_and_condition__c Where Quote__c =:getQuotedata.Id ];
-                    system.debug('getTermCondtionsDetailList :::::'+getTermCondtionsDetailList); 
+                    system.debug('getTermCondtionsDetailList === >'+getTermCondtionsDetailList); 
                 }              
             }           
         }catch(Exception e){

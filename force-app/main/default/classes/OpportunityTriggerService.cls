@@ -331,19 +331,23 @@ oppRec.addError('You do not have permission to edit status for this Opportunity.
 }*/
     
     public static void teamMemberValidation(List<Opportunity> newList, Map<Id, Opportunity> oldOppMap) {
-        Set<Id> creditUsers 		= new Set<Id>();
-        for(GroupMember gmObj : [Select Id,UserOrGroupId from GroupMember where Group.DeveloperName = 'Credit_Risk_User']) {
+        Set<Id> creditUsers = new Set<Id>();
+        for (GroupMember gmObj : [Select Id, UserOrGroupId from GroupMember where Group.DeveloperName = 'Credit_Risk_User']) {
             creditUsers.add(gmObj.UserOrGroupId);
         }
         
-        for(Opportunity oppRec : newList){
+        Boolean hasCustomPermission = FeatureManagement.checkPermission('OpportunityStagePermission');
+        
+        for (Opportunity oppRec : newList) {
             //'012C2000000C3oXIAS'
-            if(oldOppMap.get(oppRec.Id).StageName != oppRec.StageName && 
-               oppRec.RecordTypeId == Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('EPIC').getRecordTypeId() &&
-               !creditUsers.contains(UserInfo.getUserId())){
-                   oppRec.addError('You do not have permission to edit status for this Opportunity.');    
-               }
+            if (oldOppMap.get(oppRec.Id).StageName != oppRec.StageName &&
+                oppRec.RecordTypeId == Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('EPIC').getRecordTypeId() &&
+                !creditUsers.contains(UserInfo.getUserId()) &&
+                !hasCustomPermission) {
+                    oppRec.addError('You do not have permission to edit status for this Opportunity.');
+                }
         }
     }
+
     
 }

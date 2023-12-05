@@ -17,7 +17,7 @@ public class CalculateQuoteDetails {
             }
             
             if(!mapofQuoteIdByQLIList.isEmpty()){
-                List<QuoteLineItem> fetchAvailableQLI = [select Id,Product2Id,Account_Type__c,Travel_Pricing_Type__c,IsMultiplybyBooking__c,Minimum_Commitment__c,Is_Travel_Product__c,Quantity_0__c,Parent_Quote_Line_Item__c,OTI_Price__c,SAAS_Price__c,QuoteId from QuoteLineItem where QuoteId in: mapofQuoteIdByQLIList.keySet()];
+                List<QuoteLineItem> fetchAvailableQLI = [select Id,Product2.Name,Travel_Offering_Type__c,Product2Id,Account_Type__c,Travel_Pricing_Type__c,IsMultiplybyBooking__c,Minimum_Commitment__c,Is_Travel_Product__c,Quantity_0__c,Parent_Quote_Line_Item__c,OTI_Price__c,SAAS_Price__c,QuoteId from QuoteLineItem where QuoteId in: mapofQuoteIdByQLIList.keySet()];
                 if(!fetchAvailableQLI.isEmpty()){
                     mapofQuoteIdByQLIList	= new Map<Id,List<QuoteLineItem>>();
                     for(QuoteLineItem qli : fetchAvailableQLI){
@@ -36,7 +36,8 @@ public class CalculateQuoteDetails {
                             qu.Expense_Total_OTI__c=0;
                             qu.Expense_Total_SAAS__c=0;
                             qu.Id = mapKey;
-                            
+                            integer travelCount=0;
+                            integer ExpenseCount=0;    
                             system.debug('mapKey::'+mapKey);
                             for(QuoteLineItem qli : mapofQuoteIdByQLIList.get(mapKey)){
                                 
@@ -54,7 +55,12 @@ public class CalculateQuoteDetails {
                                 }else if(qli.Parent_Quote_Line_Item__c != null  && !qli.Quantity_0__c){
                                     
                                     qu.Expense_Total_OTI__c = qu.Expense_Total_OTI__c + qli.OTI_Price__c;
-                                    qu.Expense_Total_SAAS__c = qu.Expense_Total_SAAS__c +qli.SAAS_Price__c;
+                                    if(qli.IsMultiplybyBooking__c==true){
+                                        qu.Expense_Total_SAAS__c = qu.Expense_Total_SAAS__c +(qli.SAAS_Price__c * qli.Minimum_Commitment__c);
+                                    }else{
+                                        qu.Expense_Total_SAAS__c = qu.Expense_Total_SAAS__c +qli.SAAS_Price__c;
+                                    }
+                                    
                                     
                                     system.debug('Expense_Total_SAAS__c-->'+qu.Expense_Total_SAAS__c);
                                     if(qli.Minimum_Commitment__c!=null && qli.IsMultiplybyBooking__c==true){  
@@ -65,9 +71,34 @@ public class CalculateQuoteDetails {
                                     }
                                     system.debug('Not Inside Travel Product');
                                 }
+                                if(QLI.Is_Travel_Product__c==true){
+                                    if(qu.TotalTravelCount__c==null)
+                                        qu.TotalTravelCount__c=0;
+                                    qu.TotalTravelCount__c=qu.TotalTravelCount__c+1;
+                                    if(QLI.Account_Type__c!=null)
+                                        qu.Travel_Account_Type__c=QLI.Account_Type__c;
+                                    if(QLI.Travel_Pricing_Type__c!=null)
+                                        qu.Travel_Pricing_Type__c=QLI.Travel_Pricing_Type__c;
+                                    if(QLI.Travel_Offering_Type__c!=null)
+                                        qu.Travel_Offering_Type__c=QLI.Travel_Offering_Type__c;
+                                    if(QLI.Minimum_Commitment__c!=null)
+                                        qu.Travel_Minimum_Commitment__c=QLI.Minimum_Commitment__c;
+                                    
+                                }else if(QLI.Is_Travel_Product__c==false && (QLI.Product2.Name!='Travel Bundle' && QLI.Product2.Name!='Expense Bundle')){
+                                    if(qu.TotalExpenseCount__c==null)
+                                        qu.TotalExpenseCount__c=0;
+                                    qu.TotalExpenseCount__c=qu.TotalExpenseCount__c+1;
+                                    if(QLI.Account_Type__c!=null)
+                                        qu.Expense_Account_Type__c=QLI.Account_Type__c;
+                                    if(QLI.Travel_Pricing_Type__c!=null)
+                                        qu.Expense_Pricing_Type__c=QLI.Travel_Pricing_Type__c;
+                                    if(QLI.Minimum_Commitment__c!=null)
+                                        qu.Expense_Minimum_Commitment__c=QLI.Minimum_Commitment__c;
+                                }
+                                
                             }
                             if(NoOfBookings!=null && NoOfBookings>0){
-                                qu.Expense_Total_SAAS__c=qu.Expense_Total_SAAS__c*NoOfBookings;
+                                qu.Expense_Total_SAAS__c=qu.Expense_Total_SAAS__c;
                                 system.debug('Expense_Total_SAAS__c After No Of Booking-->'+qu.Expense_Total_SAAS__c);
                                 system.debug('NoOfBookings'+NoOfBookings);
                             }
@@ -78,13 +109,11 @@ public class CalculateQuoteDetails {
                         if(!quoteListTobeUpdate.isEmpty()){
                             update quoteListTobeUpdate;
                         }
-                        
+                        UpdateOpportunity.Quote_Related_OpportunityUpdate(mapofQuoteIdByQLIList.keyset());                         
                     }
                 }
-                
             }
         }
-        
     }
     
     @Auraenabled

@@ -291,7 +291,7 @@
                     <tr>
                         <td style="border:1px solid black;background-color: #dddddd;padding:10px;"><b>Sub-Total</b></td>
                         <td style="border:1px solid black;padding:10px;text-align:center;">
-                            <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!TotalExpTra}"/></apex:outputText>
+                            <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!SubTotalExpAndTravel}"/></apex:outputText>
                         </td>
                     </tr>
                 </table>
@@ -318,6 +318,7 @@
                 <br/>
                 <br/>
                 <br/>
+                <br/>  
                 <br/>     
                 <div style="width:1000%;float:left">
                     <b style="font-size:17px;font-weight: bold;">TRAVEL DETAILS:</b>
@@ -347,9 +348,9 @@
                                 <!-- <apex:variable var="index" value="{!(index+1)}"/> -->
                                 <!-- <td style="border:1px solid black;padding:10px;"><apex:outputText value="{!index}"/></td> -->
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!trvSAASList.Product2.Name}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!trvSAASList.Account_Type__c}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvSAASList.Travel_Offering_Type__c}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvSAASList.Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;font-size:13px;text-align:center;">{!trvSAASList.Account_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;font-size:13px;text-align:center;">{!trvSAASList.Travel_Offering_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;font-size:13px;text-align:center;">{!trvSAASList.Type__c}</td>
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvSAASList.Travel_Pricing_Type__c}</td>
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
                                     <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!trvSAASList.SAAS_Price__c}"/></apex:outputText>
@@ -388,9 +389,9 @@
                                 <!-- <apex:variable var="index" value="{!(index+1)}"/> -->
                                 <!-- <td style="border:1px solid black;padding:10px;"><apex:outputText value="{!index}"/></td> -->
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!trvOTIList.Product2.Name}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!trvOTIList.Account_Type__c}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvOTIList.Travel_Offering_Type__c}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvOTIList.Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;font-size:13px;text-align:center;">{!trvOTIList.Account_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;font-size:13px;text-align:center;">{!trvOTIList.Travel_Offering_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;font-size:13px;text-align:center;">{!trvOTIList.Type__c}</td>
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvOTIList.Travel_Pricing_Type__c}</td>
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
                                     <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!trvOTIList.SAAS_Price__c}"/></apex:outputText>
@@ -427,9 +428,9 @@
                         <apex:repeat value="{!getTravelOTTSAASList}" var="trvSAASOTIList">
                             <tr>
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!trvSAASOTIList.Product2.Name}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!trvSAASOTIList.Account_Type__c}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvSAASOTIList.Travel_Offering_Type__c}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvSAASOTIList.Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;font-size:13px;text-align:center;">{!trvSAASOTIList.Account_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;font-size:13px;text-align:center;">{!trvSAASOTIList.Travel_Offering_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;font-size:13px;text-align:center;">{!trvSAASOTIList.Type__c}</td>
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!trvSAASOTIList.Travel_Pricing_Type__c}</td>
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
                                     <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!trvSAASOTIList.SAAS_Price__c}"/></apex:outputText>
@@ -463,7 +464,7 @@
                 <br/>
                 <br/>
                 <br/>  
-                
+                <br/>
                 <div style="width:1000%;float:left">
                     <b style="font-size:17px;font-weight: bold;">EXPENSE DETAILS:</b>
                 </div>
@@ -479,9 +480,9 @@
                         <tr >
                             <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">PRODUCT NAME</th>
                             <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">ACCOUNT TYPE</th>
-                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL OFFERING TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">EXPENSE OFFERING TYPE</th>
                             <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TYPE</th>
-                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL EXP PRICING TYPE </th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">EXPENSE PRICING TYPE </th>
                             <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">SAAS PRICE </th>
                             <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">OTI PRICE</th>
                         </tr>
@@ -490,9 +491,9 @@
                                 <!-- <apex:variable var="index" value="{!(index+1)}"/> -->
                                 <!-- <td style="border:1px solid black;padding:10px;"><apex:outputText value="{!index}"/></td> -->
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!expSAASList.Product2.Name}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!expSAASList.Account_Type__c}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expSAASList.Travel_Offering_Type__c}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expSAASList.Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;font-size:13px;text-align:center;">{!expSAASList.Account_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;font-size:13px;text-align:center;">{!expSAASList.Travel_Offering_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;font-size:13px;text-align:center;">{!expSAASList.Type__c}</td>
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expSAASList.Travel_Pricing_Type__c}</td>
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
                                     <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!expSAASList.SAAS_Price__c}"/></apex:outputText>
@@ -518,9 +519,9 @@
                         <tr >
                             <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">PRODUCT NAME</th>
                             <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">ACCOUNT TYPE</th>
-                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL OFFERING TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">EXPENSE OFFERING TYPE</th>
                             <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TYPE</th>
-                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL EXP PRICING TYPE </th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">EXPENSE PRICING TYPE </th>
                             <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">SAAS PRICE </th>
                             <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">OTI PRICE</th>
                         </tr>
@@ -530,9 +531,9 @@
                                 <!-- <apex:variable var="index" value="{!(index+1)}"/> -->
                                 <!-- <td style="border:1px solid black;padding:10px;"><apex:outputText value="{!index}"/></td> -->
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!expOTIList.Product2.Name}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!expOTIList.Account_Type__c}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expOTIList.Travel_Offering_Type__c}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expOTIList.Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;font-size:13px;text-align:center;">{!expOTIList.Account_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;font-size:13px;text-align:center;">{!expOTIList.Travel_Offering_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;font-size:13px;text-align:center;">{!expOTIList.Type__c}</td>
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expOTIList.Travel_Pricing_Type__c}</td>
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
                                     <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!expOTIList.SAAS_Price__c}"/></apex:outputText>
@@ -558,9 +559,9 @@
                         <tr >
                             <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">PRODUCT NAME</th>
                             <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">ACCOUNT TYPE</th>
-                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL OFFERING TYPE</th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">EXPENSE OFFERING TYPE</th>
                             <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TYPE</th>
-                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">TRAVEL EXP PRICING TYPE </th>
+                            <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">EXPENSE PRICING TYPE </th>
                             <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">SAAS PRICE </th>
                             <th  style="border:1px solid black;background-color: #dddddd;font-size:12px;text-align:center;">OTI PRICE</th>
                         </tr>
@@ -570,9 +571,9 @@
                                 <!-- <apex:variable var="index" value="{!(index+1)}"/> -->
                                 <!-- <td style="border:1px solid black;padding:10px;"><apex:outputText value="{!index}"/></td> -->
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!expSAASOTIList.Product2.Name}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;">{!expSAASOTIList.Account_Type__c}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expSAASOTIList.Travel_Offering_Type__c}</td>
-                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expSAASOTIList.Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;font-size:13px;text-align:center;">{!expSAASOTIList.Account_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;font-size:13px;text-align:center;">{!expSAASOTIList.Travel_Offering_Type__c}</td>
+                                <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;font-size:13px;text-align:center;">{!expSAASOTIList.Type__c}</td>
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">{!expSAASOTIList.Travel_Pricing_Type__c}</td>
                                 <td style="border:1px solid black;word-wrap: break-word;padding:5px;word-wrap: break-all;text-align:center;">
                                     <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!expSAASOTIList.SAAS_Price__c}"/></apex:outputText>

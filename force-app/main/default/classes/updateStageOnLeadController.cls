@@ -30,7 +30,7 @@ public class UpdateStageOnLeadController {
     public static String updateLeadStatus(Lead leadRec,String recordId){
         
         if(leadRec.Status == 'Converted'){
-            return 'Please use Convert Lead Button';
+            return LeadConversioonCompHelper.convertLeadMethod(recordId);
         }else{
             try {
                 system.debug('leadRec-->'+recordId);

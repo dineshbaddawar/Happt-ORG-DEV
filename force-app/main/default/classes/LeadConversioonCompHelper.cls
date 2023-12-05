@@ -2,6 +2,7 @@ public Without Sharing class LeadConversioonCompHelper {
     
     @AuraEnabled
     public static String convertLeadMethod(String recordId) {
+        
         LeadTriggerHandler.runtrigger = false;
         Lead leadObj = [SELECT Id, Email, Account__c, RecordType.DeveloperName FROM Lead WHERE Id =: recordId];
         String contactId;
@@ -30,18 +31,21 @@ public Without Sharing class LeadConversioonCompHelper {
                     System.debug(lcr.getAccountId());
                     return lcr.getAccountId();    
                 }
-            } else {
-                // Directly convert the lead without event validation
-                Database.LeadConvert lc = new Database.LeadConvert();
-                lc.setLeadId(recordId);
-                lc.setAccountId(leadObj.Account__c);
-                if (contactId != null) lc.setContactId(contactId);
-                
-                lc.setConvertedStatus('Converted');
-                Database.LeadConvertResult lcr = Database.convertLead(lc);
-                System.debug(lcr.getAccountId());
-                return lcr.getAccountId();    
-            }
+            }else {
+                if (leadObj.Account__c == null) {
+                    return 'Lead cannot be converted. Please associate an account before converting.';
+                }else{
+                    // Directly convert the lead without event validation
+                    Database.LeadConvert lc = new Database.LeadConvert();
+                    lc.setLeadId(recordId);
+                    lc.setAccountId(leadObj.Account__c);
+                    if (contactId != null) lc.setContactId(contactId);
+                    lc.setConvertedStatus('Converted');
+                    Database.LeadConvertResult lcr = Database.convertLead(lc);
+                    System.debug(lcr.getAccountId());
+                    return lcr.getAccountId();    
+                }
+             }
         } catch (DmlException  e) {
             System.debug(e.getMessage() + e.getLineNumber());
             if(e.getMessage().contains('No event found or event is of a future date')){
@@ -51,7 +55,7 @@ public Without Sharing class LeadConversioonCompHelper {
             }
         }
     }
-
+    
     
     @AuraEnabled
     public static void submitForApproval(String recordId) {
@@ -76,6 +80,6 @@ public Without Sharing class LeadConversioonCompHelper {
         
         Approval.ProcessResult result = Approval.process(req1);
     }
-
+    
     
 }

@@ -27,7 +27,9 @@ export default class NewPaymentTermsCondtion extends LightningElement {
   @track PaymentTermValue;
   @track richtext;
   @track showErrorMessage=false;
-  
+  @track showConformationBox=false;
+  @track OnClickOfSaveButton;
+  @track IsUpdate;
   error;
   showDecription = true;
   popUpOpen = true;
@@ -75,6 +77,11 @@ export default class NewPaymentTermsCondtion extends LightningElement {
 
           getExistingTermsConditions({ recordId: this.recordId }).then(res => {
         this.termsConditions = res;
+        if(this.termsConditions.length > 0){
+            this.OnClickOfSaveButton='Update Function';
+        }else{
+           this.OnClickOfSaveButton='Insert Function';
+        }
         this.checkMarkedValue();
       })
 
@@ -125,7 +132,6 @@ export default class NewPaymentTermsCondtion extends LightningElement {
                 })
               })
             }
-
           }
           taList.push(t);
         })
@@ -288,11 +294,15 @@ export default class NewPaymentTermsCondtion extends LightningElement {
     //})
   }
 
+  handleClickConfirm(){
+     debugger;
+     this.IsUpdate='yes';
+     this.handleSaveData();
+  }
+
   handleSaveData() {
     debugger;
-
-this.termSectionList.forEach(term =>{
-           
+  this.termSectionList.forEach(term =>{
            if(term.Name == 'YoY | PUPM/Report 50-100' && term.IsSectionValueSelected ==true){
               this.termSectionList.forEach(term =>{ 
                 if(term.Name == 'YoY | PUPM/Report >100'){
@@ -307,7 +317,7 @@ this.termSectionList.forEach(term =>{
                 }
               })
            }
-        })
+  })
       let Counter=0;
        this.termSectionList.forEach(term =>{
            if(term.IsSectionValueSelected==false){
@@ -316,7 +326,7 @@ this.termSectionList.forEach(term =>{
            }else{
               Counter++
            }
-        })
+      })
         if(this.termSectionList.length==Counter){
            this.showErrorMessage=false;
         }
@@ -444,16 +454,35 @@ if(this.showErrorMessage==false){
 
     descriptionJson = JSON.stringify(descriptionTliList);
     wrapperListJson = JSON.stringify(wrapperlist);
-    debugger;
-    createTermasCondition({ wrapperJsonList: wrapperListJson, recordId: this.recordId, descriptiontalidList: descriptionJson }).then(result => {
-      debugger;
-      this.IsLoaded = false;
-      this.popUpOpen = false;
-      this.dispatchEvent(new CloseActionScreenEvent());
-      let baseURL = window.location.href.slice(0, 56);
-      window.location.replace(baseURL + this.recordId);
-    });
-    this.wiredTermsAndConditions;
+
+    if(this.OnClickOfSaveButton=='Insert Function'){
+          createTermasCondition({ wrapperJsonList: wrapperListJson, recordId:this.recordId, descriptiontalidList: descriptionJson }).then(result => {
+            debugger;
+            this.IsLoaded = false;
+            this.popUpOpen = false;
+            this.dispatchEvent(new CloseActionScreenEvent());
+            let baseURL = window.location.href.slice(0, 56);
+            window.location.replace(baseURL + this.recordId);
+          });
+          this.wiredTermsAndConditions;
+    }else if(this.OnClickOfSaveButton=='Update Function'){
+          this.showConformationBox=true;
+          this.popUpOpen=false;
+          this.IsLoaded = false;
+          if(this.IsUpdate=='yes'){
+              createTermasCondition({ wrapperJsonList: wrapperListJson, recordId: this.recordId, descriptiontalidList: descriptionJson }).then(result => {
+                debugger;
+                this.IsLoaded = false;
+                this.popUpOpen = false;
+                this.showConformationBox=true;
+                this.dispatchEvent(new CloseActionScreenEvent());
+                let baseURL = window.location.href.slice(0, 56);
+                window.location.replace(baseURL + this.recordId);
+              });
+              this.wiredTermsAndConditions;
+          }         
+    }
+    
   }else{
     return;
   }
@@ -487,4 +516,18 @@ if(this.showErrorMessage==false){
         this.IsLoaded = false;
     }
 
+    closeModal(){
+      debugger;
+      this.showConformationBox=false;
+    }
+
+   handleClickCancel(){
+        debugger;
+        this.popUpOpen = false
+        this.dispatchEvent(new CloseActionScreenEvent());
+        let baseURL = window.location.href.slice(0, 56);
+        window.location.replace(baseURL + this.recordId);
+   }
+
+    
 }
