@@ -757,15 +757,31 @@
         
         if(selectedProductName=='Expense Bundle'){
             var numOfBook= parseInt(numOfBookings);
-            if(numOfBook < 30){
-                component.set("v.show", false);
-                component.set("v.showalert", true);
-                component.find('notifyId').showNotice({
-                    "variant": "error",
-                    "header": "Number of booking Must be Minimum 30 Or Greater Than 30 !!!!",
-                    "message": "🚫Number of booking Must be Minimum 30 Or Greater Than 30 !!!!.",
-                });
-                return;
+            if(pricingType=='Per User'){   
+                if(numOfBook < 30){
+                    component.set("v.show", false);
+                    component.set("v.showalert", true);
+                    component.find('notifyId').showNotice({
+                        "variant": "error",
+                        "header": "Number of booking Must be Minimum 30 Or Greater Than 30 !!!!",
+                        "message": "🚫Number of booking Must be Minimum 30 Or Greater Than 30 !!!!.",
+                    });
+                    return;
+                }
+                
+            }else if(pricingType=='Per Report'){
+ 
+                if(numOfBook < 500){
+                    component.set("v.show", false);
+                    component.set("v.showalert", true);
+                    component.find('notifyId').showNotice({
+                        "variant": "error",
+                        "header": "Number of booking Must be Minimum 500 Or Greater Than 500 !!!!",
+                        "message": "🚫Number of booking Must be Minimum 500 Or Greater Than 500 !!!!.",
+                    });
+                    return;
+                }
+                
             }
          }
         

@@ -1,10 +1,10 @@
 /**
- * @author [Dinesh B]
- * @email dinesh.b@utilitarianLab.com
- * @create date 2023-11-20 12:44:48
- * @modify date 2023-11-20 12:44:48
- * @desc [description]
- */
+* @author [Dinesh B]
+* @email dinesh.b@utilitarianLab.com
+* @create date 2023-11-20 12:44:48
+* @modify date 2023-11-20 12:44:48
+* @desc [description]
+*/
 
 public with sharing class GenerateOrderFromLWCHelper {
     
@@ -15,49 +15,62 @@ public with sharing class GenerateOrderFromLWCHelper {
             if(recordId !=null){
                 blob pdfBody;
                 string filename;
-            Quote quote = [SELECT Id,Name FROM Quote WHERE Id=:recordId];
-            if(!String.isBlank(quote.id) &&  orderformName != null){
-
-                if(orderformName == 'OF With Card Deals'){
-                    PageReference pdfPage = Page.OrderForm_OfWithCardDeals;   
-                    pdfPage.getParameters().put('id',recordId);
-                    pdfBody = (!Test.isRunningTest() ? pdfPage.getContent() : Blob.valueOf('For Test Class content'));
-                    filename = 'With__Card__Deal';
+                Quote quote = [SELECT Id,Name FROM Quote WHERE Id=:recordId];
+                if(!String.isBlank(quote.id) &&  orderformName != null){
+                    if(orderformName == 'OF With OTI And Subscription'){ 
+                        PageReference pdfPage = Page.SubscriptionWithOTIOF;   
+                        pdfPage.getParameters().put('id',recordId);
+                        pdfBody = (!Test.isRunningTest() ? pdfPage.getContent() : Blob.valueOf('For Test Class content'));
+                        filename = 'SubscriptionWithOTIOF';
+                    }
+                    if(orderformName == 'OF Only With Subscription'){
+                        PageReference pdfPage = Page.OrderFormSubsOnly;   
+                        pdfPage.getParameters().put('id',recordId);
+                        pdfBody = (!Test.isRunningTest() ? pdfPage.getContent() : Blob.valueOf('For Test Class Fake content'));
+                        filename = 'OrderFormForSubsOnly';
+                    }
+                    if(orderformName == 'OF With Subscription and Card Details'){ 
+                        PageReference pdfPage = Page.OrderFormSubsWithCard;   
+                        pdfPage.getParameters().put('id',recordId);
+                        pdfBody = (!Test.isRunningTest() ? pdfPage.getContent() : Blob.valueOf('For Test Class Fake content'));
+                        filename = 'OrderFormSubsOnlyWithCard';
+                    }
+                    if(orderformName == 'OF With OTI, Subscription and Card details'){
+                        PageReference pdfPage = Page.SubscriptionOTICardOF;   
+                        pdfPage.getParameters().put('id',recordId);
+                        pdfBody = (!Test.isRunningTest() ? pdfPage.getContent() : Blob.valueOf('For Test Class Fake content'));
+                        filename = 'OrderFormForCardDeal';
+                    }
+                    Attachment attach = new Attachment(); 
+                    attach.Body = pdfBody;
+                    attach.Name =  filename+'_'+System.now()+'_.Pdf';
+                    attach.IsPrivate = false;
+                    attach.ParentId = quote.Id;
+                    attach.ContentType = 'application/pdf';
+                    attachList.add(attach);
                 }
-                if(orderformName == 'Only Subscription With Cards'){
-                    PageReference pdfPage = Page.OrderForm_OnlySubscriptionWithCards;   
-                    pdfPage.getParameters().put('id',recordId);
-                    pdfBody = (!Test.isRunningTest() ? pdfPage.getContent() : Blob.valueOf('For Test Class Fake content'));
-                    filename = 'Only_Subscription_With_Cards';
+                if(!attachList.isEmpty()){
+                    insert attachList;
+                    return 'SUCCESS';
                 }
-                if(orderformName == 'Subscription & Implementation OF'){
-                    PageReference pdfPage = Page.OrderSubscription_Implementation_OF;   
-                    pdfPage.getParameters().put('id',recordId);
-                    pdfBody = (!Test.isRunningTest() ? pdfPage.getContent() : Blob.valueOf('For Test Class Fake content'));
-                    filename = 'Subscription_Implementation_OF';
-                }
-                if(orderformName == 'Only Subscription OF'){
-                    PageReference pdfPage = Page.Order_Only_Subscription_OF;   
-                    pdfPage.getParameters().put('id',recordId);
-                    pdfBody = (!Test.isRunningTest() ? pdfPage.getContent() : Blob.valueOf('For Test Class Fake content'));
-                    filename = 'Only_Subscription_Of';
-                }
-                Attachment attach = new Attachment(); 
-                attach.Body = pdfBody;
-                attach.Name =  filename+'_'+System.now()+'_.Pdf';
-                attach.IsPrivate = false;
-                attach.ParentId = quote.Id;
-                attach.ContentType = 'application/pdf';
-                attachList.add(attach);
             }
-            if(!attachList.isEmpty()){
-                insert attachList;
-              return 'SUCCESS';
-            }
-        }
         }catch(Exception e){
             System.debug('The Error ::'+e.getMessage() +' AND Error Line No :'+e.getLineNumber());
         }
-       return null;
+        return null;
     }
+    
+    
+    @AuraEnabled
+    public static Quote getQuoteDetails(String recordId){
+        try{
+            if(recordId !=null){
+                return [SELECT Id, Name, ContactId, Contact.Name, Contact.Email FROM Quote where Id =:recordId];
+            }
+        }catch(Exception e){
+            System.debug('The Error ::'+e.getMessage() +' AND Error Line No :'+e.getLineNumber());
+        }
+        return null;
+    }
+    
 }

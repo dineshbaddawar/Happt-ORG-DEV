@@ -4,16 +4,16 @@ public class OppDocApprovalHelper {
     public static string docApproval(String oppId, String comment){
         try {
             String result;
-            List<Opportunity> oppList = [SELECT Id, Name, OwnerId, Approved_Quotes__c FROM Opportunity WHERE Id =: oppId LIMIT 1];
+            List<Opportunity> oppList = [SELECT Id, Name, OwnerId, Approved_Quotes__c, Accepted_Quotes__c FROM Opportunity WHERE Id =: oppId LIMIT 1];
             List<ProcessInstance> recordUnderApproval = [Select ID, Status,TargetObjectID, TargetObject.Name From ProcessInstance Where Status = 'Pending' AND TargetObjectID =:oppId];
             System.debug('RecordUnderApproval----'+recordUnderApproval);
-            if(oppList[0].Approved_Quotes__c > 0){
+            if(oppList[0].Accepted_Quotes__c > 0){
                 if(recordUnderApproval.size()>0){
                     result = 'Pending';
                 }
                 result = doApproval(oppId, 'Document_Approval', comment);
             }
-            else if(oppList[0].Approved_Quotes__c == 0){
+            else if(oppList[0].Accepted_Quotes__c == 0){
                 result = 'Quote not approved';
             }       
             system.debug('result -- ' + result);

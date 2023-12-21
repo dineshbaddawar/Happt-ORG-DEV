@@ -46,13 +46,15 @@ public class HappyOrderFormVFController {
         getExpenseOTTSAASList = new List<QuoteLineItem>();
         try{
             serviceData = [SELECT id,Name,StreetArea__c,CityArea__c,CityStatePincode__c,StreetRoad__c,StreetAddress__c,Charges__c FROM SERVICEPROVIDERDETAILS__c LIMIT 1];
+            System.debug('serviceData == >'+serviceData);
             happcardData = [SELECT Id,Welcome__c,Wallet_to_Bank_transfer_charges__c,Operational__c,Happay_Fee__c,ATM_Withdrawal_Fee__c,ATM_Pin_Reissuance_Fee__c,ATM_Balance_Inquiry__c,Year_1__c,Year2__c,Year3__c FROM HappyCard__c LIMIT 1];
             termsmetaData = [SELECT Term1__c,Term10__c,Term11__c,Term12__c,Term13__c,Term14__c,Term2__c,Term3__c,Term4__c,Term5__c,Term6__c,Term7__c,Term8__c,Term9__c FROM TermsCondtion__mdt LIMIT 1];
             string recordId= ApexPages.currentPage().getParameters().get('id');
+            System.debug('recordId === >'+recordId);
             terms = [ SELECT Id, Name,Comments__c, Quote__c, Late_Payment_Interest__c, YoY_PUPM_Report__c, YoY_PUPM_Report_100__c, YoY_AMC_10_20_of_ARR__c, Term_Attribute_Line_Item__r.Name,  Term_Section_Line_Item__r.Name FROM Terms_and_condition__c  WHERE Quote__c =:recordId  ]; 
-           // System.debug('terms ===>'+terms); 
+            System.debug('terms ===>'+terms); 
             if(!String.isBlank(recordId)){
-                getQuotedata = [SELECT Id,Name,AccountId,Travel_Total_OTI__c,Travel_Final_ARR__c,Expense_FInal_ARR__c,Travel_ARR_Discount__c,Expense_ARR_Discount__c,Expense_OTI_Discount__c,Travel_OTI_Discounted__c,Expense_ARR_Discounted__c,Travel_OTI_Discount__c,Travel_ARR_Discounted__c,Travel_Total_SAAS__c,Expense_Total_OTI__c,Expense_OTI_Discounted__c,Expense_Total_SAAS__c,QuoteNumber,ExpirationDate,OpportunityId,Description,Subscription_Billing_Start_Date__c,Advance_Billing_Cycle__c,Payment_Due_Date__c,Delayed_Payment_Interest__c,Subscription_Term__c,Notes__c,Yearly_Price_Escalation__c FROM Quote WHERE Id=:recordId];
+                getQuotedata = [SELECT Id,Name,AccountId,Travel_Total_OTI__c,Travel_Final_ARR__c,Expense_FInal_ARRs__c,Travel_ARR_Discount__c,Expense_ARR_Discount__c,Expense_OTI_Discount__c,Travel_OTI_Discounted__c,Expense_ARR_Discounted__c,Travel_OTI_Discount__c,Travel_ARR_Discounted__c,Travel_Total_SAAS__c,Expense_Total_OTI__c,Expense_OTI_Discounted__c,Expense_Total_SAAS__c,QuoteNumber,ExpirationDate,OpportunityId,Description,Subscription_Billing_Start_Date__c,Advance_Billing_Cycle__c,Payment_Due_Date__c,Delayed_Payment_Interest__c,Subscription_Term__c,Notes__c,Yearly_Price_Escalation__c FROM Quote WHERE Id=:recordId];
 
                 if(getQuotedata.Travel_Final_ARR__c !=null){
                     SubtotalTravel = getQuotedata.Travel_Final_ARR__c;
@@ -61,8 +63,8 @@ public class HappyOrderFormVFController {
                  }
                 System.debug('SubtotalTravel ==> '+SubtotalTravel);
                 
-                if(getQuotedata.Expense_FInal_ARR__c !=null){
-                    SubTotalExpense = getQuotedata.Expense_FInal_ARR__c;
+                if(getQuotedata.Expense_FInal_ARRs__c !=null){
+                    SubTotalExpense = getQuotedata.Expense_FInal_ARRs__c;
                 }else{
                     SubTotalExpense = 0;
                 }

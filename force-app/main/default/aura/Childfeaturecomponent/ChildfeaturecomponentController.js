@@ -211,7 +211,8 @@
                TempFeatureList[index].OTI_Price__c=0; 
             }else{
                TempFeatureList[index].OTI_Price__c=OptionRec.OTI_Custome_API_Price__c;  
-            }  
+            } 
+            TempFeatureList[index].Sub_Type__c=selectedSubType; 
         }else if(selectedSubType=='API'){
             
             if(OptionRec.SAAS_API_Pricing__c==null || OptionRec.SAAS_API_Pricing__c==undefined){
@@ -225,6 +226,7 @@
             }else{
                TempFeatureList[index].OTI_Price__c=OptionRec.OTI_API_Pricing__c;  
             }
+            TempFeatureList[index].Sub_Type__c=selectedSubType; 
         }else if(selectedSubType=='SFTP'){
             
             if(OptionRec.SAAS_SFTP_Pricing__c==null || OptionRec.SAAS_SFTP_Pricing__c==undefined){
@@ -238,6 +240,7 @@
             }else{
                TempFeatureList[index].OTI_Price__c=OptionRec.OTI_SFTP_Pricing__c;  
             }
+            TempFeatureList[index].Sub_Type__c=selectedSubType; 
         }else if(selectedSubType=='Elite'){
             
             if(OptionRec.SAAS_Elite_Pricing__c==null || OptionRec.SAAS_Elite_Pricing__c==undefined){
@@ -251,7 +254,7 @@
             }else{
                TempFeatureList[index].OTI_Price__c=OptionRec.OTI_Elite_Pricing__c;  
             }
-            
+            TempFeatureList[index].Sub_Type__c=selectedSubType; 
         }else if(selectedSubType=='Premium'){
             
              if(OptionRec.SAAS_Premium_Pricing__c==null || OptionRec.SAAS_Premium_Pricing__c==undefined){
@@ -265,6 +268,7 @@
             }else{
                TempFeatureList[index].OTI_Price__c=OptionRec.OTI_Premium_Pricing__c;  
             }
+            TempFeatureList[index].Sub_Type__c=selectedSubType; 
         }else if(selectedSubType=='Pro'){
             
              if(OptionRec.SAAS_Pro_Pricing__c==null || OptionRec.SAAS_Pro_Pricing__c==undefined){
@@ -278,6 +282,7 @@
             }else{
                TempFeatureList[index].OTI_Price__c=OptionRec.OTI_Pro_Pricing__c;  
             }
+            TempFeatureList[index].Sub_Type__c=selectedSubType; 
         }else if(selectedSubType=='Google Maps'){
             
             if(OptionRec.Google_Maps_SAAS__c==null || OptionRec.Google_Maps_SAAS__c==undefined){
@@ -291,7 +296,7 @@
             }else{
                TempFeatureList[index].OTI_Price__c=OptionRec.Google_Maps_OTI__c;  
             }
-            
+            TempFeatureList[index].Sub_Type__c=selectedSubType; 
         }else if(selectedSubType=='Map My India'){
             
             if(OptionRec.Map_My_India_SAAS__c==null || OptionRec.Map_My_India_SAAS__c==undefined){
@@ -305,7 +310,7 @@
             }else{
                TempFeatureList[index].OTI_Price__c=OptionRec.Map_My_India_OTI__c;  
             }
-            
+            TempFeatureList[index].Sub_Type__c=selectedSubType; 
         }else if(selectedSubType=='None'){
             
              if(OptionRec.Base_SAAS_Price__c==null || OptionRec.Base_SAAS_Price__c==undefined){
@@ -319,13 +324,15 @@
             }else{
                TempFeatureList[index].OTI_Price__c=OptionRec.Base_OTI_Price__c;  
             }
+            TempFeatureList[index].Sub_Type__c=selectedSubType; 
         }
         
         console.log('TempFeatureList',TempFeatureList);
+        component.set('v.SelectedProductOptions',TempFeatureList); 
          helper.helperMethod(component, event,TempFeatureList);
     },
     getEvents:function(component, event, helper) {
-        
+        debugger;
         var TempFeatureList = event.getParam("SelectedparentRecords");
        // var Loading=event.getParam("SelectedparentRecords");
            component.set("v.tempListLatest",TempFeatureList);

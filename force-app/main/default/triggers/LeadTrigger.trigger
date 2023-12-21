@@ -7,9 +7,9 @@ trigger LeadTrigger on Lead (after insert, before update, after update) {
     
     if(Trigger.isUpdate && Trigger.isBefore) {
         LeadTriggerHandler.onBeforeUpdate(Trigger.newMap, Trigger.oldMap);
-        if(LeadTriggerHandler.runtrigger == true){
+        /*if(LeadTriggerHandler.runtrigger == true){
             LeadTriggerHandler.checkMandatoryFields(Trigger.newMap);
-        }
+        }*/
     }
     
     if(Trigger.isUpdate && Trigger.isAfter) {

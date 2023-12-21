@@ -33,7 +33,8 @@ public class TestUtility1 {
         quotRec.Travel_ARR_Discounted__c    = 7000000; 
         quotRec.Expense_ARR_Discounted__c   = 8000000;
         quotRec.Travel_OTI_Discounted__c    = 10000;
-        quotRec.Expense_OTI_Discounted__c   = 7000000;
+        quotRec.Expense_OTI_Discounted__c   = 7000000; 
+        quotRec.Billing_Type_Multiplier__c  = 3;
          
         insert quotRec;
       
@@ -105,11 +106,12 @@ public class TestUtility1 {
     
     public static Terms_and_condition__c CreateTermAndCondition( string AppMatId,string TALIRecid,String TSLIRecID,string userid,string quoteId){
         Terms_and_condition__c TACRec     = new Terms_and_condition__c();
-        TACRec.Approval_Authority__c      = AppMatId;
+        TACRec.Approval_Matrix__c     = AppMatId;
         TACRec.Term_Attribute_Line_Item__c= TALIRecid;
         TACRec.Term_Section_Line_Item__c  = TSLIRecID;
         TACRec.Approval_Authority__c      = userid;
         TACRec.Quote__c                   = quoteId;
+        TACRec.Change_Request__c = 1000;
         insert TACRec;
         return TACRec;
     }

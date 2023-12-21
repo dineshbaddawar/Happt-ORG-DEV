@@ -7,6 +7,7 @@ trigger QuoteTrigger on Quote (before Update,after update) {
     }
     if(trigger.isAfter && trigger.isUpdate){
         SendOrderEmailAttachementHelper.SendOrderFormWithAttachmentEmail(trigger.newMap,trigger.oldMap);
+        SendOrderEmailAttachementHelper.sendOrderApprovedEmail(trigger.newMap,trigger.oldMap);
     }
 
 }

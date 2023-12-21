@@ -1,0 +1,36 @@
+<apex:component controller="GetChild" access="global">
+    
+    <html>
+        <body>
+            <p>
+                OF Draft has been submitted for the opportunity <b>{!quoteList.Opportunity.Name}</b> by Sales Team Member {!quoteList.Owner.Name}
+            </p>
+            <p>
+                PFA the details below : 
+            </p>
+            <b>Expense:</b>
+            <p>
+                Discount on ARR : {!quoteList.Expense_ARR_Discount__c}
+            </p>
+            <p>
+                Discount on OTI : {!quoteList.Expense_OTI_Discount__c}
+            </p>
+            <b>Travel:</b>
+            <p>
+                Discount on ARR : {!quoteList.Travel_ARR_Discount__c}
+            </p>
+            <p>
+                Discount on OTI :{!quoteList.Travel_OTI_Discount__c}
+            </p>
+            
+            <p><b>Payment Terms:</b></p>
+            <ul>
+                <apex:repeat value="{!quoteList.Terms_and_conditions__r}" var="childRecord">
+                    <br/>
+                    <b>{!childRecord.Term_Section_Line_Item_Name__c}</b>  : {!childRecord.Billing_Type__c}
+                </apex:repeat>
+            </ul>
+        </body>
+    </html>
+    
+</apex:component>

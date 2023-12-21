@@ -373,5 +373,6 @@ public class QuoteLineItemTrigger {
             } 
         }
         update quoteListTobeUpdate;
+        UpdateOpportunity.Quote_Related_OpportunityUpdate(quoteIdRec);
     }   
 }

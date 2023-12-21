@@ -1,0 +1,546 @@
+<apex:page showHeader="false" sidebar="false"  docType="html-5.0" renderAs="pdf" applyBodyTag="false" applyHtmlTag="false" standardController="Quote" extensions="SubscriptionWithOTIOFControllerNew">
+    <!--  renderAs="pdf"  -->
+    <head>
+        
+        <style>
+            .header {
+            position: running(header);
+            width:100%;
+            margin-bottom:50px;
+            }
+            @page {
+            @top-right {
+            content: element(header);
+            
+            }
+            }
+            .pageStart{
+            margin-top:80px;
+            }
+            .brandfontcolor{
+            color:#00b26f;
+            font-size:25px;
+            font-weight: bold;
+            }
+            table {
+            border-collapse: collapse;
+            width: 100%;
+            }
+            
+            th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <div >
+            <div class="header">
+                <img src="{!$Resource.heaserlogo}" style='float:right;width:400px;'/>
+            </div>
+        </div>
+        
+        <div style='margin-top:500px;background:#00b26f;width:35%'>
+            <b style="color:White;font-size:35px;font-weight: bold;">ORDER FORM</b>
+        </div>
+        
+        <div style="page-break-after: always"/>
+        <div >
+            
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+
+            <div> 
+                <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;width:30%;">Proposal Reference Number</td>
+                        <td style="border:1px solid black;padding:10px;">{!dataWrapperObj.quoteDetails.Name}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;width:30%;">Billing contact Name</td>
+                        <td style="border:1px solid black;padding:10px;">{!dataWrapperObj.quoteDetails.Contact.Name}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;width:30%;">Billing contact Email</td>
+                        <td style="border:1px solid black;padding:10px;">{!dataWrapperObj.quoteDetails.Contact.Email}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;width:30%;">Proposed By</td>
+                        <td style="border:1px solid black;padding:10px;">{!$User.FirstName} {!$User.LastName}</td>
+                    </tr>
+                </table>
+            </div>
+            <div style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;;">
+                
+            </div>
+            <p style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;">
+                <span style="padding-left:30px;font-size:20px;padding-top:30px;padding-bottom:30px;font-weight: bold;">SERVICE PROVIDER DETAILS</span>
+            </p>
+            <div>
+                <b style="font-size:12px;font-family: Noto Sans,Helvetica,sans-serif;">VA TECH VENTURES PRIVATE LIMITED</b> <br/>
+                <br/> <span style="">3rd Floor, Delta Block, Sigma Soft-Tech</span> 
+                <br/> <span style="">Park, No.7 Whitefield Main Road, </span>
+                <br/> <span style="">Ramagodanahalli, Varthur Hobli, </span>
+                <br/> <span style="">Bangalore 560066</span>
+            </div>
+            <br/>
+            <div style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;;">
+                
+            </div>
+            <p style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;">
+                <span style="padding-left:30px;font-size:20px;padding-top:30px;padding-bottom:30px;font-weight: bold;">CLIENT DETAILS</span>
+            </p>
+            <div>
+                <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;width:30%;">Client Entity Name</td>
+                        <td style="border:1px solid black;padding:10px;">{!dataWrapperObj.quoteDetails.Account.Name}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;width:30%;">Registered Address</td>
+                        <td style="border:1px solid black;padding:10px;">{!dataWrapperObj.quoteDetails.Account.BillingStreet}, {!dataWrapperObj.quoteDetails.Account.BillingCity} {!dataWrapperObj.quoteDetails.Account.BillingState}  {!dataWrapperObj.quoteDetails.Account.BillingPostalCode}, {!dataWrapperObj.quoteDetails.Account.BillingCountry}</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;width:30%;">CIN / Registration Number</td>
+                        <td style="border:1px solid black;padding:10px;">{!dataWrapperObj.quoteDetails.Account.CIN__c}</td>
+                    </tr>
+                </table>
+            </div>
+            <div style="margin-top:3px;">
+                <div style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;;">
+                    
+                </div>
+                <p style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;">
+                    <span style="padding-left:30px;font-size:20px;padding-top:30px;padding-bottom:30px;font-weight: bold;">SOLUTION OFFERED</span>
+                </p>
+                <div>
+                    <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                        <tr>
+                            <td style="border:1px solid black;background-color: #dddddd;padding:10px;width:30%;">Happay Offerings</td>
+                            <td style="border:1px solid black;padding:10px;">Travel (Request) and Expense</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div style="page-break-after: always"/>
+        <div class="pageStart">
+            <div style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;;">
+                
+            </div>
+            <p style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;">
+                <span style="padding-left:30px;font-size:20px;padding-top:30px;padding-bottom:30px;font-weight: bold;">SUBSCRIPTION SUMMARY</span>
+            </p>
+            
+            <div>
+                <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                    <tr>
+                        <td colspan="2"  style="border:1px solid black;background-color: #dddddd;padding:10px;">Offered Commercials validity up to <span><apex:outputText value="{0,date,MM/dd/yy}"> <apex:param value="{!dataWrapperObj.quoteDetails.ExpirationDate}" /> </apex:outputText></span></td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:10px;width:30%;">Description</td>
+                        <td style="border:1px solid black;padding:10px;background-color: #dddddd;">Amounts (INR)</td>
+                    </tr>
+                    
+                    
+                    
+                    
+                    
+                    <apex:repeat value="{!dataWrapperObj.termsDetilsList}" var="term">
+                        <tr>
+                            <td style="border:1px solid black;padding:10px;">{!term.Term_Section_Line_Item__r.Name}</td>
+                            <td style="border:1px solid black;padding:10px;">
+                                
+                                <apex:outputText rendered="{!(term.Term_Section_Line_Item__r.Name != 'Delay Payment Interest' && 
+                                                           term.Term_Section_Line_Item__r.Name != 'YoY | PUPM/Report 50-100' && 
+                                                           term.Term_Section_Line_Item__r.Name != 'YoY | PUPM/Report >100' && 
+                                                           term.Term_Section_Line_Item__r.Name != 'YoY | AMC 10-20% of ARR' && term.Term_Section_Line_Item__r.Name != 'OTI Payment Milestone' )}">
+                                    {!term.Term_Attribute_Line_Item__r.Name}<br/>
+                                    <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                                </apex:outputText>
+                                <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'OTI Payment Milestone'}">
+                                    <apex:outputText rendered="{!term.Term_Attribute_Description__c !=null}">{!term.Term_Attribute_Description__c}</apex:outputText>
+                                    <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                                </apex:outputText>
+                                
+                                <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'Delay Payment Interest'}">
+                                    <apex:outputText rendered="{!term.Late_Payment_Interest__c !=null}">{!term.Late_Payment_Interest__c}</apex:outputText>
+                                    <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                                </apex:outputText>
+                                
+                                <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'YoY | PUPM/Report 50-100'}">
+                                    <apex:outputText rendered="{!term.YoY_PUPM_Report__c !=null}">{!term.YoY_PUPM_Report__c}</apex:outputText>
+                                    <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                                </apex:outputText>
+                                
+                                <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'YoY | PUPM/Report >100'}">
+                                    <apex:outputText rendered="{!term.YoY_PUPM_Report_100__c !=null}">{!term.YoY_PUPM_Report_100__c}</apex:outputText>
+                                    <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                                </apex:outputText>
+                                
+                                <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'YoY | AMC 10-20% of ARR'}">
+                                    <apex:outputText rendered="{!term.YoY_AMC_10_20_of_ARR__c !=null}">{!term.YoY_AMC_10_20_of_ARR__c} </apex:outputText>
+                                    <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                                </apex:outputText>
+                            </td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+            </div>
+        </div>
+        
+        <div style="page-break-after: always"/>
+        <div class="pageStart">
+            <apex:variable var="index" value="{!0}" />
+            <div style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;;">
+                
+            </div>
+            <p style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;">
+                <span style="padding-left:30px;font-size:20px;padding-top:30px;padding-bottom:30px;font-weight: bold;">SUBSCRIPTION FEES</span>
+            </p>
+            <br/>
+            <b>EXPENSE DETAILS</b>
+            <br/>  <br/>
+            
+            <table>
+                <tr>
+                    <th Style ="width:25">Product Name</th>
+                    <th>Pricing Type</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                </tr>
+                <apex:repeat value="{!dataWrapperObj.expenceQLIList}" var="subOLI">
+                    <tr>
+                        <td>{!subOLI.Product2.Name}</td>
+                        <apex:outputPanel layout="none" rendered="{!index == 0}">
+                            <td rowspan="{!dataWrapperObj.subscriptionQLIListSize}">{!subOLI.Travel_Pricing_Type__c}</td>
+                        </apex:outputPanel>
+                        <apex:outputPanel layout="none" rendered="{!index == 0}">
+                            <td rowspan="{!dataWrapperObj.subscriptionQLIListSize}">{!dataWrapperObj.subscriptionQLIListSize}</td>
+                        </apex:outputPanel>
+                        <apex:outputPanel layout="none" rendered="{!index == 0}">
+                            <td rowspan="{!dataWrapperObj.subscriptionQLIListSize}">{!dataWrapperObj.dataWrapperObj.subscriptionQLIAmount}</td>
+                        </apex:outputPanel>
+                    </tr>  
+                    <apex:variable var="index" value="{!index + 1}" />
+                </apex:repeat>
+            </table>
+            
+            <table> 
+                <tr>
+                    <td style="width:53%">Web Services Charge</td>
+                    <td style="width:15%;text-align:center">{!dataWrapperObj.expenceWebChargeQLIRecord.Travel_Pricing_Type__c}</td>
+                    <td style="width:15%;text-align:center">{!dataWrapperObj.expenceWebChargeQLIRecord.SAAS_Quantity__c}</td>
+                    <td style="width:18%;text-align:center">{!dataWrapperObj.expenceWebChargeQLIRecord.SAAS_Price__c}</td>
+                </tr>
+                <tr>
+                    <td style="width:53%">Expense Monthly Price</td>
+                    <td colspan="3" style="text-align:center" >{!dataWrapperObj.ExpenseMonthlyAmount}</td>
+                </tr>
+                <tr>
+                    <td style="width:53%">Total Expense</td>
+                    <td colspan="3" style="text-align:center" >{!dataWrapperObj.TotalExpenseAmountWithRemoveOfWebCharges}</td>
+                </tr>
+            </table>
+            
+            <apex:variable var="ind" value="{!0}" />
+            <div style="page-break-after: always"/>
+            <div class="pageStart">
+                <br/>
+                <br/>
+                <br/>
+                <b style="font-size:15px;">1. Route Tracker:</b>
+                <br/>
+                <br/>
+                        <table style="border:1px solid black;border-collapse:collapse;">
+                            <tr>
+                                <td style="border:1px solid black; padding:7px;word-wrap: break-all;width:25% !important;text-align:center;">Vendor Name</td>
+                                <td style="border:1px solid black; padding:7px;word-wrap: break-all;width:25%;text-align:center;">Upto 20k Transaction(INR/Transation) </td>
+                                 <td style="border:1px solid black; padding:7px;word-wrap: break-all;width:25%;text-align:center;">Upto 20k-50k Transaction(INR/Transation) </td>
+                                 <td style="border:1px solid black; padding:7px;word-wrap: break-all;width:25%;text-align:center;">above 50k Transaction(INR/Transation) </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid black; padding:7px;width:25%;text-align:center;">Map My India</td>
+                                <td style="border:1px solid black; padding:7px;width:25%;text-align:center;"><span> 2 </span></td>
+                                 <td style="border:1px solid black; padding:7px;width:25%;text-align:center;"><span> 1.75 </span></td>
+                                 <td style="border:1px solid black; padding:7px;width:25%;text-align:center;"><span> 1.5 </span></td>
+                            </tr>
+                         <tr>
+                                <td style="border:1px solid black; padding:7px;width:25%;text-align:center;">Google Map</td>
+                                <td style="border:1px solid black; padding:7px;width:25%;text-align:center;"><span>  8</span></td>
+                                 <td style="border:1px solid black; padding:7px;width:25%;text-align:center;"><span> 7 </span></td>
+                                 <td style="border:1px solid black; padding:7px;width:25%;text-align:center;"><span> 6 </span></td>
+                            </tr>
+                        </table>
+                    
+                    
+                    
+                     <br/>
+                <br/>
+                <br/>
+                    <span>
+                        Note:
+                    </span>
+                    <br/>
+                    <br/> <span style="font-size:15px;text-align:left;">1. The Invoicing For Route trcker will be on <b>monthly actuals on created transcations.</b></span>
+                    <br/> <span style="font-size:15px;text-align:left;">2. Route Tracker to be sold as an additional add-on module.</span>
+                    <br/> <span style="font-size:15px;text-align:left;">3. The Pricing is slab based pricing and the slab pricing will be effective irrespetive of the Number of transactions option in the calculator.estimation from the customer on transactions,you can add 20,000 in the Number of transaction option in the calculator.</span> <br/>
+                    <br/> <br/> <span style="font-size:15px;text-align:left;margin-left:20px;">Example: x company has a monthly consumption of 1lks transaction, Pricung for MMI will be as follows:</span>
+                    <br/>  <span style="font-size:15px;text-align:left;margin-left:50px;">2*20000  = 40,000(for initial 20k transaction)</span>
+                    <br/>  <span style="font-size:15px;text-align:left;margin-left:50px;">1.75*30000  = 52,500(for 20k-50k transaction)</span>
+                    <br/>  <span style="font-size:15px;text-align:left;margin-left:50px;">1.5*50000  = 75,000(above 50k transaction)</span>
+                    <br/>  <span style="font-size:15px;text-align:left;margin-left:50px;"><b style=" border-bottom: 1px solid black;">Total Cost :INR 1,67,000 </b></span>
+                    <br/>
+                    <br/>
+                    <br/>
+            </div>
+            <div style="page-break-after: always"/>
+            <div class="pageStart">
+               
+                <br/>
+                <b>TRAVEL DETAILS</b>
+                <br/>  <br/>
+                <table>
+                    <tr>
+                        <th Style ="width:25">Product Name</th>
+                        <th>Pricing Type</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                    </tr>
+                    <apex:repeat value="{!dataWrapperObj.travelQLIList}" var="travelOLI">
+                        <tr>
+                            <td>{!travelOLI.Product2.Name}</td>
+                            <apex:outputPanel layout="none" rendered="{!ind == 0}">
+                                <td rowspan="{!dataWrapperObj.travelQLIListsize}">{!travelOLI.Travel_Pricing_Type__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="none" rendered="{!ind == 0}">
+                                <td rowspan="{!dataWrapperObj.travelQLIListsize}">{!dataWrapperObj.travelQLIListsize}</td> 
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="none" rendered="{!ind == 0}">
+                                <td rowspan="{!dataWrapperObj.travelQLIListsize}">{! dataWrapperObj.TravelsubscriptionQLIAmount}</td> 
+                            </apex:outputPanel>                            
+                        </tr>  
+                        <apex:variable var="ind" value="{!ind + 1}" />
+                    </apex:repeat>
+                    <tr>
+                        <td style="width:53%">Travel Monthly Price</td>
+                        <td colspan="3" style="text-align:center" >{!dataWrapperObj.TravelMonthlyAmount}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:53%">Discount</td>
+                        <td colspan="3" style="text-align:center" >%</td>
+                    </tr>
+                    <tr>
+                        <td style="width:53%">Total Monthly Price (Travel+Expense)</td>
+                        <td colspan="3" style="text-align:center" >{!TotalMonthlyTravelExpenseTotal}</td>
+                    </tr>
+                </table>
+                <br/>
+                <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:7px;width:53%;"> ARR Expense</td>
+                        <td style="border:1px solid black;padding:7px;text-align:center">{!dataWrapperObj.quoteDetails.Expense_FInal_ARRs__c} </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:7px;width:53%;">ARR Travel</td>
+                        <td style="border:1px solid black;padding:7px;text-align:center"><span>{!dataWrapperObj.quoteDetails.Travel_Final_ARR__c}  </span></td>
+                    </tr>   
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:7px;width:53%;">ACV</td>
+                        <td style="border:1px solid black;padding:7px;text-align:center">
+                            <apex:outputText value="{0,number, ###,###,###,###}"><apex:param value="{!TotalACV}"/></apex:outputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background-color: #dddddd;padding:7px;width:53%;">Web Services</td>
+                        <td style="border:1px solid black;padding:7px;text-align:center"><span>{!dataWrapperObj.expenceWebChargeQLIRecord.SAAS_Price__c}  </span></td>
+                    </tr>  
+                </table>
+                
+            </div>
+            
+              
+                
+                    <div style="page-break-after: always"/>
+                
+                <apex:variable var="sa" value="{!0}" />
+                <apex:variable var="nz" value="{!0}" />
+                <div class="pageStart">
+                    <br/>
+                    <b>IMPLEMENTATION SERVICES FEES  &amp; PAYMENT TERMS</b>
+                    <br/>  <br/>
+                </div>
+                <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                    
+                    <tr>
+                        <th style="border:1px solid black;background-color: #dddddd;padding:7px;">Description</th>
+                        <th style="border:1px solid black;background-color: #dddddd;padding:7px;text-align:center;">Price </th>
+                        <td style="border:1px solid black;padding:7px;text-align:center;tex-align:left;"><b>Payment Schedule</b> <br/> <span style="font-style:normal;tex-align:left;">100% payable on Order Form signing</span> </td>
+                    </tr>
+                    <apex:repeat value="{!getExpenseOTTSAASList}" var="getExp">
+                        <tr>
+                            <td>{!getExp.Product2.Name}</td>
+                            <apex:outputPanel layout="none" rendered="{!sa == 0}">
+                                <td rowspan="{!getExpenseOTTSAASListSize}">{!getExpenseOTTSAASAmount}</td> 
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="none" rendered="{!sa == 0}">
+                                <td rowspan="{!getExpenseOTTSAASListSize}"></td> 
+                            </apex:outputPanel>                            
+                        </tr>  
+                        <apex:variable var="sa" value="{!sa + 1}" />
+                    </apex:repeat>
+                    
+
+                    <apex:repeat value="{!getTravelOTTSAASList}" var="getTra">
+                        <tr>
+                            <td>{!getTra.Product2.Name}</td>
+                            <apex:outputPanel layout="none" rendered="{!nz == 0}">
+                                <td rowspan="{!getTravelOTTSAASListSize}">{!getTravelOTTSAASAmount}</td> 
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="none" rendered="{!nz == 0}">
+                                <td rowspan="{!getTravelOTTSAASListSize}"></td> 
+                            </apex:outputPanel>                            
+                        </tr>  
+                        <apex:variable var="nz" value="{!nz + 1}" />
+                    </apex:repeat>
+
+
+                      <tr>
+                        <td style="width:53%">Travel - OTI</td>
+                        <td colspan="3" style="text-align:center" > <apex:image url="{!$Resource.RupeeSign1}" width="10" height="12" /> {!dataWrapperObj.quoteDetails.Travel_Total_OTI__c}</td>
+                    </tr>
+                     <tr>
+                        <td style="width:53%">Expense OTI</td>
+                        <td colspan="3" style="text-align:center" > <apex:image url="{!$Resource.RupeeSign1}" width="10" height="12" /> {!dataWrapperObj.quoteDetails.Expense_Total_OTI__c}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:53%">OTI Sub Total</td>
+                        <td colspan="3" style="text-align:center" > <apex:image url="{!$Resource.RupeeSign1}" width="10" height="12" /> {!OTISubTotal}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:53%">OTI Discount</td>
+                        <td colspan="3" style="text-align:center" > {!OTIDiscount}% </td>
+                    </tr>
+                    <tr>
+                        <td style="width:53%">TOTAL</td>
+                        <td colspan="3" style="text-align:center" > <apex:image url="{!$Resource.RupeeSign1}" width="10" height="12" /> {!OTISubTotal}</td>
+                    </tr>
+                </table>
+            
+              <div style="page-break-after: always"/>
+                
+                  <div class="pageStart">
+                <br/>
+                <b>PREPAID CARDS (ISSUED BY CARD ISSUING PARTNER) (IF AVAILED)</b>
+                <br/> 
+               
+            <br/> <br/>
+            <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                <tr>
+                    <td style="border:1px solid black;background-color: #dddddd;padding:10px;width:40%;">Welcome Kit + Card Printing Cost</td>
+                    <td style="border:1px solid  black;padding:10px;width:60%;">INR 200 per Card </td>
+                </tr>
+                <tr>
+                    <td style="border:1px solid black;background-color: #dddddd;padding:10px;width:40%;">Card Replacement Fee</td>
+                    <td style="border:1px solid  black;padding:10px;width:60%;">INR 200 per Instance</td>
+                </tr>
+                <tr>
+                    <td style="border:1px solid black;background-color: #dddddd;padding:10px;width:40%;">ATM Withdrawal Fee*</td>
+                    <td style="border:1px solid  black;padding:10px;width:60%;">INR 21+ Taxes per instance </td>
+                </tr>
+                
+                <tr>
+                    <td style="border:1px solid black;background-color: #dddddd;padding:10px;width:40%;">ATM Balance Inquiry*</td>
+                    <td style="border:1px solid  black;padding:10px;width:60%;">INR 10+ Taxes per instance </td>
+                </tr>
+                <tr>
+                    <td style="border:1px solid black;background-color: #dddddd;padding:10px;width:40%;">ATM Pin Reissuance Fee*</td>
+                    <td style="border:1px solid  black;padding:10px;width:60%;">INR 50+ Taxes per instance </td>
+                </tr>
+            </table>
+            <br/>    
+            <i style="font-size:80%;"><b></b></i>  <br/>   
+            <span style="font-size:80%;"> -&nbsp;Cards dispatch is subject to receipt of payment from the Client.   <br/>
+                -&nbsp;Card usage shall be governed by the card related terms to be agreed separately between the Card issuing partner and the Client &amp; Happay shall have no liability 
+                &nbsp;&nbsp;&nbsp;pertaining to the same.
+            </span>          
+                </div>
+                
+                <div style="page-break-after: always"/>
+                <div class="pageStart">
+                    <br/>
+                    <b>TERMS &amp; CONDITIONS</b>
+                    <br/>  <br/>
+                </div>
+                <span style="font-size:80%;">
+                    <p style="font-size:80%;text-align:left;">1.By execution of this Order Form, Service Provider and Customer agree that this Order Form is governed by the terms and conditions of the <a href="https://happay.com/master_implementation_and_subscription_agreement/">  Master Subscription Agreement</a> OR the<a href="https://happay.com/master_subscription_agreement/"> Master Implementation &amp; Subscription Agreement</a>  as the case maybe  &amp; as current at the time of execution of this Order Form (“Agreement”) and the Scope of Work executed between the Parties (“SOW”).</p>
+                    <p style="font-size:80%;">2. {!termsmetaData.Term2__c}</p>
+                    <p style="font-size:80%;">3. {!termsmetaData.Term3__c}</p>
+                    <p style="font-size:80%;">4. {!termsmetaData.Term4__c}</p>
+                    <p style="font-size:80%;">5. {!termsmetaData.Term5__c}</p>
+                    <p style="font-size:80%;">6. {!termsmetaData.Term6__c}</p>
+                    <p style="font-size:80%;">7. {!termsmetaData.Term7__c}</p>
+                    <p style="font-size:80%;">8. {!termsmetaData.Term8__c}</p>
+                    <p style="font-size:80%;">9. {!termsmetaData.Term9__c}</p>
+                    <p style="font-size:80%;">10. {!termsmetaData.Term10__c}</p>
+                    <p style="font-size:80%;">11. {!termsmetaData.Term11__c}</p>
+                    <p style="font-size:80%;">12. {!termsmetaData.Term_15__c}</p>
+                    <p style="font-size:80%;">13. {!termsmetaData.Term_16__c}</p>  <br/> <br/>
+                    <p style="font-size:80%;"> *For the purpose of this Order Form, Authorized Signatory means, in relation to a company, an individual who is duly authorized to represent, perform any and / or all acts including but not limited to signing and execution of the certificates, agreements or any document(s) on behalf of the company and the same shall be deemed to be binding on the company; and whose authority can be evidenced by a resolution of the board of directors (or any other appropriate means of authorisation) of such company .</p>  <br/><br/>
+                </span>    
+
+
+                <div style="page-break-after: always"/>
+                <div class="pageStart">
+                    <br/>
+                    <b>ACKNOWLEDGEMENT</b>
+                    <br/>  <br/>
+                </div>
+
+                <div>
+                    <br/>
+           <table style="width:100%;border:1px solid black;border-collapse:collapse;">
+                 <tr>
+                      <td style="border:1px solid black;width:50%;padding:30px;">FOR AND ON BEHALF OF THE CLIENT</td>
+                      <td style="border:1px solid black;width:50%;padding:30px;">FOR AND ON BEHALF OF THE SERVICE PROVIDER</td>
+                 </tr>
+                 <tr>
+                       <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;text-align:center;">
+                           Authorised Signatory <br/>
+                           <hr/>
+                       </td>
+                       <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;text-align:center;">
+                           Authorised Signatory <br/>
+                           <hr/>
+                       </td>
+                 </tr>
+                 <tr>
+                       <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Name:</td>
+                       <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Name: <span >{!getContactDetails.Name} </span> </td>
+                </tr>
+               
+              <tr>
+                   <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Designation:</td>
+                   <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Designation:</td>
+              </tr>
+              <tr>
+                           <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Date:<span> {!DAY(TODAY())}/{!MONTH(TODAY())}/{!YEAR(TODAY())}  </span></td>
+                           <td style="border:1px solid black;width:50%;padding:10px;border-top: hidden;">Date:<span>  {!DAY(TODAY())}/{!MONTH(TODAY())}/{!YEAR(TODAY())} </span></td>
+               </tr>
+              
+             
+               
+             </table>
+       </div>
+                
+          
+        </div>
+        
+    </body>
+</apex:page>

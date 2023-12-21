@@ -1,8 +1,8 @@
-@IsTest(SeeAllData=true)
+@IsTest 
 public class PaymentTermApprover_Test {
     @isTest
     public static void TestMethods() {
-        Profile profile = [SELECT Id,Name FROM Profile WHERE Name = 'System Administrator' LIMIT 1];
+       Profile profile = [SELECT Id,Name FROM Profile WHERE Name = 'System Administrator' LIMIT 1];
         string profileid = profile.id;
         string profileName = profile.Name;
         User testUser = new User(
@@ -16,7 +16,22 @@ public class PaymentTermApprover_Test {
             LocaleSidKey = 'en_US',
             TimeZoneSidKey = 'America/Los_Angeles'
         );
-        insert testUser;  
+        insert testUser; 
+        
+        User testUser1 = new User(
+            ProfileId = profile.Id,
+            LastName = 'Satyam',
+            ManagerId = testUser.id,
+            Email = 'satyam@mailinatore.com',
+            UserName = 'satyam@mailinatore.com',
+            Alias = 'satya',
+            EmailEncodingKey = 'UTF-8',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US',
+            TimeZoneSidKey = 'America/Los_Angeles'
+        );
+        insert testUser1; 
+        
         string userid = testUser.id;
         Map<Id,Id> mapofUseridTermConditionid = new Map<Id,Id>();
         List<Approval_Matrix__c> approvallist = new List<Approval_Matrix__c>();
@@ -32,10 +47,13 @@ public class PaymentTermApprover_Test {
         insert  opp;
         
         Quote testQuote = TestUtility1.CreateQuote(opp.id,'TestQuote',100000,100000,100000,100000);
-        testQuote.Approver_Authority_Level1__c = testUser.id;
-        testQuote.Status = 'Draft';
-        update testQuote;
-        string testQuoteid = testQuote.id;
+        Quote updatetestQuote = new Quote();
+        updatetestQuote.id = testQuote.id;
+        updatetestQuote.Approver_Authority_Level1__c = testUser.id;
+        updatetestQuote.Approver_Authority_Level2__c = testUser1.id;
+        updatetestQuote.Status = 'Draft';
+        update updatetestQuote;
+        string testQuoteid = updatetestQuote.id;
         
         Term_Section_Line_Item__c tsLRec  = TestUtility1.CreateTermSection('TestTerm');
         string tsLRecId = tsLRec.id;
@@ -45,28 +63,26 @@ public class PaymentTermApprover_Test {
         Approval_Matrix__c AMRec = TestUtility1.CreateApprovalMatrix('AppTest',True,userid,talRecId,profileid,True);
         string AMRecId = AMRec.id;
         Terms_and_condition__c TACRec = TestUtility1.CreateTermAndCondition(AMRecId,talRecId,tsLRecId,userid,testQuoteid);
-        if(TACRec != null){
             TACList.add(TACRec);
-            Terms_and_condition__c terConRec = new Terms_and_condition__c();
-            terConRec.id  = TACRec.id;
-            terConRec.Change_Request__c = 1000;
-            update  terConRec;    
-            mapIdAndTermConditiion.put(terConRec.id,terConRec);
-            mapofUseridTermConditionid.put(terConRec.id,testUser.id ); 
-        }
+            mapIdAndTermConditiion.put(TACRec.id,TACRec);
+            mapofUseridTermConditionid.put(TACRec.id,testUser.id ); 
+       
         Approval.ProcessSubmitRequest approvalRequest = new Approval.ProcessSubmitRequest();
-        approvalRequest.setComments('Submitting request for payment term approval.');
-        approvalRequest.setObjectId(testQuote.id);
+        // approvalRequest.setComments('Submitting request for payment term approval.');
+        approvalRequest.setObjectId(updatetestQuote.id);
         approvalRequest.setNextApproverIds(new List<Id>{testUser.id});
+        Approval.ProcessResult result = Approval.process(approvalRequest); 
         
+        Approval.ProcessWorkitemRequest req = new Approval.ProcessWorkitemRequest();
+        req.setComments('Some comments if needed');
+        req.setAction('Approve');
+
         
         Test.startTest();
-        PaymentTermApprover.paymentTermApproverLogic(testQuote.id);
+        PaymentTermApprover.paymentTermApproverLogic(updatetestQuote.id);
         PaymentTermApprover.calculateApproverAuthorityMatrix(TACList,mapIdAndTermConditiion); 
-       
-            PaymentTermApprover.updateAuthorityOnTermsAndCondition(mapofUseridTermConditionid);
-            
-        
+        PaymentTermApprover.updateAuthorityOnTermsAndCondition(mapofUseridTermConditionid);
+        // PaymentTermApprover.codeCover();
         Test.stopTest();
     }
     

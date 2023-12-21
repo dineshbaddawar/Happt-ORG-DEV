@@ -518,7 +518,7 @@
              <table style="width:100%;border:1px solid black;border-collapse:collapse;">
                     <tr>
                         <td style="border:1px solid black;background-color: #dddddd;padding:7px;width:40%;">Total ARR Expense</td>
-                        <td style="border:1px solid black;padding:7px;width:60%;">{!getQuotedata.Expense_FInal_ARR__c} </td>
+                        <td style="border:1px solid black;padding:7px;width:60%;">{!getQuotedata.Expense_FInal_ARRs__c} </td>
                     </tr>
                     <tr>
                         <td style="border:1px solid black;background-color: #dddddd;padding:7px;width:40%;">Total ARR Travel</td>

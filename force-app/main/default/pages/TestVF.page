@@ -1,0 +1,5 @@
+<apex:page renderAs="pdf" controller="TestVFController">
+    <apex:outputText value="{0, number, Rs ##,##,##,###.##}">
+    <apex:param value="{!i}"/>
+</apex:outputText>
+</apex:page>

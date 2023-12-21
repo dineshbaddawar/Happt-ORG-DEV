@@ -17,7 +17,7 @@
                     var toastEvent = $A.get("e.force:showToast");
                     toastEvent.setParams({
                         title : 'Error',
-                        message: 'Quote is not Approved yet',
+                        message: 'Quote is not Accepted yet',
                         duration:' 5000',
                         key: 'info_alt',
                         type: 'error',

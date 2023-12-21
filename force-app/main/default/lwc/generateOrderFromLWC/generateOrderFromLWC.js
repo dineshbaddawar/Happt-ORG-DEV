@@ -10,47 +10,76 @@ import { LightningElement,api } from 'lwc';
 import { CloseActionScreenEvent } from 'lightning/actions';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import generateSelectedOrderForm from '@salesforce/apex/GenerateOrderFromLWCHelper.generateSelectedOrderForm';
-import OnlySubscriptionOF from '@salesforce/label/c.Order_Only_Subscription_OF'; 
-import SubscriptionImplementationOF from '@salesforce/label/c.OrderSubscription_Implementation_OF'; 
-import OrderWithCardDeals from '@salesforce/label/c.OrderForm_OfWithCardDeals'; 
-import OnlySubscriptionWithCards from '@salesforce/label/c.OrderForm_OnlySubscriptionWithCards'; 
+import getQuoteDetails from '@salesforce/apex/GenerateOrderFromLWCHelper.getQuoteDetails';
+
+import SubscriptionWithOTIOFLabel from '@salesforce/label/c.SubscriptionWithOTIOFLabel'; 
+import OrderFormSubsOnlyLabel from '@salesforce/label/c.OrderFormSubsOnlyLabel'; 
+import OrderFormSubsWithCardLabel from '@salesforce/label/c.OrderFormSubsWithCardLabel'; 
+import SubscriptionOTICardOFLabel from '@salesforce/label/c.SubscriptionOTICardOFLabel'; 
+
 export default class GenerateOrderFromLWC extends LightningElement {
     @api recordId;
     isShowPDFPreview = false;
     isShowButton = false;
     isShowSaveCancelButton = false;
-    isShowButtonHide = true;
+    isShowButtonHide = false;
     value = '--None--';
-    get options() {
+    error;
+    data;
+    showContactErrorPanel = false;
+   
+      get options() {
         debugger;
         return [
-            { label: 'Subscription & Implementation OF', value: 'Subscription & Implementation OF'},
-            { label: 'Only Subscription OF', value: 'Only Subscription OF' },
-            { label: 'OF With Card Deals', value: 'OF With Card Deals' },
-            { label: 'Only Subscription With Cards', value: 'Only Subscription With Cards' },
+            { label: 'OF With OTI And Subscription', value: 'OF With OTI And Subscription'},
+            { label: 'OF Only With Subscription', value: 'OF Only With Subscription' },
+            { label: 'OF With Subscription and Card Details', value: 'OF With Subscription and Card Details' },
+            { label: 'OF With OTI, Subscription and Card Details', value: 'OF With OTI, Subscription and Card Details' },
         ];
     }
 
+
     connectedCallback(){
         setTimeout(() => {
-            // this.getPDFViewData();
+              debugger;
+             this.getData();
            // alert(this.recordId);
         }, 600);
     }
 
+getData(){
+    debugger;
+    getQuoteDetails({recordId : this.recordId})
+    .then(result =>{
+     this.data = result;
+     if(this.data.ContactId !=undefined && this.data.Contact.Email !=undefined){
+       this.isShowButtonHide = true;
+    this.showContactErrorPanel = false;
+     }else{
+         this.showContactErrorPanel = true;
+    //  this.showWarningToastWarning();
+     }
+    })
+    .catch(error =>{
+       this.error = error;
+    })
+}
+
+
+
     getPDFViewData() {
         debugger;
-        if (this.value == 'Subscription & Implementation OF') {
-            this.pdfLink = SubscriptionImplementationOF+this.recordId;
+         if (this.value == 'OF With OTI And Subscription') {
+            this.pdfLink = SubscriptionWithOTIOFLabel+this.recordId;
         }
-        if (this.value == 'Only Subscription OF') {
-            this.pdfLink = OnlySubscriptionOF+this.recordId;
+        if (this.value == 'OF Only With Subscription') {
+            this.pdfLink = OrderFormSubsOnlyLabel+this.recordId;
         }
-        if (this.value == 'OF With Card Deals') {
-            this.pdfLink = OrderWithCardDeals+this.recordId;
+        if (this.value == 'OF With Subscription and Card Details') {
+            this.pdfLink = OrderFormSubsWithCardLabel+this.recordId;
         }
-        if (this.value == 'Only Subscription With Cards') {
-            this.pdfLink = OnlySubscriptionWithCards +this.recordId;
+        if (this.value == 'OF With OTI, Subscription and Card Details') {
+            this.pdfLink = SubscriptionOTICardOFLabel +this.recordId;
         }
 
     }
@@ -122,5 +151,16 @@ export default class GenerateOrderFromLWC extends LightningElement {
         this.dispatchEvent(evt);
         
     }
+
+    showWarningToastWarning() {
+    const evt = new ShowToastEvent({
+        title: 'WARNING',
+        message: 'Please add Billing Contact before Generating Order Form',
+        variant: 'warning',
+        mode: 'dismissable'
+    });
+    this.dispatchEvent(evt);
+    return;
+}
 
 }

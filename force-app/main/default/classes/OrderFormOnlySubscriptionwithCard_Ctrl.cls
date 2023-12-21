@@ -45,10 +45,10 @@ public class OrderFormOnlySubscriptionwithCard_Ctrl {
                 termsmetaData = [SELECT Term1__c,Term10__c,Term11__c,Term12__c,Term13__c,Term14__c,Term2__c,Term3__c,Term4__c,Term5__c,Term6__c,Term7__c,Term8__c,Term9__c FROM TermsCondtion__mdt LIMIT 1];
                 terms = [ SELECT Id, Name,Comments__c, Quote__c, Late_Payment_Interest__c, YoY_PUPM_Report__c, YoY_PUPM_Report_100__c, YoY_AMC_10_20_of_ARR__c, Term_Attribute_Line_Item__r.Name,  Term_Section_Line_Item__r.Name FROM Terms_and_condition__c  WHERE Quote__c =:recordId  ]; 
                 System.debug('terms ===>'+terms); 
-                getQuotedata = [SELECT Id,Name,Travel_Final_ARR__c,Total_ACV__c,Expense_FInal_ARR__c,AccountId,Travel_Total_OTI__c,Travel_ARR_Discount__c,Expense_ARR_Discount__c,Expense_OTI_Discount__c,Travel_OTI_Discounted__c,Expense_ARR_Discounted__c,Travel_OTI_Discount__c,Travel_ARR_Discounted__c,Travel_Total_SAAS__c,Expense_Total_OTI__c,Expense_OTI_Discounted__c,Expense_Total_SAAS__c,QuoteNumber,ExpirationDate,OpportunityId,Description,Subscription_Billing_Start_Date__c,Advance_Billing_Cycle__c,Payment_Due_Date__c,Delayed_Payment_Interest__c,Subscription_Term__c,Notes__c,Yearly_Price_Escalation__c FROM Quote WHERE Id=:recordId];
+                getQuotedata = [SELECT Id,Name,Travel_Final_ARR__c,Expense_ACV__c,Expense_FInal_ARRs__c,AccountId,Travel_Total_OTI__c,Travel_ARR_Discount__c,Expense_ARR_Discount__c,Expense_OTI_Discount__c,Travel_OTI_Discounted__c,Expense_ARR_Discounted__c,Travel_OTI_Discount__c,Travel_ARR_Discounted__c,Travel_Total_SAAS__c,Expense_Total_OTI__c,Expense_OTI_Discounted__c,Expense_Total_SAAS__c,QuoteNumber,ExpirationDate,OpportunityId,Description,Subscription_Billing_Start_Date__c,Advance_Billing_Cycle__c,Payment_Due_Date__c,Delayed_Payment_Interest__c,Subscription_Term__c,Notes__c,Yearly_Price_Escalation__c FROM Quote WHERE Id=:recordId];
 
-                if(getQuotedata.Total_ACV__c !=null){
-                    TotalACV = getQuotedata.Total_ACV__c;
+                if(getQuotedata.Expense_ACV__c !=null){
+                    TotalACV = getQuotedata.Expense_ACV__c;
                 }else{
                     TotalACV = 0;
                 }

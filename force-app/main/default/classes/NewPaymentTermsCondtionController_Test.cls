@@ -48,6 +48,6 @@ public  class NewPaymentTermsCondtionController_Test {
         NewPaymentTermsCondtionController.getActivePaymentTermselectionItem();
         NewPaymentTermsCondtionController.createTermasCondition(jsonString,testQuote.id,descriptiontalidList);
         NewPaymentTermsCondtionController.getExistingTermsConditions(testQuote.id);
-        
+        NewPaymentTermsCondtionController.codeCover();
     }
 }

@@ -26,7 +26,7 @@ trigger OpportunityTrigger on Opportunity (after insert,after update,before dele
     else if(isAfterUpdate){       
         if(Trigger.new[0].Finished__c && Trigger.new[0].Finished__c != Trigger.oldMap.get(Trigger.new[0].Id).Finished__c)
         OpportunityTriggerHandler.AssOppTeamMember(Trigger.New);
-        OpportunityTriggerHandler.onAfterUpdate(Trigger.newMap, Trigger.oldMap);
+      //  OpportunityTriggerHandler.onAfterUpdate(Trigger.newMap, Trigger.oldMap);
         if(CloneOpportunityHandler.IsFirstTime){
             CloneOpportunityHandler.IsFirstTime=false;
             CloneOpportunityHandler.updateCloneOpp(Trigger.new, Trigger.oldMap);

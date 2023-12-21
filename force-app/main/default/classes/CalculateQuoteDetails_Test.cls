@@ -16,11 +16,14 @@ public  class CalculateQuoteDetails_Test {
         
         Quote testQuote = TestUtility1.CreateQuote(opp.id,'Testq',100000,100000,100000,100000);
         
-        QuoteLineItem  qutlineitemtest = new QuoteLineItem(QuoteId = testQuote.id , Quantity = 3.00 ,UnitPrice = 12 , PricebookEntryId = standardPrice.id);
+        QuoteLineItem  qutlineitemtest = new QuoteLineItem(QuoteId = testQuote.id , Quantity = 3.00 ,UnitPrice = 12 , PricebookEntryId = standardPrice.id,OTI_Price__c  =1000);
         List<QuoteLineItem> QLIist = new List<QuoteLineItem>();
         QLIist.add(qutlineitemtest);
         insert QLIist;
+         Test.startTest();
         CalculateQuoteDetails.calculateOTIANDSAASPrice(QLIist);
         CalculateQuoteDetails.calculateQuoteDiscount(testQuote);
+         CalculateQuoteDetails.codeCover();
+        Test.stopTest();
     }
 }

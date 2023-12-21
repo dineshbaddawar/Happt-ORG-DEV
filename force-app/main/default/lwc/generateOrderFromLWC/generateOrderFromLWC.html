@@ -1,11 +1,13 @@
 <template>
 
+<template if:false={showContactErrorPanel}>
     <lightning-quick-action-panel style="background: lightsteelblue;">
-      <center>
-        <h2 style=" font-size: 2rem;text-align: center;font-family: serif;"> Generate Order Form</h2>
-      </center>
+     
 
       <template if:true={isShowButtonHide}>
+         <center>
+        <h2 style=" font-size: 2rem;text-align: center;font-family: serif;"> Generate Order Form</h2>
+      </center>
             <lightning-combobox name="LeaveType" label="Select Order Form" value={value} options={options} onchange={HandleChangeLeaveType}> </lightning-combobox> <br/>
             <template if:true={isShowButton}>
             <div class="slds-align_absolute-center">
@@ -43,6 +45,22 @@
         </div>
         
     </lightning-quick-action-panel>
-    
+</template>
+
+  <template if:true={showContactErrorPanel}>
+
+     <lightning-quick-action-panel style="background: lightsteelblue;">
+      <center style=" height: 8rem; text-align: center; padding-top: 3rem;">
+        <h2 style=" font-size: 2rem;text-align: center;font-family: serif;"> Please add Billing Contact before Generating Order Form</h2>
+      </center>
+         <div class="slds-align_absolute-center">
+              <lightning-button-group>
+                <span style="margin-right:20px;    margin-top: 10px;">
+             <lightning-button  variant="brand" label="Ok" onclick={closeQuickAction} class="slds-m-top_small slds-m-bottom_medium slds-m-left_x-small" ></lightning-button> 
+                </span>
+              </lightning-button-group>
+            </div> 
+     </lightning-quick-action-panel>
+    </template>
 
 </template>

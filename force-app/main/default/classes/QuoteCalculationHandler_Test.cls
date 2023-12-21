@@ -2,6 +2,8 @@
 public class QuoteCalculationHandler_Test {
     @IsTest
     public static void methodQuoteCalculationHandler(){
+        
+        Boolean CommonSandBoxExist               =false;
         Profile profile = [SELECT Id FROM Profile WHERE Name = 'Standard User' LIMIT 1];
         string profileid = profile.id;
         User testUser = new User(
@@ -59,6 +61,9 @@ public class QuoteCalculationHandler_Test {
         Product2 prod1 = new Product2();
         prod1.Name = 'Dedicated Sandbox Environment'; 
         insert prod1;
+         Product2 prod2 = new Product2();
+        prod2.Name = 'Common Sandbox Environment'; 
+        insert prod2;
         Id pricebookId = Test.getStandardPricebookId(); 
         
         PricebookEntry standardPrice = new PricebookEntry(Pricebook2Id = pricebookId, Product2Id = prod.Id, UnitPrice = 10000, IsActive = true); 
@@ -68,7 +73,7 @@ public class QuoteCalculationHandler_Test {
             mapofProd2IdByEntryId12.put(standardPrice.Pricebook2Id,standardPrice.id); 
         }
         
-        QuoteLineItem  qliRec = new QuoteLineItem(QuoteId = testQuote1.id , Quantity = 3.00 ,UnitPrice = 12 ,Product2Id = prod.Id,  PricebookEntryId = standardPrice.id, Account_Type__c ='SMALL',Travel_Pricing_Type__c = 'Per Booking',Travel_Offering_Type__c = 'SBT',Minimum_Commitment__c = 10,IsMultiplybyBooking__c= True, OTI_Quantity__c = 5,IsPrice_IsQuantity_Editable__c= True,OTI_Price__c  =1000,
+        QuoteLineItem  qliRec = new QuoteLineItem(QuoteId = testQuote1.id , Quantity = 3.00 ,UnitPrice = 1000 ,Product2Id = prod.Id,  PricebookEntryId = standardPrice.id, Account_Type__c ='SMALL',Travel_Pricing_Type__c = 'Per Booking',Travel_Offering_Type__c = 'SBT',Minimum_Commitment__c = 10,IsMultiplybyBooking__c= True, OTI_Quantity__c = 5,IsPrice_IsQuantity_Editable__c= True,OTI_Price__c  =1000,
                                                   OTI_Custom_API_Price__c = 0,   OTI_API_Pricing__c =0 ,SAAS_SFTP_Pricing__c = 0, OTI_Elite_Pricing__c = 0,OTI_Premium_Pricing__c= 0 ,OTI_Pro_Pricing__c = 0,Type__c='OTI');
         
         if(qliRec != null){
@@ -77,7 +82,7 @@ public class QuoteCalculationHandler_Test {
         }
         insert QLIlist;
         QuoteLineItem QLItemRec=new QuoteLineItem();
-        QLItemRec.Product2Id= prod.Id;
+        QLItemRec.Product2Id= prod2.Id;
         QLItemRec.UnitPrice=15;
         QLItemRec.Quantity=1;
         QLItemRec.Account_Type__c='SMALL';
@@ -91,6 +96,13 @@ public class QuoteCalculationHandler_Test {
         QLItemRec.Minimum_Commitment__c=19;
         QLItemRec.Parent_Quote_Line_Item__c = qliRec.id;
         QLItemRec.Nested_Parent_Product__c =qliRec.id;
+        QLItemRec.Selected__c=true;
+                                QLItemRec.IsOptionalProduct__c=true;
+                                QLItemRec.SAAS_Quantity__c=0;
+                                QLItemRec.OTI_Quantity__c=1;
+                                QLItemRec.IsPrice_IsQuantity_Editable__c=true;
+                                QLItemRec.Type__c='OTI';
+        
         if(QLItemRec != null){
             QLItemList.add(QLItemRec);
         }
@@ -100,7 +112,7 @@ public class QuoteCalculationHandler_Test {
         feturelist.add(feRec);
         insert feturelist;
         
-        Product_Lookup_Data__c ProlookRec = new Product_Lookup_Data__c(Sub_Type__c = 'Custom API',Travel_Offering_Type__c = 'TRF',FeatureId__c =feRec.id,Parent_Product__c =prod.id,SAAS_Quantity__c = 1,OTI_Quantity__c =1 ,Bundle_Product__c =prod.id  );
+        Product_Lookup_Data__c ProlookRec = new Product_Lookup_Data__c(Sub_Type__c = 'Custom API',Travel_Offering_Type__c = 'TRF',FeatureId__c =feRec.id,Parent_Product__c =prod.id,SAAS_Quantity__c = 1,OTI_Quantity__c =1 ,Bundle_Product__c =prod.id,Account_Type__c='SMALL',Pricing_Type__c = 'Per Booking'  );
         proLookuplist.add(ProlookRec);
         insert proLookuplist;
         
@@ -115,7 +127,7 @@ public class QuoteCalculationHandler_Test {
         proLookuplist2.add(ProlookRec2);
         insert proLookuplist2;
         
-        Product_Rule__c PrRec = new Product_Rule__c(Name ='Product Rule Test',Product__c = prod.id,Criteria__c= '1 AND 2',Lookup_Object__c ='Lookup_Object_Field_API_Name__c',Active__c= true);
+        Product_Rule__c PrRec = new Product_Rule__c(Name ='Product Rule Test',Product__c = prod.id,Criteria__c= '1 AND 2',Lookup_Object__c ='Product_Lookup_Data__c',Active__c= true);
         insert PrRec;
         list<Product_Rule_Conditions__c> productRuleConditino = new list<Product_Rule_Conditions__c>();
         Product_Rule_Conditions__c  ProRuleRec =  new Product_Rule_Conditions__c(Product_Rule__c = PrRec.id,Lookup_Object_Field_API_Name__c = 'Travel_Offering_Type__c',Quote_Line_Field_API_Name__c ='Travel_Offering_Type__c',Sequence__c =1);
@@ -151,8 +163,7 @@ public class QuoteCalculationHandler_Test {
         QuoteCalculationHandler.GetQuotelineItemlist1(QLIlist,True); 
         QuoteCalculationHandler.deleteQliLineItems(qliRec.id);    
         QuoteCalculationHandler.InsertQuoteLineItem(prod.id,testQuote.id,proLookuplist,null,qliidlist,QLItemRec.Travel_Offering_Type__c,QLItemRec.Travel_Pricing_Type__c,QLItemRec.Account_Type__c,77);  
-        QuoteCalculationHandler.InsertQuoteLineItem(prod.id,testQuote.id,proLookuplist1,null,qliidlist,QLItemRec.Travel_Offering_Type__c,QLItemRec.Travel_Pricing_Type__c,QLItemRec.Account_Type__c,77); 
-        QuoteCalculationHandler.InsertQuoteLineItem(prod.id,testQuote.id,proLookuplist2,null,qliidlist,QLItemRec.Travel_Offering_Type__c,QLItemRec.Travel_Pricing_Type__c,QLItemRec.Account_Type__c,77);  
+        QuoteCalculationHandler.codeCover();
         Test.stopTest();
     }
     

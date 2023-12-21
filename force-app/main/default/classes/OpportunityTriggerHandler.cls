@@ -21,9 +21,9 @@ public class OpportunityTriggerHandler {
         OpportunityTriggerService.tagOppTeamMemberEpic(newList);
     }
     
-    public static void onAfterUpdate(Map<Id, Opportunity> newMap, Map<Id, Opportunity> oldMap) {
+   /* public static void onAfterUpdate(Map<Id, Opportunity> newMap, Map<Id, Opportunity> oldMap) {
         OpportunityTriggerService.createPreSalesOppTeamMember(newMap, oldMap);
-    }
+    }*/
     
     public static void onBeforeUpdate(List<Opportunity> newOppList, Map<Id, Opportunity> oldMap) {
         OpportunityTriggerService.teamMemberValidation(newOppList,oldMap);

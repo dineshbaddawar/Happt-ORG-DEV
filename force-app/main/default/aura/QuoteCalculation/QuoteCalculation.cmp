@@ -144,9 +144,15 @@
                                         <td style="width:20%;"><b style="font-size:12px;">Expense Total MRR SAAS Discounted :</b></td>
                                         <td ><span style="font-size:12px;"> <lightning:formattedNumber value="{!v.QuoteObject.Expense_ARR_Discounted__c}" style="currency" currencyCode="INR" /></span></td>
                                      </tr>
+                                     <tr>
+                                        <td style="width:20%;"><b style="font-size:12px;">Travel ACV :</b></td>
+                                        <td ><span style="font-size:12px;"><lightning:formattedNumber value="{!v.QuoteObject.Travel_ACV__c}" style="currency" currencyCode="INR" /> </span></td>
+                                        <td style="width:20%;"><b style="font-size:12px;">Expense ACV :</b></td>
+                                        <td ><span style="font-size:12px;"> <lightning:formattedNumber value="{!v.QuoteObject.Expense_ACV__c}" style="currency" currencyCode="INR" /></span></td>
+                                     </tr>
                                     <tr>
                                         <td style="width:20%;"><b style="font-size:12px;">Expense Final ARR :</b></td>
-                                        <td ><span style="font-size:12px;"><lightning:formattedNumber value="{!v.QuoteObject.Expense_FInal_ARR__c}" style="currency" currencyCode="INR" /> </span></td>
+                                        <td ><span style="font-size:12px;"><lightning:formattedNumber value="{!v.QuoteObject.Expense_FInal_ARRs__c}" style="currency" currencyCode="INR" /> </span></td>
                                     </tr>
                                 </table>
                             </div>

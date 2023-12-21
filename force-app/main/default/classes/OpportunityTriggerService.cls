@@ -104,20 +104,7 @@ public class OpportunityTriggerService {
         if(!optList.isEmpty()) insert optList;
     }
     
-    public static void createPreSalesOppTeamMember(Map<Id, Opportunity> newMap, Map<Id, Opportunity> oldMap) {
-        List<OpportunityTeamMember> optList 			= new List<OpportunityTeamMember>();
-        for(Opportunity oppObj : newMap.values()) {
-            if(oppObj.Presales_Rep__c != oldMap.get(oppObj.Id).Presales_Rep__c && oppObj.Presales_Rep__c != null) {
-                OpportunityTeamMember optObj 	= new OpportunityTeamMember();
-                optObj.OpportunityAccessLevel 	= 'Edit';
-                optObj.UserId 					= oppObj.Presales_Rep__c;
-                optObj.OpportunityId			= oppObj.Id;
-                optObj.TeamMemberRole			= 'Pre-Sales';
-                optList.add(optObj);
-            }
-        }
-        if(!optList.isEmpty()) insert optList;
-    }
+              
     
     static OpportunityLineItem createProducts(Opportunity oppObj) {
         

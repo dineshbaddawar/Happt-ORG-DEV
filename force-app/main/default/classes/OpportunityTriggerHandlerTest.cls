@@ -1,88 +1,127 @@
 @isTest
 public class OpportunityTriggerHandlerTest {
-    /* @testSetup static void setup() 
-{
-Account ac = TestUtility.createAccount('Test Ac');
-Opportunity stdOp = TestUtility.createOpportunity(ac); 
-Quote q1 =TestUtility.createQuote(stdOp ,'Draft');
-OpportunityLineItem oli = TestUtility.createLineItem(stdOp);
+    
+        @isTest
+    static void testAssignOwnerHelper() {
+       
+        Account testAccount = new Account(Name = 'Test Account');
+        insert testAccount;
 
-}*/
-    
-    @isTest
-    static void updateOpportunity()
-    { 
-        Account ac = TestUtility.createAccount('Test Ac');
-        system.debug(ac.Region__c);
-        
-        contact con  = TestUtility.createContact(ac);
-        system.debug('con-email'+con.Email);
-        
-        Opportunity stdOp1 = TestUtility.createOpportunity(ac);
-        OpportunityContactRole ocr = new OpportunityContactRole();
-        ocr.ContactId = con.Id;
-        ocr.OpportunityId = stdOp1.Id;
-        ocr.IsPrimary = TRUE;
-        ocr.Role = 'Other';
-        insert ocr;
-        
-        stdOp1.Total_User_Potential__c = 100;
-        stdOp1.StageName = 'Stage 2 (Validated)';
-        stdOp1.LG_User_Potential__c = 100;
-        Opportunity__c custOp1 = TestUtility.createCustomOppo(stdOp1);
-        CloneOpportunityHandler.IsFirstTime= true;
-        update stdOp1;
-        
-        Quote q1 =TestUtility.createQuote(stdOp1 ,'Draft');
-        stdOp1.SyncedQuoteId = q1.id; 
-        
-        OpportunityLineItem oli = TestUtility.createLineItem(stdOp1);
-        stdOp1.StageName ='Stage 3 (Shortlisted)';
-        stdOp1.Customer_Problem_Identified__c = '0';
-        CloneOpportunityHandler.IsFirstTime= true;
-        update stdOp1;
-    }
-    
-    @isTest
-    static void deleteOpportunity()
-    {  
-        Account ac = TestUtility.createAccount('Test Ac');
-        Opportunity stdOp1 = TestUtility.createOpportunity(ac);
-        Opportunity__c custOp1 = TestUtility.createCustomOppo(stdOp1);
-        delete stdOp1;   
-    }
-    
-    @isTest
-    static void deleteOppLineItem()
-    {  
-        Account ac = TestUtility.createAccount('Test Ac');
-        Opportunity stdOp1 = TestUtility.createOpportunity(ac);
-        OpportunityLineItem oli = TestUtility.createLineItem(stdOp1);
-        
-        Opportunity__c custOp1 = TestUtility.createCustomOppo(stdOp1);
-        CloneOpportunityHandler.IsFirstTime= true;
-        custOp1.Implementation_cost_expected__c =100;
-        update custOp1;
-        OpportunityLineItem__c cOppLine =TestUtility.createCustomOppLine(custOp1 ,oli);
-        delete oli; 
-        delete stdOp1;   
-    }
-    
-    @isTest
-    static void updateOppLineItem()
-    {  
-        Account ac = TestUtility.createAccount('Test Ac');
-        Opportunity stdOp1 = TestUtility.createOpportunity(ac);
-        QuoteSyncUtil.isRunningTest = true; 
-        OpportunityLineItem oli = TestUtility.createLineItem(stdOp1);
-        Opportunity__c custOp1 = TestUtility.createCustomOppo(stdOp1);
-        OpportunityLineItem__c cOppLine =TestUtility.createCustomOppLine(custOp1 ,oli);
-        
-        oli.Quantity = 10;
-        
-        CloneOpportunityHandler.IsFirstTime= true;
-        update oli;  
+        User testUser = new User(
+            FirstName = 'Test',
+            LastName = 'User',
+            Alias = 'tuser',
+            Email = 'testuser@example.com',
+            Username = 'tuser@example.com',
+            ProfileId = UserInfo.getProfileId(),
+            TimeZoneSidKey = 'America/New_York',
+            LocaleSidKey = 'en_US',
+            EmailEncodingKey = 'UTF-8',
+            LanguageLocaleKey = 'en_US'
+        );
+        insert testUser;
+
+        Opportunity testOpp = new Opportunity(
+            Name = 'Test Opportunity',
+            StageName = 'Documents Shared - Qualifying',
+            CloseDate = Date.today(),
+            AccountId = testAccount.Id,
+            Product_Interested__c = 'Epic Cards'
+        );
+        insert testOpp;
+
+        AccountTeamMember testTeamMember = new AccountTeamMember(
+            AccountId = testAccount.Id,
+            UserId = testUser.Id,
+            TeamMemberRole = 'Sales Rep'
+        );
+        insert testTeamMember;
+
+        OpportunityTriggerHandler.AssOwner(new List<Opportunity>{testOpp});
+
     }
     
     
+ /* @isTest
+    static void testUpdateOwner() {
+        Account testAccount = new Account(Name = 'Test Account');
+        insert testAccount;
+
+        User testUser = new User(
+            ProfileId = [SELECT Id FROM Profile WHERE Name = 'Standard User' LIMIT 1].Id,
+            FirstName = 'Test',
+            LastName = 'User',
+            Email = 'testuser@example.com',
+            Alias = 'tuser',
+            Username = 'user.t@example.com',
+            CommunityNickname = 'testuser',
+            TimeZoneSidKey = 'GMT',
+            LocaleSidKey = 'en_US',
+            EmailEncodingKey = 'UTF-8',
+            LanguageLocaleKey = 'en_US'
+        );
+        insert testUser;
+
+        System.runAs(testUser) {
+
+            Id loggedInUserId = UserInfo.getUserId();
+
+            Opportunity testOpp = new Opportunity(
+                Name = 'Test Opportunity',
+                StageName = 'Prospecting',
+                CloseDate = Date.today(),
+                AccountId = testAccount.Id,
+                Product_Interested__c = 'Employee Tax Benefits'
+            );
+            insert testOpp;
+
+            AccountTeamMember testTeamMember = new AccountTeamMember(
+                AccountId = testAccount.Id,
+                UserId = loggedInUserId,
+                TeamMemberRole = 'Sales Rep',
+                Product__c = 'Employee Tax Benefits'
+            );
+            insert testTeamMember;
+
+            OpportunityTriggerHandler.onBeforeInsert(new List<Opportunity>{testOpp});
+            OpportunityTriggerHandler.assignOpp(new List<Opportunity>{testOpp});
+        }
+    }*/
+    
+    
+   @isTest
+    static void testTagOppTeamMemberEpic() {
+      
+        RecordType epicRecordType = [SELECT Id, Name FROM RecordType WHERE SObjectType = 'Opportunity' AND Name = 'EPIC' LIMIT 1];
+
+        Opportunity testOpp = new Opportunity(
+            Name = 'Test Opportunity',
+            StageName = 'Documents Shared - Qualifying',
+            CloseDate = Date.today(),
+            RecordTypeId = epicRecordType.Id
+        );
+        insert testOpp;
+
+        Group testGroup = new Group(Name = 'Credit Risk User', Type = 'Regular');
+        insert testGroup;
+
+        User testUser = new User(
+            FirstName = 'Test',
+            LastName = 'User',
+            Alias = 'tuser',
+            Email = 'testuser@example.com',
+            Username = 'tser@example.com',
+            ProfileId = UserInfo.getProfileId(),
+            TimeZoneSidKey = 'America/New_York',
+            LocaleSidKey = 'en_US',
+            EmailEncodingKey = 'UTF-8',
+            LanguageLocaleKey = 'en_US'
+        );
+        insert testUser;
+
+        Test.startTest();
+       OpportunityTriggerHandler.onAfterInsert(new List<Opportunity>{testOpp});
+        Test.stopTest();
+
+    }
 }

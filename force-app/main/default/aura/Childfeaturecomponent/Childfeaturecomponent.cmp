@@ -55,7 +55,7 @@
                     <td>
                         <div data-id ="{!ProductOption.Id}" > 
                             <aura:if isTrue="{!ProductOption.Is_Subtype_Editable__c}">
-                                <aura:if isTrue="{!ProductOption.Product_Name__c!='Route Tracker (txns per month)'}">
+                                <aura:if isTrue="{!ProductOption.Product_Name__c!='Route Tracker'}">
                                     <lightning:select  name="select" label=""  value="{!ProductOption.Sub_Type__c}" onchange="{!c.SubTypechange}">
                                         <option value="None">None</option>
                                         <option value="Custom API" text="Custom API"></option>
