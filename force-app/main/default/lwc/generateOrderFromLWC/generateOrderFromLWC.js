@@ -2,7 +2,7 @@
  * @author [Dinesh B]
  * @email dinesh.b@utilitarianLab.com
  * @create date 2023-11-20 12:44:40
- * @modify date 2023-11-21 13:10:55
+ * @modify date 2023-12-22 13:59:14
  * @desc [description]
  */
 
@@ -52,7 +52,7 @@ getData(){
     getQuoteDetails({recordId : this.recordId})
     .then(result =>{
      this.data = result;
-     if(this.data.ContactId !=undefined && this.data.Contact.Email !=undefined){
+     if(this.data.ContactId !=undefined && this.data.Contact_Email__c !=undefined && this.data.SAAS_Start_Date__c !=undefined && this.data.Change_Request__c !=undefined){
        this.isShowButtonHide = true;
     this.showContactErrorPanel = false;
      }else{

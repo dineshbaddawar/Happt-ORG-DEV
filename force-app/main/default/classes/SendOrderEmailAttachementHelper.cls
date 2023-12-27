@@ -38,7 +38,10 @@ public class SendOrderEmailAttachementHelper {
                 String htmlBody = temp.HTMLValue;
                 String subject = temp.Subject;
                 String plainTextBody = temp.body;
-                String emailtoSend = 'sakshi.baranwal@happay.com';
+                 String emailAddressesString = System.Label.SendApproaveEmailPresentedStage	;
+                 List<String> emailAddressesList = emailAddressesString.split(',');      
+                
+               // String emailtoSend = 'sakshi.baranwal@happay.com';
                 for(Quote quoteRec : [SELECT Id,Name FROM Quote WHERE Id IN:quoteRecIdSet]){
                     PageReference pdfPage = page.HappyOrderFormVF;
                     pdfPage.getParameters().put('id',quoteRec.id);
@@ -52,7 +55,7 @@ public class SendOrderEmailAttachementHelper {
                     mailTemp.setHtmlBody(htmlBody);
                     mailTemp.setSubject(temp.subject);
                     mailTemp.setPlainTextBody(plainTextBody);
-                    mailTemp.toAddresses = new String[] {emailtoSend};
+                    mailTemp.setToAddresses(emailAddressesList);
                         mailTemp.setFileAttachments(new Messaging.EmailFileAttachment[] { attach });
                     mailList.add(mailTemp);
                 }

@@ -65,7 +65,7 @@ public with sharing class GenerateOrderFromLWCHelper {
     public static Quote getQuoteDetails(String recordId){
         try{
             if(recordId !=null){
-                return [SELECT Id, Name, ContactId, Contact.Name, Contact.Email FROM Quote where Id =:recordId];
+                return [SELECT Id, Name, ContactId, Contact.Name, Contact.Email,Contact_Email__c,SAAS_Start_Date__c,Change_Request__c FROM Quote where Id =:recordId];
             }
         }catch(Exception e){
             System.debug('The Error ::'+e.getMessage() +' AND Error Line No :'+e.getLineNumber());

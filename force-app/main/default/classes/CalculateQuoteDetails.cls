@@ -79,17 +79,19 @@ public class CalculateQuoteDetails {
                                     qu.PUPM_Quantity_Count__c=qu.PUPM_Quantity_Count__c+1;
                                 }
                                 if(QLI.Is_Travel_Product__c==true){
-                                    if(qu.TotalTravelCount__c==null)
+                                    /*if(qu.TotalTravelCount__c==null)
                                         qu.TotalTravelCount__c=0;
-                                    qu.TotalTravelCount__c=qu.TotalTravelCount__c+1;
+                                    qu.TotalTravelCount__c=qu.TotalTravelCount__c+1;*/
+                                    qu.TotalTravelCount__c = qu.TotalTravelCount__c==null ? qu.TotalTravelCount__c=0:qu.TotalTravelCount__c+1;
 									qu.Travel_Account_Type__c=QLI.Account_Type__c!=null ? QLI.Account_Type__c:null;
 									qu.Travel_Pricing_Type__c=QLI.Travel_Pricing_Type__c!=null ? QLI.Travel_Pricing_Type__c : null;
  									qu.Travel_Offering_Type__c=QLI.Travel_Offering_Type__c!=null ? QLI.Travel_Offering_Type__c : null;
 									qu.Travel_Minimum_Commitment__c=QLI.Minimum_Commitment__c!=null ? QLI.Minimum_Commitment__c : null;  
                                 }else if(QLI.Is_Travel_Product__c==false && (QLI.Product2.Name!='Travel Bundle' && QLI.Product2.Name!='Expense Bundle')){
-                                    if(qu.TotalExpenseCount__c==null)
+                                    /*if(qu.TotalExpenseCount__c==null)
                                         qu.TotalExpenseCount__c=0;
-                                     qu.TotalExpenseCount__c=qu.TotalExpenseCount__c+1;
+                                     qu.TotalExpenseCount__c=qu.TotalExpenseCount__c+1;*/
+                                     qu.TotalExpenseCount__c = qu.TotalExpenseCount__c==null ? qu.TotalExpenseCount__c=0:qu.TotalExpenseCount__c+1;
                                      qu.Expense_Account_Type__c=QLI.Account_Type__c!=null ? QLI.Account_Type__c:null;
                                      qu.Expense_Pricing_Type__c=QLI.Travel_Pricing_Type__c!=null ? QLI.Travel_Pricing_Type__c:null;
                                      qu.Expense_Minimum_Commitment__c=QLI.Minimum_Commitment__c!=null ? QLI.Minimum_Commitment__c:null;

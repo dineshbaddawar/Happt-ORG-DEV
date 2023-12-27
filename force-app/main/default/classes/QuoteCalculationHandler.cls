@@ -524,7 +524,7 @@ public without sharing class QuoteCalculationHandler {
             system.debug('CalculateTotalACVOn--'+CalculateTotalACVOn);*/
             //if(sandboxRouteTrackerExist==true){
             if(!QuoteIdset.IsEmpty()){
-                List<Quote> QuoteRecs=[Select Id,Expense_Total_SAAS__c,Expense_Total_OTI__c,Expense_ACV__c,Expense_OTI_Discounted__c,Expense_ARR_Discounted__c From Quote Where Id=:QuoteIdset];
+                List<Quote> QuoteRecs=[Select Id,Expense_Minimum_Commitment__c,Expense_Total_SAAS__c,Expense_Total_OTI__c,Expense_ACV__c,Expense_OTI_Discounted__c,Expense_ARR_Discounted__c From Quote Where Id=:QuoteIdset];
                 system.debug('QuoteRecs ===>'+QuoteRecs);
                 
                 if(!QuoteRecs.IsEmpty()){
@@ -555,6 +555,7 @@ public without sharing class QuoteCalculationHandler {
                                 QLIRec.OTI_Quantity__c=1;
                                 QLIRec.IsPrice_IsQuantity_Editable__c=true;
                                 QLIRec.Type__c='OTI';
+                                QLIRec.Minimum_Commitment__c=Q.Expense_Minimum_Commitment__c;
                                 
                                 QuoteLineToInsert.add(QLIRec);
                             }
@@ -577,6 +578,7 @@ public without sharing class QuoteCalculationHandler {
                                 QLIRec.OTI_Quantity__c=1;
                                 QLIRec.IsPrice_IsQuantity_Editable__c=true;
                                 QLIRec.Type__c='OTI';
+                                QLIRec.Minimum_Commitment__c=Q.Expense_Minimum_Commitment__c;
                                 
                                 QuoteLineToInsert.add(QLIRec); 
                             }

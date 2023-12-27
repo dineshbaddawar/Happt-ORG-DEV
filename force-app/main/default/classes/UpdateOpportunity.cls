@@ -1,4 +1,5 @@
 public class UpdateOpportunity {
+    
     @future
     Public Static void Quote_Related_OpportunityUpdate(set<Id> QuoteId){
         List<Opportunity> OpportunityToUpdate=new List<Opportunity>();

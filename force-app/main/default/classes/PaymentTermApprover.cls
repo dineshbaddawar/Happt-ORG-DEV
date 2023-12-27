@@ -2,7 +2,7 @@ public class PaymentTermApprover {
     
     public static Boolean reccursiveHandler = true;
     
-    @auraEnabled
+    /*@auraEnabled
     public static void paymentTermApproverLogic(Id quoteId){
         Id loggedInUserId = UserInfo.getUserId();
         Id managerId	= [select userName,id,manager.name,manager.Id, manager.profile.name from user where id =: loggedInUserId].manager.Id;
@@ -40,7 +40,7 @@ public class PaymentTermApprover {
             }
             Approval.process(approvalRequestList);
         }
-    }
+    }*/
     
     
     public static void calculateApproverAuthorityMatrix(List<Terms_and_condition__c> tcList,map<Id,Terms_and_condition__c> oldMap){ 
@@ -51,28 +51,31 @@ public class PaymentTermApprover {
         if(loggedInUserProfileName == 'System Administrator'){
             loggedInUserProfileName = 'Enterprise';
         }
-        String level2AuthId = '005C2000004RDivIAG';
-        Map<Id,Id> mapOfActiveUserByManagerId	= new Map<Id,Id>();
-        Map<Id,Id> mapOfTALIIdByOwnerId			= new Map<Id,Id>();
+        String level2AuthId = '';
+        if(UserList[0].profile.name == 'AM'){
+            level2AuthId = System.Label.Level2AmProfile;
+        }else{
+            level2AuthId = System.Label.Level2OtherProfile;
+        }
+        
+        List<Quote> quoteListTobeUpdate = new List<Quote>();
+        
         Map<Id,Id> mapOfQuoteIdByLevel1AuthId = new Map<Id,Id>();
         Map<Id,Id> mapOfQuoteIdByLevel2AuthId = new Map<Id,Id>();
         Map<Id,Id> mapofQuoteIdByLevel3AuthId = new Map<Id,Id>();
-        Map<Id,Id> mapofTALIByApproverLevel1Id	 = new Map<Id,Id>();
-        Map<Id,Id> mapofTALIByApproverLevel2Id	 = new Map<Id,Id>();
-        Map<Id,Id> mapofTALIIdByTCId			= new Map<Id,Id>();
-        Map<Id,Id> mapofTCIdByQuoteId			= new Map<Id,Id>();
+        
+        
         Set<Id> termAtrributeIdSet = new Set<Id>();
+        
         Set<Id> QuoteIdSet 						= new Set<Id>();
-        List<Quote> quoteListTobeUpdate = new List<Quote>();
+        
         Map<Id,Id> mapofTCIdByAuthorityId = new Map<Id,Id>();
+        Map<Id,Id> mapofTCIDbyQuId = new Map<Id,Id>();
         for(Terms_and_condition__c tc : tcList){
             if((tc.Term_Attribute_Line_Item__c != null && oldMap != null && tc.Term_Attribute_Line_Item__c != oldMap.get(tc.Id).Term_Attribute_Line_Item__c)
               || (tc.Term_Attribute_Line_Item__c != null && oldMap == null)){
                 QuoteIdSet.add(tc.Quote__c);
                 termAtrributeIdSet.add(tc.Term_Attribute_Line_Item__c);
-                mapofTALIIdByTCId.put(tc.Term_Attribute_Line_Item__c,tc.Id);
-                mapofTCIdByQuoteId.put(tc.Id,tc.Quote__c);
-                mapOfTALIIdByOwnerId.put(tc.Term_Attribute_Line_Item__c,tc.OwnerId);
             }
         }
         Map<Id,Approval_Matrix__c> mapofTALIIdByApprovalMatrix = new Map<Id,Approval_Matrix__c>();
@@ -83,42 +86,39 @@ public class PaymentTermApprover {
             if(!approvalMatrixList.isEmpty()){
                 for(Approval_Matrix__c matrix : approvalMatrixList){
                     mapofTALIIdByApprovalMatrix.put(matrix.Term_Attribute_Line_Item__c,matrix);
-                    if(!matrix.Higher_Authority__c && !matrix.Team_Lead_Approver__c && matrix.Approving_Authority__c !=null){
-                        System.debug('True Condition Record == >');
-                        level2AuthId = '005C2000004RDivIAG';
-                    }else{
-                        System.debug('False Condtion Record == >' );
-                    }
                 }
-                System.debug('level2AuthId === >'+level2AuthId);
+                
                 if(!mapofTALIIdByApprovalMatrix.isEmpty()){
                     for(Terms_and_condition__c tc : tcList){
                         if(!mapofTALIIdByApprovalMatrix.isEmpty() && mapofTALIIdByApprovalMatrix.containsKey(tc.Term_Attribute_Line_Item__c)){
-                            
+                            system.debug('mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Team_Lead_Approver__c::'+mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Team_Lead_Approver__c);
+                            system.debug('Second Level'+(!mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Higher_Authority__c && mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Approving_Authority__c != null));
+                            system.debug('Third Level'+(mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Higher_Authority__c && mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Approving_Authority__c != null));
                             if(mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Team_Lead_Approver__c){
                                 mapOfQuoteIdByLevel1AuthId.put(tc.Quote__c,UserList[0].ManagerId);
-                                System.debug(' Level 1 Check == tc.Id === >'+tc.Id +' && UserList[0].ManagerId === >'+UserList[0].ManagerId);
                                 mapofTCIdByAuthorityId.put(tc.Id,UserList[0].ManagerId);
-                                //tc.Approval_Authority__c = UserList[0].ManagerId;
-                            }
-                            
-                            if(!mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Higher_Authority__c && mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Approving_Authority__c != null){
+                                mapofTCIDbyQuId.put(tc.Id,tc.Quote__c);
+                            }else if(!mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Higher_Authority__c && mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Approving_Authority__c != null){
                                 mapOfQuoteIdByLevel1AuthId.put(tc.Quote__c,UserList[0].ManagerId);
                                 mapOfQuoteIdByLevel2AuthId.put(tc.Quote__c,mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Approving_Authority__c);
-                                  System.debug(' Level 2 Check == tc.Id === >'+tc.Id + ' && tc.Term_Attribute_Line_Item__c === >'+tc.Term_Attribute_Line_Item__c +' && mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Approving_Authority__c === >'+mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Approving_Authority__c);
                                 mapofTCIdByAuthorityId.put(tc.Id,mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Approving_Authority__c);
-                                //tc.Approval_Authority__c =mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Approving_Authority__c;
-                            }
-                            if(mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Higher_Authority__c && mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Approving_Authority__c != null){
+                                mapofTCIDbyQuId.put(tc.Id,tc.Quote__c);
+                            }else if(mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Higher_Authority__c && mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Approving_Authority__c != null){
                                 mapOfQuoteIdByLevel1AuthId.put(tc.Quote__c,UserList[0].ManagerId);
                                 mapOfQuoteIdByLevel2AuthId.put(tc.Quote__c,level2AuthId);
                                 mapofQuoteIdByLevel3AuthId.put(tc.Quote__c,mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Approving_Authority__c);
-                                  System.debug(' Level 3 Check == tc.Id === >'+tc.Id +' && tc.Term_Attribute_Line_Item__c === >'+tc.Term_Attribute_Line_Item__c +' && mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Approving_Authority__c ==> '+mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Approving_Authority__c);
                                 mapofTCIdByAuthorityId.put(tc.Id,mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Approving_Authority__c);
-                                //tc.Approval_Authority__c = mapofTALIIdByApprovalMatrix.get(tc.Term_Attribute_Line_Item__c).Approving_Authority__c;
+                                mapofTCIDbyQuId.put(tc.Id,tc.Quote__c);
+                            }else{
+                                mapofTCIdByAuthorityId.put(tc.Id,null);
+                                mapofTCIDbyQuId.put(tc.Id,tc.Quote__c);
                             }   
                         }
                     }
+                    
+                    system.debug('mapOfQuoteIdByLevel1AuthId::'+mapOfQuoteIdByLevel1AuthId);
+                    system.debug('mapOfQuoteIdByLevel2AuthId::'+mapOfQuoteIdByLevel2AuthId);
+                    system.debug('mapofQuoteIdByLevel3AuthId::'+mapofQuoteIdByLevel3AuthId);
                     if(!QuoteIdSet.isEmpty()){
                         for(Id quoteId : QuoteIdSet){
                             Quote qu = new Quote();
@@ -143,7 +143,7 @@ public class PaymentTermApprover {
                     system.debug(' mapofTCIdByAuthorityId === >'+mapofTCIdByAuthorityId);
                     if(!mapofTCIdByAuthorityId.isEmpty()){
                         System.debug('Inside Method called');
-                        updateAuthorityOnTermsAndCondition(mapofTCIdByAuthorityId);
+                        updateAuthorityOnTermsAndCondition(mapofTCIdByAuthorityId,mapofTCIDbyQuId);
                     }else{
                          System.debug('Outside Method called');
                     }
@@ -153,428 +153,42 @@ public class PaymentTermApprover {
     }
     
     @future 
-    public static void updateAuthorityOnTermsAndCondition(Map<Id,Id> mapofTCIdByAuthorityId){
+    public static void updateAuthorityOnTermsAndCondition(Map<Id,Id> mapofTCIdByAuthorityId,Map<Id,Id> mapofTCIDbyQuId){
         system.debug(' mapofTCIdByAuthorityId future === >'+mapofTCIdByAuthorityId);
+        Set<Id> quoteIdSet = new Set<Id>();
         List<Terms_and_condition__c> tcListTobeUpdate = new List<Terms_and_condition__c>();
         for(Id mapKey : mapofTCIdByAuthorityId.keySet()){
             Terms_and_condition__c tc = new Terms_and_condition__c();
             tc.Id = mapKey;
             tc.Approval_Authority__c = mapofTCIdByAuthorityId.get(mapKey);
             tcListTobeUpdate.add(tc);
+            quoteIdSet.add(mapofTCIDbyQuId.get(mapKey));
         }
         
         if(!tcListTobeUpdate.isEmpty()){
             update tcListTobeUpdate;
         }
-    }
-    /* public static void codeCover(){
-        Integer i = 0;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-          i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-          i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-          i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-          i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-          i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-          i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-          i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-          i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-          i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-          i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-          i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-        i++;i++;
-          
         
-    }*/
+        List<Terms_and_condition__c> listOfTC = new List<Terms_and_condition__c>();
+        List<Quote> quoteListTobeUpdate = new List<Quote>();
+        listOfTC = [select id from Terms_and_condition__c where Quote__c in:quoteIdSet and Approval_Authority__c != null];
+        
+        if(listOfTC.size() == 0){
+            for(Id qu : quoteIdSet){
+                quote q = new quote();
+                q.Id = qu;
+                q.Authority_1__c = null;
+                q.Authority_2__c = null;
+                q.Authority_3__c = null;
+                quoteListTobeUpdate.add(q);
+            }
+            
+            if(!quoteListTobeUpdate.isEmpty()){
+                update quoteListTobeUpdate;
+            }
+        }
+        
+    }
+   
+   
 }

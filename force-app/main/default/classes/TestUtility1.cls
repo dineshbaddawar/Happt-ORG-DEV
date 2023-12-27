@@ -35,6 +35,8 @@ public class TestUtility1 {
         quotRec.Travel_OTI_Discounted__c    = 10000;
         quotRec.Expense_OTI_Discounted__c   = 7000000; 
         quotRec.Billing_Type_Multiplier__c  = 3;
+        quotRec.Pricebook2Id = Test.getStandardPricebookId();
+        //quotRec.IsSyncing =true;
          
         insert quotRec;
       

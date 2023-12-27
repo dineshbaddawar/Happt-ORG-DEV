@@ -3,7 +3,7 @@
         
         <style>
             
-              @page {
+            @page {
             background-image: url({!WaterMarkisTrue});
             background-repeat: no-repeat;
             background-position: center;
@@ -19,7 +19,7 @@
             @page {
             margin-top: 150px;padding:0px;margin-bottom: 90px;
             @top-right {
-            content: element(header); 
+            content: element(header);
             
             }
             }
@@ -127,7 +127,22 @@
                     <table style="width:100%;border:1px solid black;border-collapse:collapse;">
                         <tr>
                             <td style="border:1px solid black;background-color: #dddddd;padding:10px;width:30%;">Happay Offerings</td>
-                            <td style="border:1px solid black;padding:10px;">Travel (Request) and Expense</td>
+                            <apex:outputText rendered="{!(dataWrapperObj.subscriptionExpenseQLIListSize != null && dataWrapperObj.addOnModules && dataWrapperObj.subscriptionTravelQLIListSize != null)}">
+                                <td style="border:1px solid black;padding:10px;">Travel and Expense + AddOn</td>
+                            </apex:outputText>
+                            <apex:outputText rendered="{!(dataWrapperObj.subscriptionExpenseQLIListSize != null && dataWrapperObj.subscriptionTravelQLIListSize != null && !dataWrapperObj.addOnModules)}">
+                                <td style="border:1px solid black;padding:10px;">Travel and Expense</td>
+                            </apex:outputText>
+                            <apex:outputText rendered="{!(dataWrapperObj.subscriptionExpenseQLIListSize != null && dataWrapperObj.addOnModules && dataWrapperObj.subscriptionTravelQLIListSize == null)}">
+                                <td style="border:1px solid black;padding:10px;">Expense + AddOn</td>
+                            </apex:outputText>
+                            <apex:outputText rendered="{!(dataWrapperObj.subscriptionExpenseQLIListSize != null && !dataWrapperObj.addOnModules && dataWrapperObj.subscriptionTravelQLIListSize == null)}">
+                                <td style="border:1px solid black;padding:10px;">Expense</td>
+                            </apex:outputText>
+                            <apex:outputText rendered="{!(dataWrapperObj.subscriptionExpenseQLIListSize == null && dataWrapperObj.subscriptionTravelQLIListSize != null)}">
+                                <td style="border:1px solid black;padding:10px;">Travel</td>
+                            </apex:outputText>
+                            
                         </tr>
                     </table>
                 </div>
@@ -162,70 +177,70 @@
                         </apex:outputText>
                         <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name != 'OTI Payment Milestone'}">
                             <tr>
-                            <apex:outputText rendered="{!(term.Term_Section_Line_Item__r.Name != 'YoY | PUPM/Report 50-100' && 
+                                <apex:outputText rendered="{!(term.Term_Section_Line_Item__r.Name != 'YoY | PUPM/Report 50-100' && 
                                                            term.Term_Section_Line_Item__r.Name != 'YoY | PUPM/Report >100' && 
                                                            term.Term_Section_Line_Item__r.Name != 'YoY | AMC 10-20% of ARR')}">
-                                <td style="border:1px solid black;padding:10px;">{!term.Term_Section_Line_Item__r.Name}</td>
-                            </apex:outputText>
-                            <apex:outputText rendered="{!(term.Term_Section_Line_Item__r.Name == 'YoY | PUPM/Report 50-100' || 
+                                    <td style="border:1px solid black;padding:10px;">{!term.Term_Section_Line_Item__r.Name}</td>
+                                </apex:outputText>
+                                <apex:outputText rendered="{!(term.Term_Section_Line_Item__r.Name == 'YoY | PUPM/Report 50-100' || 
                                                            term.Term_Section_Line_Item__r.Name == 'YoY | PUPM/Report >100' ||
                                                            term.Term_Section_Line_Item__r.Name == 'YoY | AMC 10-20% of ARR')}">
-                                <td style="border:1px solid black;padding:10px;">YOY Escalation</td>
-                                
-                            </apex:outputText>
-                            
-                            <td style="border:1px solid black;padding:10px;">
-                                
-                                <apex:outputText rendered="{!(term.Term_Section_Line_Item__r.Name != 'Delay Payment Interest' && 
-                                                           term.Term_Section_Line_Item__r.Name != 'YoY | PUPM/Report 50-100' && 
-                                                           term.Term_Section_Line_Item__r.Name != 'YoY | PUPM/Report >100' && 
-                                                           term.Term_Section_Line_Item__r.Name != 'YoY | AMC 10-20% of ARR' && 
-                                                           term.Term_Section_Line_Item__r.Name != 'OTI Payment Milestone' && 
-                                                           term.Term_Section_Line_Item__r.Name != 'SAAS Start Date' && 
-                                                           term.Term_Section_Line_Item__r.Name != 'Change Request' &&
-                                                           term.Term_Section_Line_Item__r.Name != 'Payment Due Date')}">
-                                    {!term.Term_Attribute_Line_Item__r.Name}<br/>
-                                    <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
-                                </apex:outputText>
-                                <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'SAAS Start Date'}">
+                                    <td style="border:1px solid black;padding:10px;">YOY Escalation</td>
                                     
-                                    <apex:outputText value="{0,date,MM/dd/yyyy}">
-                                        <apex:param value="{!dataWrapperObj.quoteDetails.SAAS_Start_Date__c}" />
+                                </apex:outputText>
+                                
+                                <td style="border:1px solid black;padding:10px;">
+                                    
+                                    <apex:outputText rendered="{!(term.Term_Section_Line_Item__r.Name != 'Delay Payment Interest' && 
+                                                               term.Term_Section_Line_Item__r.Name != 'YoY | PUPM/Report 50-100' && 
+                                                               term.Term_Section_Line_Item__r.Name != 'YoY | PUPM/Report >100' && 
+                                                               term.Term_Section_Line_Item__r.Name != 'YoY | AMC 10-20% of ARR' && 
+                                                               term.Term_Section_Line_Item__r.Name != 'OTI Payment Milestone' && 
+                                                               term.Term_Section_Line_Item__r.Name != 'SAAS Start Date' && 
+                                                               term.Term_Section_Line_Item__r.Name != 'Change Request' &&
+                                                               term.Term_Section_Line_Item__r.Name != 'Payment Due Date')}">
+                                        {!term.Term_Attribute_Line_Item__r.Name}<br/>
+                                        <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
                                     </apex:outputText>
-                                </apex:outputText>
-                                <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'Payment Due Date'}">
-                                    Net {!term.Term_Attribute_Line_Item__r.Name} Days from the date of invoice
-                                </apex:outputText>
-                                <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'Change Request'}">
-                                    {!dataWrapperObj.quoteDetails.Change_Request__c}
-                                </apex:outputText>
-                                <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'OTI Payment Milestone'}">
-                                    <apex:variable var="OTIPaymentMilestone" value="{!term.Term_Attribute_Description__c}" />
-                                    <!--apex:outputText rendered="{!term.Term_Attribute_Description__c !=null}">{!term.Term_Attribute_Description__c}</apex:outputText>
-                                    <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/-->
-                                </apex:outputText>
-                                
-                                <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'Delay Payment Interest'}">
-                                    <apex:outputText rendered="{!term.Late_Payment_Interest__c !=null}">{!term.Late_Payment_Interest__c} %</apex:outputText>
-                                    <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
-                                </apex:outputText>
-                                
-                                <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'YoY | PUPM/Report 50-100'}">
-                                    <apex:outputText rendered="{!term.YoY_PUPM_Report__c !=null}">{!term.YoY_PUPM_Report__c} %</apex:outputText>
-                                    <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
-                                </apex:outputText>
-                                
-                                <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'YoY | PUPM/Report >100'}">
-                                    <apex:outputText rendered="{!term.YoY_PUPM_Report_100__c !=null}">{!term.YoY_PUPM_Report_100__c} %</apex:outputText>
-                                    <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
-                                </apex:outputText>
-                                
-                                <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'YoY | AMC 10-20% of ARR'}">
-                                    <apex:outputText rendered="{!term.YoY_AMC_10_20_of_ARR__c !=null}">{!term.YoY_AMC_10_20_of_ARR__c} %</apex:outputText>
-                                    <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
-                                </apex:outputText>
-                            </td>
-                        </tr>
+                                    <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'SAAS Start Date'}">
+                                        
+                                        <apex:outputText value="{0,date,MM/dd/yyyy}">
+                                            <apex:param value="{!dataWrapperObj.quoteDetails.SAAS_Start_Date__c}" />
+                                        </apex:outputText>
+                                    </apex:outputText>
+                                    <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'Payment Due Date'}">
+                                        Net {!term.Term_Attribute_Line_Item__r.Name} Days from the date of invoice
+                                    </apex:outputText>
+                                    <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'Change Request'}">
+                                        {!dataWrapperObj.quoteDetails.Change_Request__c}
+                                    </apex:outputText>
+                                    <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'OTI Payment Milestone'}">
+                                        <apex:variable var="OTIPaymentMilestone" value="{!term.Term_Attribute_Description__c}" />
+                                        <!--apex:outputText rendered="{!term.Term_Attribute_Description__c !=null}">{!term.Term_Attribute_Description__c}</apex:outputText>
+<apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/-->
+                                    </apex:outputText>
+                                    
+                                    <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'Delay Payment Interest'}">
+                                        <apex:outputText rendered="{!term.Late_Payment_Interest__c !=null}">{!term.Late_Payment_Interest__c} %</apex:outputText>
+                                        <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                                    </apex:outputText>
+                                    
+                                    <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'YoY | PUPM/Report 50-100'}">
+                                        <apex:outputText rendered="{!term.YoY_PUPM_Report__c !=null}">{!term.YoY_PUPM_Report__c} %</apex:outputText>
+                                        <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                                    </apex:outputText>
+                                    
+                                    <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'YoY | PUPM/Report >100'}">
+                                        <apex:outputText rendered="{!term.YoY_PUPM_Report_100__c !=null}">{!term.YoY_PUPM_Report_100__c} %</apex:outputText>
+                                        <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                                    </apex:outputText>
+                                    
+                                    <apex:outputText rendered="{!term.Term_Section_Line_Item__r.Name == 'YoY | AMC 10-20% of ARR'}">
+                                        <apex:outputText rendered="{!term.YoY_AMC_10_20_of_ARR__c !=null}">{!term.YoY_AMC_10_20_of_ARR__c} %</apex:outputText>
+                                        <apex:outputText rendered="{!term.Comments__c !=null}" value="{!term.Comments__c}" escape="false"/>
+                                    </apex:outputText>
+                                </td>
+                            </tr>
                         </apex:outputText>
                         
                     </apex:repeat>
@@ -234,236 +249,286 @@
         </div>
         
         <div style="page-break-after: always"/>
-        <div class="pageStart">
-            <apex:variable var="index" value="{!0}" />
-            <div style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;;">
+        <apex:outputText rendered="{!dataWrapperObj.subscriptionExpenseQLIListSize != null}">
+            <div class="pageStart">
+                <apex:variable var="index" value="{!0}" />
+                <div style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;;">
+                    
+                </div>
+                <p style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;">
+                    <span style="padding-left:30px;font-size:20px;padding-top:30px;padding-bottom:30px;font-weight: bold;">SUBSCRIPTION FEES</span>
+                </p>
                 
-            </div>
-            <p style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;">
-                <span style="padding-left:30px;font-size:20px;padding-top:30px;padding-bottom:30px;font-weight: bold;">SUBSCRIPTION FEES</span>
-            </p>
-            
-            <table>
-                <tr>
-                    <th Style ="width:25">Product Name</th>
-                    <th>Pricing Type</th>
-                    <th>Quantity</th>
-                    <th>Total Price</th>
-                </tr>
-                
-                <apex:repeat value="{!dataWrapperObj.subscriptionExpenseQLIList}" var="subOLI">
+                <table>
                     <tr>
-                        <apex:outputText rendered="{!dataWrapperObj.addOnModules && subOLI.Product2.Name == 'Modules in Standard'}">
-                            <td>{!subOLI.Product2.Name} + Addon</td>
-                        </apex:outputText>
-                        <apex:outputText rendered="{!!dataWrapperObj.addOnModules && subOLI.Product2.Name == 'Modules in Standard'}">
-                            <td>{!subOLI.Product2.Name}</td>
-                        </apex:outputText>
-                        <apex:outputText rendered="{!subOLI.Product2.Name != 'Modules in Standard'}">
-                            <td>{!subOLI.Product2.Name}</td>
-                        </apex:outputText>
-                        
-                        <apex:outputPanel layout="none" rendered="{!index == 0}">
-                            <td rowspan="{!dataWrapperObj.subscriptionExpenseQLIListSize}">{!subOLI.Travel_Pricing_Type__c}</td>
-                        </apex:outputPanel>
-                        <apex:outputPanel layout="none" rendered="{!index == 0}">
-                            <td rowspan="{!dataWrapperObj.subscriptionExpenseQLIListSize}">{!dataWrapperObj.quoteDetails.Expense_Minimum_Commitment__c}</td>
-                        </apex:outputPanel>
-                        <apex:outputPanel layout="none" rendered="{!index == 0}" >
-                            <td rowspan="{!dataWrapperObj.subscriptionExpenseQLIListSize}">
-                                <apex:outputText value="{0, number,##,##,###,##0.00}">
-                                    
-                                    <apex:param value="{!dataWrapperObj.woWebChargePricing}" />
-                                    
-                                </apex:outputText>
-                            </td>
-                        </apex:outputPanel>
-                        
+                        <th Style ="width:25">Product Name</th>
+                        <th>Pricing Type</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
                     </tr>
                     
-                    <apex:variable var="index" value="{!index + 1}" />
-                </apex:repeat>
-                <apex:outputPanel layout="none" rendered="{!dataWrapperObj.webCharges != null}" >
-                    <tr>
-                    <td>Web Services Charge</td>
-                    <td>{!dataWrapperObj.webServiceChargeQLI.Travel_Pricing_Type__c}</td>
-                    <td>{!dataWrapperObj.webServiceChargeQLI.SAAS_Quantity__c}</td>
-                    <td>
-                         <apex:outputText value="{0, number,##,##,###,##0.00}">
+                    
+                    <apex:repeat value="{!dataWrapperObj.subscriptionExpenseQLIList}" var="subOLI">
+                        <tr>
+                            <apex:outputText rendered="{!dataWrapperObj.addOnModules && subOLI.Product2.Name == 'Modules in Standard'}">
+                                <td>{!subOLI.Product2.Name} + Addon</td>
+                            </apex:outputText>
+                            <apex:outputText rendered="{!!dataWrapperObj.addOnModules && subOLI.Product2.Name == 'Modules in Standard'}">
+                                <td>{!subOLI.Product2.Name}</td>
+                            </apex:outputText>
+                            <apex:outputText rendered="{!(subOLI.Product2.Name != 'Modules in Standard' && subOLI.Product2.Name != 'Route Tracker')}">
+                                <td>{!subOLI.Product2.Name}</td>
+                            </apex:outputText>
+                            <apex:outputText rendered="{!subOLI.Product2.Name == 'Route Tracker'}">
+                                <td>{!subOLI.Product2.Name} ({!subOLI.Sub_Type__c})</td>
+                            </apex:outputText>
+                            
+                            <apex:outputPanel layout="none" rendered="{!index == 0}">
+                                <td rowspan="{!dataWrapperObj.subscriptionExpenseQLIListSize}">{!subOLI.Travel_Pricing_Type__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="none" rendered="{!index == 0}">
+                                <td rowspan="{!dataWrapperObj.subscriptionExpenseQLIListSize}">{!dataWrapperObj.quoteDetails.Expense_Minimum_Commitment__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="none" rendered="{!index == 0}" >
+                                <td rowspan="{!dataWrapperObj.subscriptionExpenseQLIListSize}">
+                                    <apex:outputText value="{0, number,##,##,###,##0.00}">
+                                        
+                                        <apex:param value="{!dataWrapperObj.woWebChargePricing}" />
+                                        
+                                    </apex:outputText>
+                                </td>
+                            </apex:outputPanel>
+                            
+                        </tr>
+                        
+                        <apex:variable var="index" value="{!index + 1}" />
+                    </apex:repeat>
+                    <apex:outputPanel layout="none" rendered="{!dataWrapperObj.webCharges != null}" >
+                        <tr>
+                            <td>Web Services Charge</td>
+                            <td>{!dataWrapperObj.webServiceChargeQLI.Travel_Pricing_Type__c}</td>
+                            <td>{!dataWrapperObj.webServiceChargeQLI.SAAS_Quantity__c}</td>
+                            <td>
+                                <apex:outputText value="{0, number,##,##,###,##0.00}">
                                     
                                     <apex:param value="{!dataWrapperObj.webCharges}" />
                                     
                                 </apex:outputText>
-                        </td>
-                </tr>
-                </apex:outputPanel>
-                
-                <tr>
-                    <td ><b>Expense Monthly Price</b></td>
-                    <td colspan="3" style="text-align:center" >
-                        <b>
-                        <apex:outputText value="{0, number,##,##,###,##0.00}">
+                            </td>
+                        </tr>
+                    </apex:outputPanel>
+                    
+                    <tr>
+                        <td ><b>Expense Monthly Price</b></td>
+                        <td colspan="3" style="text-align:center" >
+                            <b>
+                                <apex:outputText value="{0, number,##,##,###,##0.00}">
                                     
                                     <apex:param value="{!dataWrapperObj.ExpenseMonthlyAmount}" />
                                     
                                 </apex:outputText></b>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                    
+                    
+                </table>
                 
-                
-            </table>
-        </div>
-        <div style="page-break-after: always"/>
+            </div>
+            <div style="page-break-after: always"/>
+        </apex:outputText>
+        
         <div class="pageStart">
+            <apex:outputText rendered="{!dataWrapperObj.subscriptionExpenseQLIListSize == null}">
+                <p style=" border-left-style: solid; border-width: 7px;  border-color: #00b26f;width:100%;">
+                    <span style="padding-left:30px;font-size:20px;padding-top:30px;padding-bottom:30px;font-weight: bold;">SUBSCRIPTION FEES</span>
+                </p>
+            </apex:outputText>
             <apex:variable var="index" value="{!0}" />
             <apex:outputText rendered="{!dataWrapperObj.subscriptionTravelQLIListSize != null}">
                 <table>
-                <tr>
-                    <th Style ="width:25">Product Name</th>
-                    <th>Pricing Type</th>
-                    <th>Quantity</th>
-                    <th>Total Price</th>
-                </tr>
-                <apex:repeat value="{!dataWrapperObj.subscriptionTravelQLIList}" var="subOLI">
                     <tr>
-                        <td>{!subOLI.Product2.Name}</td>
-                        <apex:outputPanel layout="none" rendered="{!index == 0}">
-                            <td rowspan="{!dataWrapperObj.subscriptionTravelQLIListSize}">{!subOLI.Travel_Pricing_Type__c}</td>
-                        </apex:outputPanel>
-                        <apex:outputPanel layout="none" rendered="{!index == 0}">
-                            <td rowspan="{!dataWrapperObj.subscriptionTravelQLIListSize}">{!dataWrapperObj.quoteDetails.Travel_Minimum_Commitment__c}</td>
-                        </apex:outputPanel>
-                        <apex:outputPanel layout="none" rendered="{!index == 0}">
-                            <td rowspan="{!dataWrapperObj.subscriptionTravelQLIListSize}">
-                                
-                                <apex:outputText value="{0, number,##,##,###,##0.00}">
-                                    
-                                    <apex:param value="{!dataWrapperObj.travelPriceWithoutCancelation}" />
-                                    
-                                </apex:outputText>
-                            </td>
-                        </apex:outputPanel>
-                        
+                        <th Style ="width:25">Product Name</th>
+                        <th>Pricing Type</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
                     </tr>
-                    
-                    <apex:variable var="index" value="{!index + 1}" />
-                </apex:repeat>
-                <apex:repeat value="{!dataWrapperObj.subscriptionTravelCancelation}" var="subOLI">
-                    <tr>
-                        <td> {!subOLI.Product2.Name}</td>
-                        <td>{!subOLI.Travel_Pricing_Type__c}</td>
-                        <td>{!subOLI.Quantity}</td>
-                        <td>
-                            <apex:outputText value="{0, number,##,##,###,##0.00}">
+                    <apex:repeat value="{!dataWrapperObj.subscriptionTravelQLIList}" var="subOLI">
+                        <tr>
+                            <td>{!subOLI.Product2.Name}</td>
+                            <apex:outputPanel layout="none" rendered="{!index == 0}">
+                                <td rowspan="{!dataWrapperObj.subscriptionTravelQLIListSize}">{!subOLI.Travel_Pricing_Type__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="none" rendered="{!index == 0}">
+                                <td rowspan="{!dataWrapperObj.subscriptionTravelQLIListSize}">{!dataWrapperObj.quoteDetails.Travel_Minimum_Commitment__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="none" rendered="{!index == 0}">
+                                <td rowspan="{!dataWrapperObj.subscriptionTravelQLIListSize}">
+                                    
+                                    <apex:outputText value="{0, number,##,##,###,##0.00}">
+                                        
+                                        <apex:param value="{!dataWrapperObj.travelPriceWithoutCancelation}" />
+                                        
+                                    </apex:outputText>
+                                </td>
+                            </apex:outputPanel>
+                            
+                        </tr>
+                        
+                        <apex:variable var="index" value="{!index + 1}" />
+                    </apex:repeat>
+                    <apex:repeat value="{!dataWrapperObj.subscriptionTravelCancelation}" var="subOLI">
+                        <tr>
+                            <td> {!subOLI.Product2.Name}</td>
+                            <td>{!subOLI.Travel_Pricing_Type__c}</td>
+                            <td>{!subOLI.Quantity}</td>
+                            <td>
+                                <apex:outputText value="{0, number,##,##,###,##0.00}">
                                     
                                     <apex:param value="{!subOLI.SAAS_Price__c}" />
                                     
                                 </apex:outputText>
-                        </td>
-                    </tr>
-                </apex:repeat>
-                <tr>
-                    <td ><b>Travel Monthly Price</b></td>
-                    <td colspan="3" style="text-align:center" >
-                        <b>
-                            <apex:outputText value="{0, number,##,##,###,##0.00}">
+                            </td>
+                        </tr>
+                    </apex:repeat>
+                    <tr>
+                        <td ><b>Travel Monthly Price</b></td>
+                        <td colspan="3" style="text-align:center" >
+                            <b>
+                                <apex:outputText value="{0, number,##,##,###,##0.00}">
                                     
                                     <apex:param value="{!dataWrapperObj.quoteDetails.Travel_Total_SAAS__c}" />
                                     
                                 </apex:outputText>
-                        </b>
-                        
-                        
-                    </td>
-                </tr>
+                            </b>
+                            
+                            
+                        </td>
+                    </tr>
                     <tr>
                         <td colspan="4">
                             Cancellation Charges: Any cancellation will be charged at 40 INR per cancellation.
                         </td>
                     </tr>
-            </table>
+                </table>
             </apex:outputText>
             
             
-            <br/>
+            
+            
+            
+        </div>
+        <div style="page-break-after: always"/>
+        <div class="pageStart">
             
             <table>
-                <tr>
-                    <td><b>Total Monthly Price(Travel + Expense)</b></td>
-                    <td><b>
-                        <apex:outputText value="{0, number,##,##,###,##0.00}">
-                                    
-                                    <apex:param value="{!dataWrapperObj.totalMonthlypricing}" />
-                                    
-                                </apex:outputText>
-                        </b>
+                <apex:outputText rendered="{!dataWrapperObj.totalMonthlypricing != null}">
+                    <tr>
+                        <apex:outputText rendered="{!(dataWrapperObj.subscriptionExpenseQLIListSize != null && dataWrapperObj.addOnModules && dataWrapperObj.subscriptionTravelQLIListSize != null)}">
+                            <td><b>Total Monthly Price(Travel + Expense + Addon)</b></td>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!(dataWrapperObj.subscriptionExpenseQLIListSize != null && dataWrapperObj.subscriptionTravelQLIListSize != null && !dataWrapperObj.addOnModules)}">
+                            <td><b>Total Monthly Price(Travel + Expense)</b></td>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!(dataWrapperObj.subscriptionExpenseQLIListSize != null && dataWrapperObj.addOnModules && dataWrapperObj.subscriptionTravelQLIListSize == null)}">
+                            <td><b>Total Monthly Price(Expense + Addon)</b></td>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!(dataWrapperObj.subscriptionExpenseQLIListSize != null && !dataWrapperObj.addOnModules && dataWrapperObj.subscriptionTravelQLIListSize == null)}">
+                            <td><b>Total Monthly Price(Expense)</b></td>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!(dataWrapperObj.subscriptionExpenseQLIListSize == null && dataWrapperObj.subscriptionTravelQLIListSize != null)}">
+                            <td><b>Total Monthly Price(Travel)</b></td>
+                        </apex:outputText>
                         
-                    </td>
-                </tr>
-                <tr>
-                    <td><b>Discount</b></td>
-                    <td>
-                        <b><apex:outputText value="{0, number,##,##,###,##0.00}">
-                                    
-                                    <apex:param value="{!dataWrapperObj.quoteDetails.Overall_ARR_Discount__c}" /> 
-                                    
+                        <td><b>
+                            <apex:outputText value="{0, number,##,##,###,##0.00}">
+                                
+                                <apex:param value="{!dataWrapperObj.totalMonthlypricing}" />
+                                
+                            </apex:outputText>
+                            </b>
+                            
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!(dataWrapperObj.quoteDetails.Overall_ARR_Discount__c != null && dataWrapperObj.quoteDetails.Overall_ARR_Discount__c > 0)}">
+                    <tr>
+                        <td><b>Discount</b></td>
+                        <td>
+                            <b><apex:outputText value="{0, number,##,##,###,##0.00}">
+                                
+                                <apex:param value="{!dataWrapperObj.quoteDetails.Overall_ARR_Discount__c}" /> 
+                                
                                 </apex:outputText>%</b>
-                        
-                    </td>
-                </tr>
-                <tr>
-                    <td><b>ARR Expense</b></td>
-                    <td><b>
-                        <apex:outputText value="{0, number,##,##,###,##0.00}">
-                                    
-                                    <apex:param value="{!dataWrapperObj.quoteDetails.Expense_FInal_ARRs__c}" />
-                                    
-                                </apex:outputText>
-                        </b>
-                        
-                    </td>
-                </tr>
-                <tr>
-                    <td><b>ARR Travel</b></td>
-                    <td><b>
-                        <apex:outputText value="{0, number,##,##,###,##0.00}">
-                                    
-                                    <apex:param value="{!dataWrapperObj.quoteDetails.Travel_SAAS_ARR__c}" />
-                                    
-                                </apex:outputText>
-                        </b>
-                        
-                    </td>
-                </tr>
-                <tr>
-                    <td><b>ACV</b></td>
-                    <td><b>
-                        <apex:outputText value="{0, number,##,##,###,##0.00}">
-                                    
-                                    <apex:param value="{!dataWrapperObj.subscriptionACV}" />
-                                    
-                                </apex:outputText>
-                        </b>
-                        
-                    </td>
-                </tr>
+                            
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!dataWrapperObj.subscriptionExpenseQLIListSize != null}">
+                    <tr>
+                        <td><b>ARR Expense</b></td>
+                        <td><b>
+                            <apex:outputText value="{0, number,##,##,###,##0.00}">
+                                
+                                <apex:param value="{!dataWrapperObj.quoteDetails.Expense_FInal_ARRs__c}" />
+                                
+                            </apex:outputText>
+                            </b>
+                            
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!(dataWrapperObj.quoteDetails.Travel_SAAS_ARR__c != null && dataWrapperObj.quoteDetails.Travel_SAAS_ARR__c > 0)}">
+                    <tr>
+                        <td><b>ARR Travel</b></td>
+                        <td><b>
+                            <apex:outputText value="{0, number,##,##,###,##0.00}">
+                                
+                                <apex:param value="{!dataWrapperObj.quoteDetails.Travel_SAAS_ARR__c}" />
+                                
+                            </apex:outputText>
+                            </b>
+                            
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
+                <apex:outputText rendered="{!dataWrapperObj.subscriptionACV != null}">
+                    <tr>
+                        <td><b>ACV</b></td>
+                        <td><b>
+                            <apex:outputText value="{0, number,##,##,###,##0.00}">
+                                
+                                <apex:param value="{!dataWrapperObj.quoteACV}" />
+                                
+                            </apex:outputText>
+                            </b>
+                            
+                        </td>
+                    </tr>
+                </apex:outputText>
+                
                 <apex:outputPanel layout="none" rendered="{!dataWrapperObj.webCharges != null}" >
                     <tr>
-                    <td><b>Web Service</b></td>
-                    <td>
-                        <b>
-                            <apex:outputText value="{0, number,##,##,###,##0.00}">
+                        <td><b>Web Service</b></td>
+                        <td>
+                            <b>
+                                <apex:outputText value="{0, number,##,##,###,##0.00}">
                                     
                                     <apex:param value="{!dataWrapperObj.webCharges}" />
                                     
                                 </apex:outputText>
-                        </b>
-                        
-                    </td>
-                </tr>
+                            </b>
+                            
+                        </td>
+                    </tr>
                 </apex:outputPanel>
-                <br/>
-                <apex:outputText rendered="{!dataWrapperObj.quoteDetails.Notes__c != null}">
+                
+            </table>
+            <br/>
+            <apex:outputText rendered="{!dataWrapperObj.quoteDetails.Notes__c != null}">
                 <table>
                     <tr>
                         <td>
@@ -477,13 +542,6 @@
                     </tr>
                 </table>
             </apex:outputText>
-                
-            </table>
-        </div>
-        <div style="page-break-after: always"/>
-        <div class="pageStart">
-            <br/>
-            <br/>
             <br/>
             <b style="font-size:15px;">1. Route Tracker:</b>
             <br/>
@@ -519,20 +577,13 @@
             </span>
             <br/>
             <br/> <span style="font-size:15px;text-align:left;">1. The Invoicing For Route trcker will be on <b>monthly actuals on created transcations.</b></span>
-            <br/> <span style="font-size:15px;text-align:left;">2. Route Tracker to be sold as an additional add-on module.</span>
-            <br/> <span style="font-size:15px;text-align:left;">3. The Pricing is slab based pricing and the slab pricing will be effective irrespetive of the Number of transactions option in the calculator.estimation from the customer on transactions,you can add 20,000 in the Number of transaction option in the calculator.</span> <br/>
-            <br/> <br/> <span style="font-size:15px;text-align:left;margin-left:20px;">Example: x company has a monthly consumption of 1lks transaction, Pricung for MMI will be as follows:</span>
-            <br/>  <span style="font-size:15px;text-align:left;margin-left:50px;">2*20000  = 40,000(for initial 20k transaction)</span>
-            <br/>  <span style="font-size:15px;text-align:left;margin-left:50px;">1.75*30000  = 52,500(for 20k-50k transaction)</span>
-            <br/>  <span style="font-size:15px;text-align:left;margin-left:50px;">1.5*50000  = 75,000(above 50k transaction)</span>
-            <br/>  <span style="font-size:15px;text-align:left;margin-left:50px;"><b style=" border-bottom: 1px solid black;">Total Cost :INR 1,67,000 </b></span>
             <br/>
             <br/>
             <br/>
             
         </div>
         <div style="page-break-after: always"/>
-       
+        
         <div class="pageStart">
             <br/>
             <b>TERMS &amp; CONDITIONS</b>

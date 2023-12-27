@@ -56,7 +56,7 @@ public class SubscriptionWithOTIOFController {
     
     public static void getAllTheSubsctiptionProducts(Id recordId){
         try{
-            List<QuoteLineItem> listOfQLI = [SELECT Id,Type__c,Product2.Name,Sub_Type__c,Nested_Parent_Product__c,Quantity,Travel_Pricing_Type__c,SAAS_Price__c,Is_Travel_Product__c,SAAS_Quantity__c from QuoteLineItem where QuoteId =: recordId ];
+            List<QuoteLineItem> listOfQLI = [SELECT Id,Type__c,Product2.Name,Sub_Type__c,Nested_Parent_Product__c,Nested_Parent_Product__r.Product2.Name,Quantity,Travel_Pricing_Type__c,SAAS_Price__c,Is_Travel_Product__c,SAAS_Quantity__c from QuoteLineItem where QuoteId =: recordId ];
             dataWrapperObj.subscriptionExpenseQLIList = new List<QuoteLineItem>();
             dataWrapperObj.subscriptionTravelQLIList = new List<QuoteLineItem>();
             Set<Id> nestedBundleSet = new Set<Id>();
@@ -69,7 +69,10 @@ public class SubscriptionWithOTIOFController {
                 if(qli.Type__c == 'SAAS' || qli.Type__c == 'OTI + SAAS'){
                     
                     if(!qli.Is_Travel_Product__c){
-                        nestedBundleSet.add(qli.Nested_Parent_Product__c);
+                        if((qli.Nested_Parent_Product__c != null && qli.Nested_Parent_Product__r.Product2.Name != 'Modules in Standard') || (qli.Nested_Parent_Product__c == null && qli.Product2.Name != 'Expense Bundle' && qli.Product2.Name != 'Modules in Standard')){
+                            dataWrapperObj.addOnModules = true;
+                        }
+                        
                     }
                     
                     if(!qli.Is_Travel_Product__c && !qli.Product2.Name.contains('Web Services Charges for Web based API Integration (if any)')){
@@ -117,10 +120,10 @@ public class SubscriptionWithOTIOFController {
             
             
             
-            
+           /* system.debug('nestedBundleSet::'+nestedBundleSet);
             if(!nestedBundleSet.isEmpty() && nestedBundleSet.size() > 1){
                 dataWrapperObj.addOnModules = true;
-            }
+            }*/
             if(dataWrapperObj.woWebChargePricing == null){
                 dataWrapperObj.woWebChargePricing = dataWrapperObj.ExpenseMonthlyAmount;
             }
@@ -138,6 +141,12 @@ public class SubscriptionWithOTIOFController {
             }
             dataWrapperObj.totalMonthlypricing = dataWrapperObj.quoteDetails.Travel_Total_SAAS__c + dataWrapperObj.ExpenseMonthlyAmount;
             dataWrapperObj.subscriptionACV = dataWrapperObj.quoteDetails.Expense_FInal_ARRs__c + dataWrapperObj.quoteDetails.Travel_SAAS_ARR__c;
+            
+            
+            if(dataWrapperObj.subscriptionACV == null)
+                dataWrapperObj.subscriptionACV = 0;
+            
+            dataWrapperObj.quoteACV = dataWrapperObj.quoteDetails.OTI_Total_Amount__c + dataWrapperObj.subscriptionACV;
         }catch(Exception e){
             System.debug('The Error ::'+e.getMessage() +' AND Error Line No :'+e.getLineNumber());
         }
@@ -172,6 +181,7 @@ public class SubscriptionWithOTIOFController {
         Public Decimal subscriptionTravelQLIAmount{get;set;}
         Public Decimal implementationExpenseQLIAmount{get;set;}
         Public Decimal implementationTravelQLIAmount{get;set;}
+        Public Decimal quoteACV{get;set;}
         
         Public Decimal subscriptionQLIAmount{get;set;}
         public List<QuoteLineItem> travelQLIList {get;set;}
